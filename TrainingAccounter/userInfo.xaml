@@ -1,0 +1,64 @@
+﻿<Page x:Class="TrainingAccounter.userInfo"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      d:DesignHeight="610" d:DesignWidth="1110"
+	Title="userInfo">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <StackPanel>
+            <GroupBox Header="管理员照片" FontSize="14"   Height="225" HorizontalAlignment="Center" x:Name="groupBoxPhoto" VerticalAlignment="Top" Width="160">
+                <Grid>
+                    <WrapPanel Height="200" VerticalAlignment="Top">
+                        <Image  x:Name="imageUserManger"  Width="149" Height="180" Source="/TrainingAccounter;component/Resource/1.png" />
+                        <Button Content="拍摄照片" Template="{StaticResource GlassButton}" FontSize="12" Height="20"  x:Name="btnPhotoUser" Width="72" Margin="40,0,0,0" Click="btnPhotoUser_Click" RenderTransformOrigin="0.903,0.478" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                    </WrapPanel>
+                </Grid>
+            </GroupBox>
+            <StackPanel Orientation="Horizontal">
+                <StackPanel  HorizontalAlignment="Left" Margin="0,10,0,0" x:Name="stackPanel8" VerticalAlignment="Top">
+                    <Label Content="I D:"  Height="25" Margin="0,15,0,0" x:Name="label47" Width="40" />
+                    <Label Content="姓名:" Height="25" Margin="0,15,0,0" x:Name="label48" Width="45" />
+                    <Label Content="密码:" Height="25" Margin="0,15,0,0" x:Name="label88" Width="45" />
+                    <Label Content="类别:" Height="25" Margin="0,15,0,0" x:Name="label89" Width="45" />
+                    <Label Content="联系方式:" Height="25" Margin="0,15,0,0" x:Name="label90" Width="80" />
+                </StackPanel>
+                <StackPanel HorizontalAlignment="Left" Margin="0,10,0,0" x:Name="stackPanel9" VerticalAlignment="Top" >
+                    <TextBox Height="25"  Style="{StaticResource RadiusTextBoxStyle}" Margin="0,15,0,0" x:Name="tboxUserId" Width="160" />
+                    <TextBox Height="25" Margin="0,15,0,0" Style="{StaticResource RadiusTextBoxStyle}" x:Name="tboxUserName" Width="160" />
+                    <TextBox Height="25" Margin="0,15,0,0" Style="{StaticResource RadiusTextBoxStyle}" x:Name="tboxPwd" Width="160" />
+                    <ComboBox Height="25" Margin="0,15,0,0" x:Name="cboxUserType" SelectedIndex="0" Width="160" >
+                        <ComboBoxItem>操作员</ComboBoxItem>
+                        <ComboBoxItem>管理员</ComboBoxItem>
+                    </ComboBox>
+                    <TextBox Height="25" Margin="0,15,0,0" Style="{StaticResource RadiusTextBoxStyle}" x:Name="tboxPhone" Width="160" />
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button Click="btnAddUser_Click" Template="{StaticResource GlassButton}" Content="新   增" FontSize="15" Height="30" Margin="20,25,0,8" x:Name="btnAddUser" Width="85" />
+                <Button Click="btnSaveUser_Click" Template="{StaticResource GlassButton}" Content="保   存" FontSize="15" Height="30" Margin="40,25,0,8" x:Name="btnSaveUser" Width="85" />
+            </StackPanel>
+        </StackPanel>
+        <DataGrid AutoGenerateColumns="False" Grid.Column="1"  FontSize="14" CanUserAddRows="False"  x:Name="dataGridTraManager" SelectionChanged="dataGridTraManager_SelectionChanged" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding TRA_MANAGER_ID}" Header="用户ID" IsReadOnly="True" Width="100" />
+                <DataGridTextColumn Binding="{Binding TRA_MANAGER_NAME}" Header="用户姓名" IsReadOnly="True" Width="200" />
+                <DataGridTextColumn Binding="{Binding AuthManagement}" Header="用户类别" IsReadOnly="True" Width="150" />
+                <DataGridTextColumn Binding="{Binding PHONE_NO}" Header="联系电话" IsReadOnly="True" Width="250" />
+                <DataGridTemplateColumn Header="" Width="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="删除" Template="{StaticResource GlassButton}"  x:Name="deleteBtn" Click="btnDelUser_Click"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Page>

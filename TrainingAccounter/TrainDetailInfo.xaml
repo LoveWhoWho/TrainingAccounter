@@ -1,0 +1,107 @@
+﻿<Window x:Class="TrainingAccounter.TrainDetailInfo"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TrainingAccounter"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="训练详细信息" Height="600" Width="1000" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Height" Value="18"/>
+            <Setter Property="Width" Value="80"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontFamily" Value="FangSong"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Width" Value="80"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="FontFamily" Value="FangSong"/>
+        </Style>
+        <Style TargetType="DataGrid">
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="FontFamily" Value="FangSong"/>
+        </Style>
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Width" Value="80"/>
+            <Setter Property="Height" Value="30"/>
+        </Style>
+        
+        <!--<Style TargetType="{x:Type DataGridRow}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding VL_POINTS,Converter={StaticResource PointsConvert},ConverterParameter=0}" Value="True">
+                    <Setter Property="Foreground" Value="Red" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>-->
+    </Window.Resources>
+    <Grid Background="#FF87CEFA">
+        <StackPanel Orientation="Vertical">
+            <WrapPanel  Margin="4,4,4,0" Height="103">
+                <TextBlock Text="序 号:" FontSize="13" Margin="23,2,0,0" Width="50" />
+                <TextBox Name="txtSeqNo" FontSize="13" Margin="0,2,0,0"  Text=""/>
+                <TextBlock Text="姓 名:" FontSize="13" Margin="27,2,0,0" Width="49" />
+                <TextBox Name="txtName" FontSize="13" Text="" Margin="0,2,0,0"/>
+                <TextBlock Text="身份证号:" FontSize="13"  Margin="4,2,0,0" Width="80"/>
+                <TextBox Name="txtPidNo" FontSize="13" Text="" Margin="0,2,0,0" Width="168"/>
+                <TextBlock Text="训练日期:" FontSize="13"  Margin="4,2,0,0" Width="80"/>
+                <TextBox Name="txtDate" Text="" FontSize="13" Margin="0,2,0,0" Width="168"/>
+                <TextBlock Text="车  号:" FontSize="13" Width="80" />
+                <TextBox Name="txtAutoId" FontSize="13" Text="" />
+                <TextBlock Text="车 型:" FontSize="13" Margin="23,2,0,0" Width="50" />
+                <TextBox Name="txtAutoType" FontSize="13"  Margin="0,2,0,0" Text=""/>
+                <TextBlock Text="科 目:" FontSize="13" Margin="27,2,0,0" Width="49" />
+                <TextBox Name="txtExamCd" FontSize="13" Text="" />
+                <TextBlock Text="开始时间:" FontSize="13" Margin="4,2,0,0" Width="80"/>
+                <TextBox Name="txtStartTime" FontSize="13" Text="" Margin="0,2,0,0"  Width="168"/>
+                <TextBlock Text="结束时间:" FontSize="13" Grid.Column="7" Margin="4,2,0,0" Width="80" FontFamily="FangSong"  VerticalAlignment="Top"/>
+                <TextBox Name="txtEndTime" FontSize="13" Text="" Margin="0,4,0,0" Width="168"/>
+
+                <TextBlock Text="教练员:" FontSize="13" />
+                <TextBox Name="txtTrainer" FontSize="13" Text="" />
+                <TextBlock Text="计费模式:" FontSize="13" Margin="2,2,0,0" Width="71" />
+                <TextBox Name="txtTrainMode" FontSize="13" Margin="0,2,0,0" />
+                <TextBlock Text="训练次数:" FontSize="13" Margin="0,2,0,0" Width="76" />
+                <TextBox Name="txtTrainTries" FontSize="13" Margin="0,2,0,0" />
+                <TextBlock Text="驾校名称:" FontSize="13" Margin="4,2,0,0" Width="80"/>
+                <TextBox Name="txtDrivingSchool" FontSize="13" Text="" Margin="0,2,0,0"  MinWidth="255" Width="277"/>
+                <TextBlock Text="训练时间(单位:小时):" FontSize="13" Margin="60,2,0,0" Width="163"/>
+                <TextBox x:Name="txtTrainTime" FontSize="13" Margin="0,2,0,0" Width="80"/>
+
+                <TextBlock Text="训练里程(单位:公里):" FontSize="13" Margin="0,2,0,0" Width="160"/>
+                <TextBox Name="txtTrainMileage" FontSize="13" Margin="0,2,0,0" Width="105"/>
+                <Button Name="btnPrint"  Content="预览打印" Height="25" Width="80" Margin="538,10,0,0" Click="btnPrint_Click"/>
+                <Button Name="btnExport" Content="导出" Margin="10,10,0,0" Height="25" Width="80" Click="btnExport_Click"/>
+            </WrapPanel>
+
+            <DataGrid Grid.Row="1" Margin="2" FontSize="15"  Name="dgDetailRecords" Height="459">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="序号" Binding="{Binding SEQ_NO}" Width="60"/>
+                    <DataGridTextColumn Header="项目代码" Binding="{Binding EI_CODE}" Width="80"/>
+                    <DataGridTextColumn Header="项目名称" Binding="{Binding EI_DESC}" Width="100"/>
+                    <DataGridTextColumn Header="扣分名称" Binding="{Binding VL_DESC}" Width="280"/>
+                    <DataGridTextColumn Header="扣分分值" Binding="{Binding VL_POINTS}" Width="80"/>
+                    <DataGridTextColumn Header="项目状态" Binding="{Binding TRA_TYPE}" Width="80"/>
+                    <DataGridTextColumn Header="时间" Binding="{Binding EI_TS_TAMP,StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}" Width="180"/>
+                    <DataGridTextColumn Header="训练模式" Binding="{Binding TRA_MODE}" Width="100"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,42 @@
+﻿<Window x:Class="TrainingAccounter.UpdateBoxWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="提示消息：" Height="246" Width="450" WindowStartupLocation="CenterScreen" Background="LightSkyBlue" ResizeMode="NoResize" >
+    <Grid Height="208">
+        <WrapPanel>
+           
+            <StackPanel Orientation="Vertical" Width="443">
+                <StackPanel Margin="71,0,0,0" Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Label Margin="10,5,0,0">姓名：</Label>
+                    <TextBlock FontSize="14" Foreground="Red" IsEnabled="False" Margin="0,5,0,0" Name="tbxName" Width="100"></TextBlock>
+                </StackPanel>
+                <StackPanel Margin="36,0,0,0" Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Label Margin="10,5,0,0">身份证号码：</Label>
+                    <TextBlock FontSize="14"  IsEnabled="False" Foreground="Red" Margin="0,5,0,0" Name="tbxPidNo" Width="150"></TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label  Margin="10,5,0,0">本次预约实际训练：</Label>
+                    <TextBox IsEnabled="False" FontSize="14" TextAlignment="Center"  Margin="0,5,0,0" Foreground="Red" Name="tbxActra" Width="150"></TextBox>
+                    <Label Name="lbTratime" FontSize="11" VerticalAlignment="Bottom" Foreground="Red" Content=""> </Label>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Margin="35,5,0,0">本次训练费用：</Label>
+                    <TextBox IsEnabled="False" FontSize="14"  TextAlignment="Center" Margin="0,5,0,0" Foreground="Red" Name="tbxAcBalance" Width="150"></TextBox>
+                    <Label FontSize="11" Height="25" VerticalAlignment="Bottom" Foreground="Red" Content="(元)"></Label>
+                </StackPanel>
+                <!--<StackPanel Orientation="Horizontal">
+                    <Label Margin="58,5,0,0">本次剩余：</Label>
+                    <TextBox IsEnabled="False" Margin="0,5,0,0"  TextAlignment="Center" FontSize="14" Foreground="Red" Name="tbxResuite" Width="150"></TextBox>
+                    <Label FontSize="11" Height="25" VerticalAlignment="Bottom" Foreground="Red" Content="(元)"></Label>
+                </StackPanel>-->
+                <StackPanel Orientation="Horizontal">
+                    <Label Margin="46,5,0,0">应结算金额：</Label>
+                    <TextBox IsEnabled="False" Margin="0,5,0,0"  TextAlignment="Center" FontSize="14" Foreground="Red" Name="tbxBalance" Width="150"></TextBox>
+                    <Label FontSize="11" Height="25" VerticalAlignment="Bottom" Foreground="Red" Content="(元)"></Label>
+                </StackPanel>
+            </StackPanel>
+        </WrapPanel>
+        <Button Content="结算完成" Template="{StaticResource GlassButton}" FontSize="18" Height="35" HorizontalAlignment="Left" Margin="56,0,0,8" Name="btnUpd" VerticalAlignment="Bottom" Width="89" Click="btnUpd_Click" Grid.Row="1" />
+        <Button Content="取消结算" FontSize="18" Template="{StaticResource GlassButton}" Margin="0,0,52,8" Name="btnCancel" Click="btnCancel_Click" Height="35" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="89" Grid.Row="1" />
+    </Grid>
+</Window>

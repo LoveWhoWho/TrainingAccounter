@@ -1,0 +1,54 @@
+﻿<Page x:Class="TrainingAccounter.drvInfo"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:sys="clr-namespace:System;assembly=mscorlib" 
+      mc:Ignorable="d" 
+      d:DesignHeight="610" d:DesignWidth="1110"
+	Title="drvInfo">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Height="25" Grid.Row="0">
+            <Label Content="驾校名称：" FontSize="13"  x:Name="label110" />
+            <TextBox  x:Name="tBoxDrvName" Style="{StaticResource RadiusTextBoxStyle}"  Width="200" />
+            <Label Content="驾校地址：" FontSize="13" x:Name="label111"  />
+            <TextBox  x:Name="tBoxDrvAddress" Style="{StaticResource RadiusTextBoxStyle}" Width="200"  />
+            <Label Content="驾校电话：" FontSize="13"  x:Name="label112"  />
+            <TextBox x:Name="tBoxPhone" Style="{StaticResource RadiusTextBoxStyle}" Width="200" />
+            <Label Content="驾校简称："   FontSize="13" x:Name="label113"  />
+            <TextBox  Style="{StaticResource RadiusTextBoxStyle}" x:Name="tBoxDsShortName"  Width="200"  />          
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Height="25" Grid.Row="1" >
+            <Label Content="联系人：" Margin="14,0,0,0" FontSize="13" x:Name="label114" />
+            <TextBox x:Name="tBoxContact"  Style="{StaticResource RadiusTextBoxStyle}" Width="200"  />
+            <Label Content="驾校编号：" FontSize="13" x:Name="label115"  />
+            <TextBox x:Name="tboxdrvid"  Style="{StaticResource RadiusTextBoxStyle}" Width="200" />
+            <Button Content="保 存" Template="{StaticResource GlassButton}"  MaxWidth="85"   Margin="100,0,0,0" x:Name="btnSaveDrv" Width="85" Click="btnSaveDrv_Click"  />
+            <Button Content="新 增" Template="{StaticResource GlassButton}"  MaxWidth="85" Margin="50,0,0,0"  x:Name="btnAddDrv"  Width="85" Click="btnAddDrv_Click" />
+        </StackPanel>
+        <DataGrid Grid.Row="2" AutoGenerateColumns="False" FontSize="14" CanUserAddRows="False"   x:Name="dataGridDrv"  SelectionChanged="dataGridDrv_SelectionChanged" SelectionMode="Single">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding DRIVING_SCHOOL_ID}" Header="驾校ID" IsReadOnly="True" MinWidth="70" />
+                <DataGridTextColumn Binding="{Binding DS_NAME}" Header="驾校名称" IsReadOnly="True" MinWidth="200" />
+                <DataGridTextColumn Binding="{Binding ADDRESS}" Header="驾校地址" IsReadOnly="True" MinWidth="200" />
+                <DataGridTextColumn Binding="{Binding PHONE_NO}" Header="驾校电话" IsReadOnly="True" MinWidth="100" />
+                <DataGridTextColumn Binding="{Binding DS_SHORT_NAME}" Header="驾校简称" IsReadOnly="True" MinWidth="200" />
+                <DataGridTextColumn Binding="{Binding CONTACT}" Header="驾校联系人" IsReadOnly="True" MinWidth="150" />
+                <DataGridTemplateColumn Header="" Width="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="删除"  Template="{StaticResource GlassButton}" x:Name="deleteBtn" Click="btnDelDrv_Click"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn />
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Page>

@@ -1,0 +1,73 @@
+﻿<Page x:Class="TrainingAccounter.trainerInfo"
+       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:sys="clr-namespace:System;assembly=mscorlib" 
+      mc:Ignorable="d" 
+      d:DesignHeight="610" d:DesignWidth="1110"
+	Title="trainerInfo">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel  Grid.Column="0">
+                <GroupBox  Header="教练照片" FontSize="14"  Height="225"  x:Name="groupBoxPt"  Width="160" HorizontalAlignment="Center">
+                    <Grid>
+                        <StackPanel>
+                            <Image  x:Name="imageTrainer"  Width="149" Height="180" Source="/TrainingAccounter;component/Resource/1.png" />
+                            <Button Content="拍摄照片" Template="{StaticResource GlassButton}" FontSize="12" Height="20"  x:Name="btnPhotoTrainer" Width="72" Margin="40,0,0,0" Click="btnPhotoTrainer_Click"  HorizontalAlignment="Left"  />
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+            <StackPanel Orientation="Horizontal" Margin="22,20,0,0" HorizontalAlignment="Center">
+                <Label FontSize="13"  Content="姓 名："  x:Name="label116"  />
+                <TextBox FontSize="13" Style="{StaticResource RadiusTextBoxStyle}" x:Name="tBoxName" Width="157" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+                <Label FontSize="13" Content="身份证号：" x:Name="label117"  />
+                <TextBox FontSize="13" Style="{StaticResource RadiusTextBoxStyle}" x:Name="tBoxPidNo" Width="157" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="22,10,0,0" HorizontalAlignment="Center">
+                <Label Content="编 号："  FontSize="13"  x:Name="label118"  />
+                <TextBox  x:Name="tboxTrainerNo" Style="{StaticResource RadiusTextBoxStyle}" FontSize="13" Width="157"  />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Center">
+                <Label Content="联系电话："  x:Name="label119" FontSize="13" />
+                <TextBox  x:Name="tBoxPhoneNo"  Style="{StaticResource RadiusTextBoxStyle}" Width="157"  FontSize="13" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="22,10,0,0" HorizontalAlignment="Center">
+                <Label Content="车 型："  x:Name="label121" FontSize="13" />
+                <ComboBox  x:Name="cboxCarTypeInTrainer" Width="157" FontSize="13" SelectionChanged="cboxCarTypeInTrainer_SelectionChanged"  />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="4,10,0,0" HorizontalAlignment="Center">
+                <Label Content="驾 校："   x:Name="label120" FontSize="13" />
+                <ComboBox DisplayMemberPath="DS_NAME"  IsEditable="True" FontSize="13"  MinWidth="120" x:Name="cboxDrivingSchool" SelectedValuePath="DRIVING_SCHOOL_ID"  Width="175" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,0"   HorizontalAlignment="Center">
+                <Button Content="清 空"  Template="{StaticResource GlassButton}" FontSize="14"  Width="85" Height="30"  x:Name="btnAdd" Click="btnAdd_Click" />
+                <Button Content="保 存" Template="{StaticResource GlassButton}"  Margin="30,0,0,0" FontSize="14" Width="85" Height="30" x:Name="btnSaveTrainer" Click="btnSaveTrainer_Click" />
+            </StackPanel>
+        </StackPanel>
+        <DataGrid  Grid.Column="1" AutoGenerateColumns="False" CanUserAddRows="False" FontSize="14"  x:Name="dataGridTrainer"  SelectionChanged="dataGridTrainer_SelectionChanged" SelectionMode="Single">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding TRAINER_ID}" Header="编 号" IsReadOnly="True" MinWidth="60" />
+                <DataGridTextColumn Binding="{Binding TRAINER_NAME}" Header="姓 名" IsReadOnly="True" MinWidth="150" />
+                <DataGridTextColumn Binding="{Binding PidNo}" Header="身份证号" IsReadOnly="True" MinWidth="150" />
+                <DataGridTextColumn Binding="{Binding PHONE_NO}" Header="联系电话" IsReadOnly="True" MinWidth="150" />
+                <DataGridTextColumn Binding="{Binding DrvSchoolName}" Header="所属驾校" IsReadOnly="True" MinWidth="250" />
+                <DataGridTemplateColumn Header="" Width="80">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="删除" Template="{StaticResource GlassButton}"  x:Name="deleteBtn" Click="btnDel_Click"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </Grid>
+</Page>

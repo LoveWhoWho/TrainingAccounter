@@ -1,0 +1,18 @@
+﻿<Window x:Class="TrainingAccounter.serRecharge"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="充值记录查询" Height="400" Width="800" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Grid Background="DodgerBlue">
+        <DataGrid HorizontalAlignment="Left" AutoGenerateColumns="False" Name="dataGridFinace"  CanUserAddRows="False" VerticalAlignment="Top" Height="370" Width="791" SelectionMode="Single" Margin="1,-2,0,0" FontSize="14">
+            <DataGrid.Columns>
+                <DataGridTextColumn  Header="身份证号码" IsReadOnly="True" Binding="{Binding PID_NO}" Width="150"></DataGridTextColumn>
+                <DataGridTextColumn Header="金额（元）" IsReadOnly="True" Binding="{Binding AMOUNT}" Width="100"></DataGridTextColumn>
+                <DataGridTextColumn Header="当前余额（元）" IsReadOnly="True" Binding="{Binding BALANCE}" Width="110"></DataGridTextColumn>
+                <DataGridTextColumn Header="充值日期" IsReadOnly="True" Binding="{Binding RECHARGE_TIME,StringFormat='{}{0:yyyy-MM-dd dddd HH:mm:ss}',ConverterCulture=zh-CN}" Width="200"></DataGridTextColumn>
+                <DataGridTextColumn Header="收款人" IsReadOnly="True" Binding="{Binding RECHARGE_PER}" Width="100"></DataGridTextColumn>
+                <DataGridTextColumn Header="原因" IsReadOnly="True" Binding="{Binding REASON}" Width="120"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </Grid>
+</Window>

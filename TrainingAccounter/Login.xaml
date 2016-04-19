@@ -1,0 +1,92 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:ee="http://schemas.microsoft.com/expression/2010/effects" x:Class="TrainingAccounter.Login"
+        Height="300" Background="Transparent"  OpacityMask="White"  AllowsTransparency="True"  Width="500" WindowStyle="None" WindowStartupLocation="Manual" Title="登 录" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" ResizeMode="NoResize" Left="450" Top="200" HorizontalContentAlignment="Center" Topmost="True" Icon="Resource/icon.ico" >
+    <Window.Resources>
+       
+    </Window.Resources>
+    
+	<Grid   > 
+        <Grid.Background>
+            <ImageBrush ImageSource="/Resource/dl.jpg"></ImageBrush>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition Height="60"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Rectangle  Grid.Row="0"  Fill="Gray" Opacity="0.5"/>
+        <StackPanel Grid.Row="0"  Orientation="Horizontal" >           
+            <Image Height="18" Margin="3,0,0,0" VerticalAlignment="Bottom" Width="20"  Source="Resource/icon.ico"/>
+            <TextBlock FontSize="15" Margin="5,0,0,0" Text="登录界面"></TextBlock>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"  Margin="350,0,0,0">
+                <Button x:Name="minimizeButton"  Click="minimizeButton_Click" Style="{StaticResource windows7MinimizeButtonStyle}" Content="" Height="18"  Width="26" Margin="0,0,5,3"/>
+                <Button x:Name="closeButton" Click="closeButton_Click" Content=""  Style="{StaticResource windows7CloseButtonStyle}" Height="18"  Width="26"  Margin="0,0,5,3"/>
+        </StackPanel>
+        </StackPanel>
+        <Rectangle  Grid.Row="2" Opacity="0.8" Margin="50,0">
+                   	<Rectangle.Effect>
+        		<DropShadowEffect BlurRadius="9" Direction="310" ShadowDepth="13" Opacity="0.5"/>
+        	</Rectangle.Effect>
+        	<Rectangle.Fill>                
+        		<LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+        			<GradientStop Color="#FF00E2FF" Offset="0.672"/>
+        			<GradientStop Color="#FF0090E2" Offset="0.246"/>
+        		</LinearGradientBrush>
+        	</Rectangle.Fill>
+        </Rectangle>
+        <StackPanel Grid.Row="2"   Margin="50,0">
+        	<StackPanel.Effect>
+        		<DropShadowEffect/>
+        	</StackPanel.Effect>
+            <StackPanel Orientation="Vertical"  Margin="0,35,0,0">
+                <TextBox x:Name="txtExaminerId"   HorizontalAlignment="Center"  Width="250" Height="30" Foreground="Indigo" TabIndex="0" BorderThickness="2">
+                    <TextBox.Resources>
+                        <VisualBrush x:Key="HelpBrush"  TileMode="None" Opacity="0.3" Stretch="None" AlignmentX="Left">
+                            <VisualBrush.Visual>
+                                <TextBlock FontStyle="Italic" Text="请输入用户名"/>
+                            </VisualBrush.Visual>
+                        </VisualBrush>
+                    </TextBox.Resources>
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Style.Triggers>
+                                <Trigger Property="Text" Value="{x:Null}">
+                                    <Setter Property="Background" Value="{StaticResource HelpBrush}"/>
+                                </Trigger>
+                                <Trigger Property="Text" Value="">
+                                    <Setter Property="Background" Value="{StaticResource HelpBrush}"/>
+                                </Trigger>                             
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+                <PasswordBox x:Name="txtPassword"   PasswordChanged="txtPassword_PasswordChanged" BorderThickness="2"  Margin="0,20,0,0"   HorizontalAlignment="Center"   VerticalAlignment="Top" Width="250" Height="30">
+                    <PasswordBox.Resources>
+                        <VisualBrush x:Key="HelpBrush1"  Opacity="0.3" Stretch="None" AlignmentX="Left">
+                            <VisualBrush.Visual>
+                                <TextBlock FontStyle="Italic" Text="请输入密码" />
+                            </VisualBrush.Visual>
+                        </VisualBrush>
+                    </PasswordBox.Resources>
+                    <PasswordBox.Style>
+                        <Style TargetType="PasswordBox">
+                            <Setter Property="Background" Value="{StaticResource HelpBrush1}" />
+                            <Style.Triggers>        
+                                
+                                </Style.Triggers>
+                        </Style>
+                    </PasswordBox.Style>
+                </PasswordBox>
+            </StackPanel>
+            <StackPanel Margin="0,20,0,0" HorizontalAlignment="Center" Orientation="Horizontal">
+                <Button Content="登 录" Template="{StaticResource GlassButton}" x:Name ="btnLogin" Background="#FF7DBFE2" BorderThickness="2" BorderBrush="#FFB0ABAB" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100" Height="35" Click="btnLogin_Click" IsDefault="True">
+                </Button>
+                <Button Margin="90,0,0,0" Template="{StaticResource GlassButton}" Content="取 消" x:Name ="btnExit" Background="#FF7DBFE2"  HorizontalAlignment="Left"   VerticalAlignment="Top" Width="100" BorderBrush="#FFB8B4B4" BorderThickness="2"  Height="35" Click="btnExit_Click" IsCancel="True">
+                </Button>
+            </StackPanel>
+        </StackPanel>
+		
+	</Grid>
+</Window>

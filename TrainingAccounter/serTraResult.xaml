@@ -1,0 +1,108 @@
+﻿<Page x:Class="TrainingAccounter.serTraResult"
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+       xmlns:sys="clr-namespace:System;assembly=mscorlib" 
+      mc:Ignorable="d" 
+      d:DesignHeight="610" d:DesignWidth="1110"
+	Title="serTraResult">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>        
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" Width="160" Height="30" >
+                <Label  Margin="2" Height="25" FontSize="13" Content="训练科目:"/>
+                <ComboBox Margin="0,4"  SelectedIndex="0" FontSize="13" x:Name="CboxTraCD" Width="80" Height="25">
+                    <ComboBoxItem Content="科目二"/>
+                    <ComboBoxItem Content="科目三"/>
+                </ComboBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Width="150" Height="30" Margin="1">
+                <Label  Margin="2,0,0,0" FontSize="13" Content="训练车型：" Width="75" Height="25"/>
+                <ComboBox Margin="0,4" FontSize="13" x:Name="CboxSisCarType" Width="70" Height="25" SelectionChanged="CboxSisCarType_SelectionChanged" IsEditable="True"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="4,0,0,0" Width="250" Height="30">
+                <Label  Content="身份证号码："   Height="25" FontSize="13"/>
+                <TextBox Height="25"   Style="{StaticResource ResourceKey=RadiusTextBoxStyle}" TextWrapping="Wrap" x:Name="SisPidNo" Text="" Width="150" FontSize="13"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="1" Height="30" Width="170">
+                <Label Margin="0,0" Content="学员姓名："  FontSize="13" Height="25"/>
+                <TextBox Height="25" Margin="0"  Style="{StaticResource ResourceKey=RadiusTextBoxStyle}" x:Name="SisName" TextWrapping="Wrap" Text="" Width="80" FontSize="13"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="1" Height="30" Width="160">
+                <Label   FontSize="13" Height="25" Content="教练员："/>
+                <ComboBox Margin="0,3,0,4" FontSize="13" Height="25" x:Name="CboxTrainer" DisplayMemberPath="TRAINER_NAME" SelectedValuePath="TRAINER_ID" Width="80" IsEditable="True"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="1" Height="30" Width="150">
+                <Label   Margin="0" FontSize="13" Height="25" Content="考试车号："/>
+                <ComboBox Margin="0" FontSize="13" DisplayMemberPath="AUTO_NAME" SelectedValuePath="AUTO_ID" x:Name="CboxAutoId" Height="25"  Width="70" IsEditable="True"/>
+            </StackPanel>
+        </StackPanel>       
+        <StackPanel Grid.Row="1"  Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal"  Height="30" Width="309">
+                <Label Margin="2,0,0,0"  FontSize="13" Height="25" Content="驾校名称:" />
+                <ComboBox Margin="2,2,0,3"  IsEditable="True" DisplayMemberPath="DS_NAME" SelectedValuePath="DRIVING_SCHOOL_ID" x:Name="CboxDrvName" FontSize="13" Height="25" Width="239"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Height="30" Margin="22,0,0,0" Width="473">
+                <Label  Content="起始时间：" FontSize="13" Height="25"/>
+                <DatePicker x:Name="StrTime" Margin="2" SelectedDate="{x:Static sys:DateTime.Now}" Height="25" FontSize="13" Width="149"/>
+                <Label Content="结束时间：" Margin="9,2" Height="25" FontSize="13" Width="68"/>
+                <DatePicker  x:Name="EndTime" SelectedDate="{x:Static sys:DateTime.Now}" FontSize="13" Height="25" Width="149" Margin="0,2"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="30,0,0,0" Height="30" Width="100" HorizontalAlignment="Center">
+                <Button  FontSize="15" Template="{StaticResource GlassButton}"  HorizontalAlignment="Center"   VerticalAlignment="Center" x:Name="BtnSisSerch" Height="28" Width="80" Click="BtnSisSerch_Click">
+                    <ContentControl>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/resource/cx.png"></Image>
+                            <TextBlock TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Text="查询统计"  FontSize="12">
+                            </TextBlock>
+                        </StackPanel>
+                    </ContentControl>
+                </Button>
+            </StackPanel>
+        </StackPanel>  
+        <Grid  Grid.Row="2">
+            <Grid.RowDefinitions >
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="30"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Separator Grid.Row="0"></Separator>
+            <StackPanel Grid.Row="1" Orientation="Horizontal"  HorizontalAlignment="Right">
+                <Button   FontSize="16"  x:Name="BtnPreview" Content="预  览" Height="25" Width="80" VerticalAlignment="Bottom" Click="BtnPreview_Click" />
+                <Button    FontSize="16" Margin="20,0,0,0" Height="25" Content="导  出" x:Name="BtnExport"   Width="80" VerticalAlignment="Bottom" Click="BtnExport_Click"/>
+            </StackPanel>
+            <DataGrid  Grid.Row="2" AutoGenerateColumns="False" x:Name="dataGridSisSerch" CanUserAddRows="False" FontSize="14" HorizontalContentAlignment="Center" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="编  号" Foreground="Red" IsReadOnly="True" Binding="{Binding SEQ_NO}" Width="80"/>
+                <DataGridTextColumn Header=" 车 号" IsReadOnly="True" Binding="{Binding AUTO_ID}" Width="80"/>
+                <!--<DataGridTextColumn Header=" 车型" IsReadOnly="True" Binding="{Binding AUTO_TYPE_CD}" Width="60"></DataGridTextColumn>-->
+                <DataGridTextColumn Header="姓名" IsReadOnly="True" Binding="{Binding TRAINE_NAME}" Width="80"/>
+                <DataGridTextColumn Header="身份证号码" IsReadOnly="True" Binding="{Binding PID_NO}" Width="130"/>
+                <DataGridTextColumn Header=" 日 期" IsReadOnly="True" Binding="{Binding TRAIN_DT, Mode=OneWay, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}}" Width="130"/>
+                <!--<DataGridTextColumn Header="开始时间" IsReadOnly="True" Binding="{Binding TRAIN_START_TS,Mode=OneWay, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}" Width="130"></DataGridTextColumn>-->
+                <!--<DataGridTextColumn Header="结束时间" IsReadOnly="True" Binding="{Binding TRAIN_END_TS,Mode=OneWay, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}" Width="130"></DataGridTextColumn>-->
+                <!--<DataGridTextColumn Header="状态" IsReadOnly="True" Binding="{Binding TRAIN_STATUS_CD}" Width="80"></DataGridTextColumn>-->
+                <!--<DataGridTextColumn Header="训练模式" IsReadOnly="True" Binding="{Binding TRAIN_TYPE_CD}" Width="100"></DataGridTextColumn>-->
+                <DataGridTextColumn Header="教练员" IsReadOnly="True" Binding="{Binding TRAINER_NAME}" Width="100"/>
+                <DataGridTextColumn Header="训练总时间(分钟)" IsReadOnly="True" Binding="{Binding TRAINING_TIME}" Width="120"/>
+                <DataGridTextColumn Header="训练总里程(公里)" IsReadOnly="True" Binding="{Binding TRAIN_MILEAGE}" Width="120"/>
+                <DataGridTextColumn Header="训练总次数" IsReadOnly="True" Binding="{Binding TRAIN_TRIES}" Width="80"/>
+                <DataGridTextColumn Header="驾校名称" IsReadOnly="True" Binding="{Binding DS_NAME}" Width="220"/>
+                <DataGridTextColumn Header="预约编号" IsReadOnly="True" Binding="{Binding TRABOOK_SEQ_NO}" Width="100"/>
+            </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu x:Name="cmGrid" StaysOpen="True">
+                    <MenuItem Header="查看详细信息" x:Name="miGetDetailRecords" Click="miGetDetailRecords_Click"/>
+                    <!--<MenuItem Header="导出该条详细记录" Name="miSaveDetailRecords" Click="miSaveDetailRecords_Click"/>-->
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
+        </Grid>
+    </Grid>
+</Page>

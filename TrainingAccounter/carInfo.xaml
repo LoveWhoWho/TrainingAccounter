@@ -1,0 +1,58 @@
+﻿<Page x:Class="TrainingAccounter.carInfo"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:sys="clr-namespace:System;assembly=mscorlib" 
+      mc:Ignorable="d" 
+      d:DesignHeight="610" d:DesignWidth="1110"
+	Title="carInfo">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Height="25" Grid.Row="0">
+            <Label Content="车辆名称：" FontSize="13"  x:Name="label98" />
+            <TextBox  x:Name="tboxName" Style="{StaticResource RadiusTextBoxStyle}" Width="130" />
+            <Label Content="车 型：" Margin="22,0,0,0" FontSize="13" x:Name="label99" />
+            <ComboBox Height="23" x:Name="cboxCarType" Width="130"   SelectionChanged="cboxCarType_SelectionChanged" />
+            <Label Content="牌照号码："  FontSize="13"  x:Name="label100" />
+            <TextBox  x:Name="tboxPlate" Style="{StaticResource RadiusTextBoxStyle}" Width="130"  />
+            <Label Content="车辆编号: " FontSize="13"   x:Name="label101" />
+            <TextBox  x:Name="tboxCarNo" Style="{StaticResource RadiusTextBoxStyle}"  Width="130" />
+            <Label Content="车辆状态：" FontSize="13"    x:Name="label102" />
+            <ComboBox  x:Name="cboxCarStatus"   Width="130" >
+                <ComboBoxItem>可用</ComboBoxItem>
+                <ComboBoxItem>停用</ComboBoxItem>
+            </ComboBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Height="25" Grid.Row="1">
+            <Label Content="对应教练：" FontSize="13"  x:Name="label103"  />
+            <ComboBox DisplayMemberPath="TRAINER_NAME" x:Name="cboxTrainer" SelectedValuePath="TRAINER_ID" Width="130"  />
+            <Label Content="车辆品牌：" FontSize="13"  x:Name="label104" />
+            <TextBox  x:Name="tboxBrand" Style="{StaticResource RadiusTextBoxStyle}"  Width="130" />
+            <Button Content="新 增"  Template="{StaticResource GlassButton}" Margin="100,0,0,0" MaxWidth="85" x:Name="btnAddTraCar"  Click="btnAddTraCar_Click" Width="85" />
+            <Button Content="保 存" Template="{StaticResource GlassButton}"  Margin="50,0,0,0" MaxWidth="85" x:Name="btnSaveTraCar"  Width="85" Click="btnSaveTraCar_Click" />
+        </StackPanel>
+        <DataGrid Grid.Row="2" AutoGenerateColumns="False" FontSize="14" CanUserAddRows="False" x:Name="dataGridTraCar" SelectionChanged="dataGridTraCar_SelectionChanged" SelectionMode="Single" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding AUTO_ID}" Header="车辆编号" IsReadOnly="True" MinWidth="100" />
+                <DataGridTextColumn Binding="{Binding AUTO_NAME}" Header="车辆名称" IsReadOnly="True" MinWidth="150" />
+                <DataGridTextColumn Binding="{Binding AUTO_TYPE_CD}" Header="车 型" IsReadOnly="True" MinWidth="130" />
+                <DataGridTextColumn Binding="{Binding PLATE_NO}" Header="牌照号码" IsReadOnly="True" MinWidth="150" />
+                <DataGridTextColumn Binding="{Binding AUTO_STATUS_CD}" Header="车辆状态" IsReadOnly="True" MinWidth="130" />
+                <DataGridTextColumn Binding="{Binding TRAINER_NAME}" Header="对应教练" IsReadOnly="True" MinWidth="150" />
+                <DataGridTemplateColumn Header="" Width="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="删除"  x:Name="deleteBtn" Template="{StaticResource GlassButton}" Click="btnDelTraCar_Click"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Page>

@@ -1,0 +1,95 @@
+﻿<Window x:Class="TrainingAccounter.Recharge"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        WindowStartupLocation="CenterScreen"
+        Title="充值" Height="430" Width="600" Closed="Window_Closed" ResizeMode="NoResize">
+    <Window.Resources>
+        <Style x:Key="RadiusTextBoxStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="Padding" Value="3,1,0,1"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="BorderBrush">
+                <Setter.Value>
+                    <LinearGradientBrush  StartPoint="0,1" EndPoint="0,0">
+                        <GradientStop Color="#1190fb" Offset="0"/>
+                        <GradientStop Color="#d4dade" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Grid>
+                            <Rectangle RadiusX="5" RadiusY="5" Fill="{TemplateBinding Background}" Stroke="#1190fb"  StrokeThickness="2"/>
+                            <ScrollViewer x:Name="PART_ContentHost"
+                HorizontalScrollBarVisibility="Hidden"
+                VerticalScrollBarVisibility="Hidden"
+                Padding="{TemplateBinding Padding}">
+                            </ScrollViewer>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <WrapPanel Background="DodgerBlue" HorizontalAlignment="Left"  Height="28" VerticalAlignment="Top" Width="592">
+            <Label  Name="lbstatus" Margin="250,0,0,0" Content="学员账户充值" Width="186"/>
+        </WrapPanel>
+        <WrapPanel HorizontalAlignment="Left" Height="376" Background="#00ccff" Margin="0,23,0,0" VerticalAlignment="Top" Width="592">
+            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Width="591">
+                <Label Content="学员编号：" Height="25" FontSize="13" Width="70" Name="label17" Margin="128,10,0,0" />
+                <TextBox Height="25" Name="tboxSeqNo"  Style="{StaticResource ResourceKey=RadiusTextBoxStyle}" IsEnabled="False" Margin="0,10,0,0" Width="185" />
+                <Label Content="*" Margin="15,10,0,0" FontSize="13" Foreground="Red" Height="25" x:Name="lb2" Width="15" />
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Width="490">
+                <Label Content="姓 名：" Height="25" Name="label3"  FontSize="13" Width="50" Margin="149,10,0,0"/>
+                <TextBox Height="25" Name="txbUserName"  Style="{StaticResource ResourceKey=RadiusTextBoxStyle}" Width="185" FontSize="13" Margin="0,10,0,0"/>
+                <Label Content="*" Margin="15,10,0,0" FontSize="13" Foreground="Red" Height="25" x:Name="lb1" Width="15" />
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Width="592">
+                <Label Content="身份证号码：" Margin="115,10,0,0" FontSize="13" Height="25" Name="label2" Width="84" />
+                <TextBox Height="25" FontSize="13"   Style="{StaticResource ResourceKey=RadiusTextBoxStyle}" Margin="0,10,0,0" Name="txbPidNo" Width="185"  />
+                <Label Content="*" Margin="15,10,0,0" FontSize="13" Foreground="Red" Height="25" x:Name="lb21" Width="15" />
+            </StackPanel>            
+            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Width="588">
+                <Label Content="业务类型：" Margin="128,10,0,0" Height="26" FontSize="13" Name="label4" Width="71" />
+                <RadioButton Content="现 金" Margin="10,16,0,0" Name="rdbCash" IsChecked="true" Height="20"/>
+                <RadioButton Content="刷 卡" Name="rdbCard" Margin="20,16,53,0" Height="20"/>
+                <Label Content="*" Margin="24,10,0,0" FontSize="13" Foreground="Red" Height="25" x:Name="lb3" Width="15" />
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Width="588">
+                <Label Content="学员类型：" Margin="128,10,0,0" Height="26" FontSize="13"  Width="71" />
+                <RadioButton Content="普通学员" Margin="10,16,0,0" Name="rdbCustom" IsChecked="true" Height="20"/>
+                <RadioButton Content="VIP学员" Name="rdbVip" Margin="20,16,53,0" Height="20"/>
+                <Label Content="*" Margin="-10,10,0,0" FontSize="13" Foreground="Red" Height="25" Width="15" />
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Width="589">
+                <Label Content="账户余额：" FontSize="13" Margin="122,10,0,0"   Height="25" Name="label8" Width="74" />
+                <TextBox Height="25" FontSize="13"  Style="{StaticResource ResourceKey=RadiusTextBoxStyle}" Margin="1,10,0,0" IsEnabled="False" x:Name="tboxBlce" Width="185" />
+                <Label Content="(单位：元)" Height="25" FontSize="13" Foreground="Red" HorizontalAlignment="Left"  Name="label23" VerticalAlignment="Bottom" />
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Width="589">
+                <Label Content="充值金额：" FontSize="13" Margin="122,10,0,0"   Height="25" Name="label80" Width="74" />
+                <TextBox Height="25" FontSize="13"  Style="{StaticResource ResourceKey=RadiusTextBoxStyle}" Margin="1,10,0,0" Name="txbRechargeAccount" Width="185" />
+                <Label Content="(单位：元)" Height="25" FontSize="13" Foreground="Red" HorizontalAlignment="Left"  Name="label22" VerticalAlignment="Bottom" />
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Width="589">
+                <Label Content="收款人：" FontSize="13" Margin="135,10,0,0"   Height="25" Name="label20" Width="62" />
+                <TextBox Height="25" FontSize="13"  Style="{StaticResource ResourceKey=RadiusTextBoxStyle}" Margin="0,10,0,0" Name="tbxManger" Width="185" />
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Width="589">
+                <Label Content="收款单位：" FontSize="13" Margin="122,10,0,0"   Height="25" Name="label24" Width="74" />
+                <TextBox Height="25" FontSize="13"  Style="{StaticResource ResourceKey=RadiusTextBoxStyle}" Margin="1,10,0,0" Name="tbxCompany" Width="185" />
+                <TextBlock TextWrapping="Wrap"   Name="tblxStatus" Margin="30,0,0,0"   VerticalAlignment="Center" Text="" FontSize="18" Foreground="Green" Width="153" Height="30"/>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Width="589">
+                <Button Content="进行充值" Template="{StaticResource GlassButton}" Height="30" FontSize="14" HorizontalAlignment="Left" Margin="140,20,0,0" Name="btnDeposit" VerticalAlignment="Top" Width="75" Click="btnDeposit_Click" />
+                <Button Content="打印小票" Height="30" Template="{StaticResource GlassButton}" FontSize="14" HorizontalAlignment="Left" Margin="50,20,0,0" Name="button4" VerticalAlignment="Top" Width="75" IsEnabled="False" />
+                <Button Content="返回" Template="{StaticResource GlassButton}" Height="30" FontSize="14" HorizontalAlignment="Left" Margin="50,20,0,0" Name="btnSettlement" VerticalAlignment="Top" Width="75" Click="btnSettlement_Click" />
+            </StackPanel>
+           
+        </WrapPanel>
+    </Grid>
+</Window>

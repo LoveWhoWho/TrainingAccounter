@@ -1,0 +1,91 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"  
+      xmlns:dui="clr-namespace:WPF.DazzleUI2.Controls;assembly=WPF.DazzleUI2"
+    xmlns:ds="clr-namespace:TrainingControl;assembly=TrainingControl"
+        xmlns:ee="http://schemas.microsoft.com/expression/2010/effects" x:Class="TrainingAccounter.AddTrainee"  
+        Title="添加学员信息" Height="480" Width="600" WindowStartupLocation="CenterScreen"  ResizeMode="CanMinimize">
+    <Window.Resources>
+        
+    </Window.Resources>
+	<Grid>
+		<WrapPanel Background="DodgerBlue" HorizontalAlignment="Left"  Height="28" VerticalAlignment="Top" Width="592">
+			<Label  Margin="240,0,0,0" Content="请填写学员基本信息" Width="123"/>
+		</WrapPanel>
+        <WrapPanel HorizontalAlignment="Left" Height="426" Background="#00ccff" Margin="0,23,0,0" VerticalAlignment="Top" Width="592">
+			<StackPanel Orientation="Horizontal" Width="590">
+				<WrapPanel Width="388">
+					<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Width="490">
+						<Label Content="身份证号码："  HorizontalContentAlignment="Center" Margin="60,10,0,0" FontSize="13" Height="25" x:Name="label2" Width="84" />
+                        <TextBox Height="25" Style="{StaticResource  RadiusTextBoxStyle}"  FontSize="13" VerticalContentAlignment="Center"  Margin="0,10,0,0" x:Name="txbPidNo" Width="185" TextChanged="txbPidNo_TextChanged" />
+						<Label Content="*" Margin="15,10,0,0" FontSize="13" Foreground="Red" Height="25" x:Name="lb2" Width="15" />
+					</StackPanel>
+					<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Width="490">
+						<Label Content="姓 名：" Height="25" x:Name="label3"  FontSize="13" Width="50" Margin="94,10,0,0"/>
+                        <TextBox Height="25" Style="{StaticResource  RadiusTextBoxStyle}"  VerticalContentAlignment="Center"  x:Name="txbUserName" Width="185" FontSize="13" Margin="0,10,0,0"/>
+						<Label Content="*" Margin="15,10,0,0" FontSize="13" Foreground="Red" Height="25" x:Name="lb1" Width="15" />
+					</StackPanel>
+					<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Width="490">
+						<Label Content="姓 别：" Margin="94,10,0,0" Height="25" FontSize="13" x:Name="label4" Width="50" />
+						<RadioButton Content="男" Margin="10,16,0,0" x:Name="rdbMan"  Height="20"/>
+						<RadioButton Content="女" x:Name="rdbWoman" Margin="20,16,53,0" Height="20"/>
+						<Label Content="*" Margin="55,10,0,0" FontSize="13" Foreground="Red" Height="26" x:Name="lb3" Width="15" RenderTransformOrigin="1.8,0.346" />
+					</StackPanel>
+					<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Width="490">
+						<Label Content="联系电话：" FontSize="13" Margin="72,10,0,0"   Height="25" x:Name="label8" Width="74" />
+                        <TextBox Height="25" Style="{StaticResource  RadiusTextBoxStyle}"   VerticalContentAlignment="Center" Text=""  FontSize="13" Margin="1,10,0,0" x:Name="txbPhoneNo" Width="185" />
+					</StackPanel>
+					<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Width="490" Visibility="Collapsed">
+						<Label Content="指 纹：" Margin="95,10,0,0" FontSize="13" Height="25" x:Name="label10" Width="50"  />
+						<Button Content="提取指纹" Height="25" FontSize="13" Margin="3,10,0,0" HorizontalContentAlignment="Center" x:Name="btnEnrollFingerprint" Width="115" Click="btnEnrollFingerprint_Click" IsEnabled="False" />
+						<Label Background="Red" Margin="5,10,0,0" Content="" Height="25" x:Name="lblFingerPrint1" Width="65"  />
+					</StackPanel>
+					<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Width="490">
+						<Label Content="车 型：" Margin="95,10,0,0" Height="25" FontSize="13" x:Name="label5" Width="50" />
+						<ComboBox Height="24" Margin="3,9,0,0"  IsEditable="False" x:Name="cmbLicenseTypeCd" FontSize="13" Width="185" />
+                        <Label Content="*" Margin="10,10,0,0" FontSize="13" Foreground="Red" Height="25" x:Name="lb4" Width="15" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                        <RadioButton x:Name="rdbCommon"  IsChecked="True" FontSize="13" Content="普通学员" Margin="150,0,0,0"/>
+                        <RadioButton x:Name="rdbVip"  FontSize="13" Content="VIP学员" Margin="40,0,0,0" />
+                    </StackPanel>
+                </WrapPanel>
+                <GroupBox Header="学员照片" FontSize="14"   Height="225" HorizontalAlignment="Center" x:Name="groupBoxPhoto" VerticalAlignment="Top" Width="160">
+                    <Grid>
+                        <WrapPanel Height="200" VerticalAlignment="Top">
+                            <Image  x:Name="myImage"  Width="149" Height="180" Source="/TrainingAccounter;component/Resource/1.png" />
+                            <Button Content="拍摄照片" Template="{StaticResource GlassButton}" FontSize="12" Height="20"  x:Name="btnPhotoUser" Width="72" Margin="40,0,0,0" Click="btnPhotoUser_Click" RenderTransformOrigin="0.903,0.478" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        </WrapPanel>
+                    </Grid>
+                </GroupBox>
+            </StackPanel>
+			<WrapPanel Width="336">
+				
+				<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Width="338">
+					<Label Content="出生日期：" FontSize="13" Height="25" Width="71" Margin="73,0,0,0" />
+					<DatePicker Height="25" Margin="5,0,0,0" x:Name="dpBirthDay"   SelectedDate="{x:Static sys:DateTime.Now}" FontSize="13"   Width="185" />
+				</StackPanel>              
+				<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Width="340">
+					<Label Content="注册日期：" Margin="73,10,0,0" FontSize="13" Height="25" Width="69" />
+					<DatePicker Height="25" Margin="7,10,0,0" x:Name="dpRegDate" FontSize="13"  SelectedDate="{x:Static sys:DateTime.Now}"  Width="185" SelectedDateFormat="Short"  />
+				</StackPanel>                
+			</WrapPanel> 
+			<WrapPanel Margin="30,0,0,0" Width="192">
+				<TextBlock FontSize="30" x:Name="tblSaveSta" VerticalAlignment="Center" Margin="0,15,0,0" TextAlignment="Center" Text="" Foreground="Green" Height="48" Width="190"/>
+			</WrapPanel>
+			<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Width="591">
+				<Label Content="家庭住址："  Margin="73,10,0,0" FontSize="13" Height="25" x:Name="label9" Width="74" />
+                <TextBox Height="25"  Style="{StaticResource  RadiusTextBoxStyle}"  VerticalContentAlignment="Center"  x:Name="txbAddress" Width="326" FontSize="13" Margin="1,10,0,0" />
+			</StackPanel>
+			<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Width="590">
+				<Label Content="驾校名称：" Margin="73,10,0,0" Height="25" FontSize="13" x:Name="label7" Width="71" />
+                <ComboBox Height="24" DisplayMemberPath="DS_NAME" SelectedValuePath="DRIVING_SCHOOL_ID"  Margin="5,5,0,0" IsEditable="True" MaxHeight="30" FontSize="13" SelectedIndex="0" MinWidth="120" x:Name="cmbDrivingSchool" Width="326" />
+			</StackPanel>
+            <Button Content="保存信息" Template="{StaticResource GlassButton}" Margin="140,20,0,0" Height="35"  FontSize="16" x:Name="btnSave" Width="120" Click="btnSave_Click" >
+            </Button>
+            <Button Content="返    回" Template="{StaticResource GlassButton}" Width="120" x:Name="btnCancel" Background="CornflowerBlue" FontSize="16" Height="35" Margin="90,20,0,0" Click="btnCancel_Click"/>
+		</WrapPanel>
+
+	</Grid>
+</Window>

@@ -1,0 +1,122 @@
+﻿<Page x:Class="TrainingAccounter.bookMange"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+       xmlns:sys="clr-namespace:System;assembly=mscorlib" 
+      mc:Ignorable="d" 
+      d:DesignHeight="610" d:DesignWidth="1110"
+	Title="bookMange">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="200"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel  Orientation="Horizontal" x:Name="stackPanel3" >
+        <Label Content="训练科目:" FontSize="12" VerticalAlignment="Center"  x:Name="label37" />
+        <ComboBox  x:Name="cboxSubject" SelectedIndex="0"  FontSize="13" Height="25">
+            <ComboBoxItem Content="科目二"/>
+            <ComboBoxItem Content="科目三"/>
+        </ComboBox>
+        <Label Content="身份证号码:" FontSize="12" VerticalAlignment="Center"  Margin="6,0,0,0"  x:Name="label28" />
+            <TextBox  Height="25" Style="{StaticResource  RadiusTextBoxStyle}" FontSize="12" VerticalAlignment="Center" VerticalContentAlignment="Center" x:Name="tboxpidno" Width="150"  />
+            <Button  FontSize="16" Template="{StaticResource GlassButton}" Focusable="True"  Height="25" x:Name="btnManualSearch" Width="90" Margin="38,3,0,0"  VerticalAlignment="Top" HorizontalAlignment="Left" Click="btnManualSearch_Click" IsDefault="True" >
+                <ContentControl>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/resource/cx.png"></Image>
+                        <TextBlock TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Text="手动查询"  FontSize="14">
+                        </TextBlock>
+                    </StackPanel>
+                </ContentControl>
+            </Button>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" >
+            <Label Content="计费方式:" VerticalAlignment="Center" FontSize="12"  x:Name="label32"  />
+            <TextBox Height="25"  Style="{StaticResource RadiusTextBoxStyle}" Padding="0,3,0,0" TextAlignment="Center" Foreground="Red"  FontSize="13"   x:Name="tboxBillModeBook" IsEnabled="False"  Width="100"     TextChanged="tboxBillModeBook_SelectionChanged" />
+            <Label  VerticalAlignment="Center" Content="预约车型:" x:Name="label38" Margin="18,0,0,0" FontSize="12" />
+            <TextBox Height="25" Foreground="Red" Style="{StaticResource RadiusTextBoxStyle}" TextAlignment="Center" Padding="0,3,0,0" x:Name="tboxVehicleModel" IsEnabled="False" FontSize="13" Width="66" />
+            <Label Content="车辆品牌:" FontSize="12" VerticalAlignment="Center" Margin="10,0,0,0"  x:Name="label46" />
+        <ComboBox Height="25" FontSize="13"  x:Name="cboxBookBrand" Width="68" SelectionChanged="cboxBookBrand_SelectionChanged" />
+            <Label Content="训练次数："  VerticalAlignment="Center" Margin="10,0,0,0" FontSize="12"  x:Name="label" />
+            <TextBox Height="25" Foreground="Red"  Style="{StaticResource RadiusTextBoxStyle}" FontSize="13" x:Name="tboxTraCnt"  Width="80" KeyDown="tboxTraCnt_KeyDown" KeyUp="tboxTraCnt_KeyUp" />
+            <Label Content="次" FontSize="12" Height="24" Foreground="Red" VerticalAlignment="Center" x:Name="lbcnt" />
+            <Label Content="训练里程：" FontSize="12" Margin="10,0,0,0" VerticalAlignment="Center" x:Name="lbMil" />
+            <TextBox Height="25" FontSize="13" Style="{StaticResource RadiusTextBoxStyle}" Foreground="Red"  x:Name="tboxTraMil"  Width="80" KeyDown="tboxTraMil_KeyDown" KeyUp="tboxTraMil_KeyUp" />
+            <Label VerticalAlignment="Center" Content="公里" FontSize="12"  Foreground="Red" x:Name="lbKm" />
+            <Label x:Name="lbTime" Content="训练时间："  Margin="10,0,0,0" VerticalAlignment="Center" FontSize="12"/>
+            <TextBox Height="22" Style="{StaticResource RadiusTextBoxStyle}" FontSize="13" Foreground="Red"  x:Name="tboxTraTime"  Width="80" KeyDown="tboxTraMil_KeyDown" KeyUp="tboxTraMil_KeyUp" />
+            <Label Content="小时" VerticalAlignment="Center" FontSize="12" Foreground="Red" x:Name="lbHour"/>
+        </StackPanel>
+        <Border Grid.Row="2" BorderThickness="2" BorderBrush="SkyBlue">
+        <StackPanel Orientation="Horizontal">
+            <ListBox x:Name="lboxBooktype" SelectionMode="Extended"  FontSize="12" SelectionChanged="lboxBooktype_SelectionChanged"  Width="170" />
+            <StackPanel  x:Name="stackPanel7" Width="110">
+                <Label Content="预约日期/时间" Height="25" BorderThickness="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderBrush="DarkCyan" FontSize="12" FontFamily="FangSong" x:Name="label30"  />
+                <Label Content="" FontSize="11" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="FangSong" BorderThickness="1" BorderBrush="DarkCyan" Height="23" Margin="0,1,0,0" x:Name="label81" />
+                <Label Content="" BorderThickness="1" BorderBrush="DarkCyan" FontSize="11" FontFamily="FangSong" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="23" Margin="0,1,0,0" x:Name="label82" />
+                <Label Content="" BorderThickness="1" BorderBrush="DarkCyan" FontSize="11" FontFamily="FangSong" Height="23" Margin="0,1,0,0" x:Name="label83" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+                <Label Content="" BorderThickness="1" BorderBrush="DarkCyan" FontSize="11" FontFamily="FangSong" Height="23" Margin="0,1,0,0" x:Name="label84"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <Label Content="" BorderThickness="1" BorderBrush="DarkCyan" FontSize="11" FontFamily="FangSong" Height="23" Margin="0,1,0,0" x:Name="label85" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <Label Content="" BorderThickness="1" BorderBrush="DarkCyan" FontSize="11" FontFamily="FangSong" Height="23" Margin="0,1,0,0" x:Name="label86" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <Label Content="" BorderThickness="1" BorderBrush="DarkCyan" FontSize="11" FontFamily="FangSong" Height="23" Margin="0,1,0,0" x:Name="label87" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            </StackPanel>
+            <StackPanel  x:Name="stackPanel"  HorizontalAlignment="Left" VerticalAlignment="Top">          
+                <Canvas  x:Name="canvas2" Width="830" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top"  />
+                <Canvas  x:Name="canvas1" Width="830" Height="175" HorizontalAlignment="Left" VerticalAlignment="Top"  />
+            </StackPanel>
+        </StackPanel>
+        </Border>
+        <StackPanel Grid.Row="3"  Orientation="Horizontal" >
+            <Label Content="费用信息："  FontSize="13" Foreground="Red"/>
+            <Label Content="学员:" Height="25"  x:Name="label31" VerticalAlignment="Center"  FontSize="13" Margin="180,1,0,1" Width="40"  VerticalContentAlignment="Center" />
+            <TextBlock Height="25" Foreground="Red" Margin="0,4,0,0" TextAlignment="Center" x:Name="tblockName"  FontSize="15" Text="" Width="100"  />
+            <Label Content="账户可用金额:" Height="25" FontSize="13"  Margin="10,0,0,0" HorizontalAlignment="Right"  VerticalAlignment="Center"  x:Name="label35"  />
+            <TextBox TextAlignment="Center" Style="{StaticResource RadiusTextBoxStyle}" Height="25" FontSize="14" Foreground="Red" IsEnabled="False"   x:Name="tboxBanlance"  Width="120" />
+            <Label Content="元" Foreground="Red" Height="25" FontSize="10" HorizontalAlignment="Left"   x:Name="label40"  />
+            <Label Content="本次预约费用:" Margin="10,0,0,3"  FontSize="13" Height="25" x:Name="label36" Width="94" />
+            <TextBox FontFamily="STFangsong" Height="25" Style="{StaticResource RadiusTextBoxStyle}" Foreground="Red" TextAlignment="Center" FontSize="14" IsEnabled="False"  x:Name="tboxPayamount"  Width="120"  />
+            <Label Content="元" VerticalAlignment="Center" Foreground="Red"  Height="25" FontSize="10"  x:Name="label39"  />
+            <Button  Height="26" FontSize="15"  Background="SaddleBrown"   Margin="50,2,0,0" x:Name="btnbook" VerticalAlignment="top"  Width="95" Click="btnbook_Click" >
+                <Button.Effect>
+                    <DropShadowEffect></DropShadowEffect>
+                </Button.Effect>
+                <ContentControl>
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/resource/bookbtn.png"></Image>
+                    <TextBlock TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Text="确认预约"  FontSize="14">
+                    </TextBlock>
+                </StackPanel>
+                </ContentControl>
+            </Button>
+        </StackPanel>
+        <DataGrid Grid.Row="4" AutoGenerateColumns="False" FontSize="14"  CanUserAddRows="False"  x:Name="dataGridHistory">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="编  号" Foreground="Red" IsReadOnly="True" Binding="{Binding SEQ_NO}" Width="60"/>
+                <DataGridTextColumn Header="身份证号码" IsReadOnly="True" Binding="{Binding PID_NO}" Width="150"/>
+                <DataGridTextColumn Header="   姓   名" IsReadOnly="True" Binding="{Binding TRAINE_NAME}" Width="120"/>
+                <DataGridTextColumn Header="预约日期" IsReadOnly="True" Binding="{Binding BOOK_TIME, Mode=OneWay, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}}" Width="150"/>
+                <DataGridTextColumn Header=" 时 段" IsReadOnly="True" Binding="{Binding TRAINSESSION}" Width="170"/>
+                <DataGridTextColumn Header="预约结果" IsReadOnly="True" Binding="{Binding RECHARGE_AMOUNT}" Width="130"/>
+                <DataGridTextColumn Header="   状  态" IsReadOnly="True" Binding="{Binding CHECKSTATUS}" Width="100"/>
+                <DataGridTemplateColumn Header="   签  到" Width="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content=" 签 到"  Template="{StaticResource GlassButton}" x:Name="btnLookAll" Click="btnSign_Click"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header=" 取 消" Width="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="取 消"  Template="{StaticResource GlassButton}" x:Name="btnBookCancel" Click="btnBookCancel_Click" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Page>
