@@ -457,6 +457,9 @@
     <Content Include="Refrence\Microsoft.ReportViewer.ProcessingObjectModel.DLL">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Refrence\msxsl.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Refrence\NetClient.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

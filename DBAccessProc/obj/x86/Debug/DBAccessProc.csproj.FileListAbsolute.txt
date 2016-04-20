@@ -1,0 +1,7 @@
+H:\CodeManeger\App\TrainingAccounter-branch\DBAccessProc\bin\x86\Debug\DBAccessProc.dll
+H:\CodeManeger\App\TrainingAccounter-branch\DBAccessProc\bin\x86\Debug\DBAccessProc.pdb
+H:\CodeManeger\App\TrainingAccounter-branch\DBAccessProc\bin\x86\Debug\EncDecLib.dll
+H:\CodeManeger\App\TrainingAccounter-branch\DBAccessProc\bin\x86\Debug\Microsoft.ApplicationBlocks.Data.dll
+H:\CodeManeger\App\TrainingAccounter-branch\DBAccessProc\obj\x86\Debug\DBAccessProc.csprojResolveAssemblyReference.cache
+H:\CodeManeger\App\TrainingAccounter-branch\DBAccessProc\obj\x86\Debug\DBAccessProc.dll
+H:\CodeManeger\App\TrainingAccounter-branch\DBAccessProc\obj\x86\Debug\DBAccessProc.pdb

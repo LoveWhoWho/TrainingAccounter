@@ -32,6 +32,7 @@ namespace TrainingAccounter
 			if (dsrsrc.RegisterControls("TrainingAccounter"))
 				axLibCtl = new AxLib.AxLibControl();
 			InitializeComponent();
+            statusBarItem.SetBinding(System.Windows.Controls.Primitives.StatusBarItem.ContentProperty, new Binding("MainBarText") { Source = dsrsrc });
 			tbxTitle.Text = "驾训管理系统   主版本:1.0";
 			statusBar.Content ="版本详情："+System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 			//读卡器线程
@@ -41,6 +42,7 @@ namespace TrainingAccounter
 		}	
 		public delegate void UpdatePidNoDelegate(string pidNo, string name,byte[] photo, string adress, bool status);
 		DsRsrc dsrsrc = new DsRsrc();
+
 		Thread SearchExamineeThread = null;//读卡器   
 		AxLib.AxLibControl axLibCtl = null;
 

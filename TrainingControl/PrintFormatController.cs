@@ -121,7 +121,7 @@ namespace TrainingAccounter
 				if (id == 0) { sHtmlFileName = m_sFilePath + @"\" + DateTime.Now.ToString("yyyy-MM-dd-hh") + ".html"; }
 				else { sHtmlFileName = m_sFilePath + @"\" + DateTime.Now.ToString("yyyy-MM-dd-hh") + "detail.html"; }      
                 string strParam = sXmlFileName + " " + sXslName + " -o " + sHtmlFileName;
-                CreateHtmlFile("msxsl", strParam);
+                CreateHtmlFile(Environment.CurrentDirectory.ToString() + @"\Refrence\msxsl", strParam);
                 FileInfo fileHtml = new FileInfo(sHtmlFileName);
                 if (fileHtml.Exists)
                     return sHtmlFileName;

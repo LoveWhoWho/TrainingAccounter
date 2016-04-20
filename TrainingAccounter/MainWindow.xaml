@@ -286,8 +286,8 @@
         </dui:DazzleButton>
         <StackPanel Grid.Row="2" Orientation="Horizontal">
             <StatusBar   Style="{DynamicResource StatusBarStyle}"  Background="#025fb8" VerticalAlignment="Bottom" >              
-                <StatusBarItem Name="statusBar" Content="333"  Margin="7,0,0,0"/>
-                <StatusBarItem Name="statusBarItem" Height="30" Content="333" Margin="15,0,0,0"/>
+                <StatusBarItem Name="statusBar" Content=""  Margin="7,0,0,0"/>
+                <StatusBarItem Name="statusBarItem" Height="30" Content="" Margin="15,0,0,0"/>
             </StatusBar>
         </StackPanel>
     </Grid>
