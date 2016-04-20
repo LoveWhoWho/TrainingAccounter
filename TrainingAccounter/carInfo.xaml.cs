@@ -168,13 +168,17 @@ namespace TrainingAccounter
 				if (drow.Length > 0)
 				{
 					if (System.Windows.MessageBox.Show("已经有相同ID的教练车存在,确认更新ID为" + this.tboxCarNo.Text.ToString() + "的教练车信息吗？", "提示：", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                    {
 						dsrsrc.AddTraCar("Y");
+                        dsrsrc.MainBarText = "更新车号为：" + this.tboxCarNo.Text.ToString() + "的考车信息到本地数据库成功";
+                    }
 					else
 						return;
 				}
 				else
 				{
 					dsrsrc.AddTraCar("");
+                    dsrsrc.MainBarText = "新增车号为：" + this.tboxCarNo.Text.ToString() + "的考车信息到本地数据库成功";
 				}
 
 			}

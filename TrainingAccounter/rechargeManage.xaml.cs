@@ -36,6 +36,7 @@ namespace TrainingAccounter
 		private void btnDeposit_Click(object sender, RoutedEventArgs e)
 		{
 			Recharge reg = new Recharge(dsrsrc);
+            reg._sChargingMode = dsrsrc.sBillingMode;
 			reg.ChangeTextEvent += new ChangeTextHandler(reg_ChangeTextEvent);			   
 			if (dataGridFinace.SelectedItems.Count > 0)
 			{
@@ -111,6 +112,8 @@ namespace TrainingAccounter
 					dBookBalance += tempRow["TOTALBOOKACCOUNT"].ToString() != "" ? Double.Parse(tempRow["TOTALBOOKACCOUNT"].ToString()) : 0;
 				}			
 			}
+            dsrsrc.MainBarText = "共查询到：" + dsrsrc.trainMangeDataSet.TraFinanceDataTable.Rows.Count + "条数据";
+
 		}
 		private void datePickerSerStr_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
 		{

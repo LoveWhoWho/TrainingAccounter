@@ -61,6 +61,7 @@ namespace TrainingAccounter
 				{
 					MessageBox.Show("没有查询到学员注册信息，请点击‘添加新学员’按钮进行添加.");
 				}
+                dsrsrc.MainBarText = "共查询到：" + dsrsrc.trainMangeDataSet.TraineeDataTable.Rows.Count + "条数据";
 
 			}
 			catch (Exception ex)
@@ -75,7 +76,8 @@ namespace TrainingAccounter
 		//充值事件
 		private void btnDeposit_Click(object sender, RoutedEventArgs e)
 		{
-			Recharge reg = new Recharge(dsrsrc);			
+			Recharge reg = new Recharge(dsrsrc);
+            reg._sChargingMode = dsrsrc.sBillingMode;
 			 if (dgSearchTrainee.SelectedItems.Count > 0)
 			{
 				var temp = (DataRowView)dgSearchTrainee.SelectedItems[0];

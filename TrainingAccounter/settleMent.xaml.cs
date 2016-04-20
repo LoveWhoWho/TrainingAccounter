@@ -102,7 +102,8 @@ namespace TrainingAccounter
                     dataGridSettlement.ItemsSource = dt.DefaultView;
                 }
             else
-                dataGridSettlement.ItemsSource = null;          
+                dataGridSettlement.ItemsSource = null;
+            dsrsrc.MainBarText = "共查询到：" + dsrsrc.trainMangeDataSet.BookTrainingDataTable.Rows.Count + "条数据";
         
 			}
 		private void btnSetComplete_Click(object sender, RoutedEventArgs e)

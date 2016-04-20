@@ -133,6 +133,7 @@ namespace TrainingAccounter
 				//        dsrsrc.getTraProcessInfoPoints(int.Parse(tempData["SEQ_NO"].ToString()));
 				//    }
 				//}
+                dsrsrc.MainBarText = "共查询到：" + dsrsrc.trainMangeDataSet.TraFinanceDataTable.Rows.Count + "条数据";
 			}
 			catch (Exception ex)
 			{

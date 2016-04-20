@@ -4,7 +4,7 @@
 library
 C#
 .cs
-D:\工作项目\训练管理\TrainingAccounter\WPF.DazzleUI2\obj\Debug\
+D:\CodeSource\gitData\TrainingAccounter\WPF.DazzleUI2\obj\Debug\
 WPF.DazzleUI2
 none
 false
@@ -16,5 +16,5 @@ DEBUG;TRACE
 11-1728520778
 Themes\DazzleButton.xaml;Themes\DazzleTabControl.xaml;Themes\DazzleTabItem.xaml;Themes\DazzleWindow.xaml;Themes\Generic.xaml;
 
-False
+True
 

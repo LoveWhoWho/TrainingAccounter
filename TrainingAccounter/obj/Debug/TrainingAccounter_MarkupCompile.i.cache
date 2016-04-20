@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-D:\工作项目\训练管理\TrainingAccounter\TrainingAccounter\obj\Debug\
+D:\CodeSource\gitData\TrainingAccounter\TrainingAccounter\obj\Debug\
 TrainingAccounter
 none
 false
 DEBUG;TRACE
-D:\工作项目\训练管理\TrainingAccounter\TrainingAccounter\App.xaml
+D:\CodeSource\gitData\TrainingAccounter\TrainingAccounter\App.xaml
 201772873044
 58251358320
 291343599298
-25-484416374
+25-164711199
 AddTrainee.xaml;baseInfo.xaml;bookMange.xaml;BulkBooking.xaml;carInfo.xaml;drvInfo.xaml;Login.xaml;MainWindow.xaml;Recharge.xaml;rechargeManage.xaml;serRecharge.xaml;serTraResult.xaml;settleMent.xaml;stuManage.xaml;TrainDetailInfo.xaml;trainerInfo.xaml;UpdateBoxWindow.xaml;userInfo.xaml;versionChange.xaml;WriteLicenseWindow.xaml;
 
 False

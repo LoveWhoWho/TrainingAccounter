@@ -80,13 +80,19 @@ namespace TrainingAccounter
 				{
 
 					if (System.Windows.MessageBox.Show("已经存在相同ID的驾校信息，确认更新ID为" + this.tboxdrvid.Text.ToString().Trim() + "的驾校信息吗？", "提示：", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                    {
 						dsrsrc.AddDrvSchool("Y");
+                        dsrsrc.MainBarText = "更新名称为：" + drvSh.drvname + "的驾校信息到本地数据库成功";
+                    }
 					else
 						return;
 
 				}
 				else
-				{ dsrsrc.AddDrvSchool(""); }
+				{ 
+                    dsrsrc.AddDrvSchool("");
+                    dsrsrc.MainBarText = "新增名称为：" + drvSh.drvname + "的驾校信息到本地数据库成功";
+                }
 			}
 			PopuDrvPage();
 		}

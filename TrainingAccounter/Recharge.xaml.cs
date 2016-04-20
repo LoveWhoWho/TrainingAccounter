@@ -26,7 +26,7 @@ namespace TrainingAccounter
         public Recharge(DsRsrc dsr)
         {
             InitializeComponent();
-			dsrsrc = dsr;
+			dsrsrc = dsr;         
         }
 		public string _sChargingMode { get; set; }
 		public string _sCarType { get; set; }
@@ -61,14 +61,14 @@ namespace TrainingAccounter
 				if (dsrsrc.trainMangeDataSet.TraineeDataTable.Rows.Count > 0)
                 {
                     double dChargingStandard = 0;
-		            dChargingStandard = dsrsrc.GetChargingStandard(_sChargingMode, dsrsrc.trainMangeDataSet.TraineeDataTable.Rows[0]["LICENSE_TYPE_CD"].ToString());
+                    dChargingStandard = dsrsrc.GetChargingStandard(dsrsrc.sBillingMode, dsrsrc.trainMangeDataSet.TraineeDataTable.Rows[0]["LICENSE_TYPE_CD"].ToString());
 					if (dChargingStandard == 0)
 						return;
 					tboxBlce.Text = dsrsrc.trainMangeDataSet.TraineeDataTable.Rows[0]["BALANCE"].ToString();
                     txbRechargeAccount.Text = "";
                 }
-                tempText = string.Format("学员：" + txbUserName.Text + "充值完成，充值金额：" + txbRechargeAccount.Text + " 元；账户余额：" + tboxBlce.Text + " 元");
-                tblxStatus.Text = "充值完成";
+                 dsrsrc.MainBarText= tempText = string.Format("学员：" + txbUserName.Text + "充值完成，充值金额：" + txbRechargeAccount.Text + " 元；账户余额：" + tboxBlce.Text + " 元");
+                 tblxStatus.Text = "充值完成";
             }
             catch(Exception ex)
             {

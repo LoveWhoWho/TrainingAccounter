@@ -368,12 +368,12 @@ namespace TrainingAccounter
 					finalStr += temp + ";";
 				}
 			}
-		//	if (cboxBillModeBook.SelectedValue.ToString() == "按时间计费")
-			//	tBlockBookStatus.Text = string.Format("学员:" + this.tblockName.Text + "    完成一次预约，预约时间为:" + finalStr + "预约总时长:" + traAmount + "小时,车型:" + this.tboxVehicleModel.Text.Trim() + ",车号:" + TraBookInfo.TraCarNo + "");
-		//	else if (cboxBillModeBook.SelectedValue.ToString() == "按次数计费")
-				//tBlockBookStatus.Text = string.Format("学员:" + this.tblockName.Text + "    完成一次预约，预约次数为:" + TraBookInfo.TriesAmount + "次,车型:" + this.tboxVehicleModel.Text.Trim() + ",车号:" + TraBookInfo.TraCarNo + "");
-		//	else if (cboxBillModeBook.SelectedValue.ToString() == "按里程计费")
-			//	tBlockBookStatus.Text = string.Format("学员:" + this.tblockName.Text + "    完成一次预约，预约里程为:" + TraBookInfo.TraAmount + "公里,车型:" + this.tboxVehicleModel.Text.Trim() + ",车号:" + TraBookInfo.TraCarNo + "");
+            if (tboxBillModeBook.Text == "按时间计费")
+                 dsrsrc.MainBarText = string.Format("学员:" + this.tblockName.Text + "    完成一次预约，预约时间为:" + finalStr + "预约总时长:" + traAmount + "小时,车型:" + this.tboxVehicleModel.Text.Trim() + ",车号:" + TraBookInfo.TraCarNo + "");
+            else if (tboxBillModeBook.Text == "按次数计费")
+                dsrsrc.MainBarText = string.Format("学员:" + this.tblockName.Text + "    完成一次预约，预约次数为:" + TraBookInfo.TriesAmount + "次,车型:" + this.tboxVehicleModel.Text.Trim() + ",车号:" + TraBookInfo.TraCarNo + "");
+            else if (tboxBillModeBook.Text == "按里程计费")
+                dsrsrc.MainBarText = string.Format("学员:" + this.tblockName.Text + "    完成一次预约，预约里程为:" + TraBookInfo.TraAmount + "公里,车型:" + this.tboxVehicleModel.Text.Trim() + ",车号:" + TraBookInfo.TraCarNo + "");
 
 		}	
 		private void tboxTraMil_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
@@ -684,7 +684,7 @@ namespace TrainingAccounter
 				if (tempA["CHECKSTATUS"].ToString() == "未签到")
 				{
 					bool bPrint = true;
-					//打印小票
+					//打印小票 
 					//   bPrint = print.PrintDirect("OrderDocument.xaml", tempA);//直接打印
 					//bPrint = print.PrintDlg("OrderDocument.xaml", tempA);//选择打印机打印
 					if (bPrint)

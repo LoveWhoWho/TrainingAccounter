@@ -93,7 +93,7 @@ namespace TrainingAccounter
             {
                 if(_photo==null)
                 {
-                       BitmapImage bmp = myImage.Source as BitmapImage;
+                     BitmapImage bmp = myImage.Source as BitmapImage;
                 if (bmp != null)
                 {
 					UserPhoto = addDsrsrc.PhotoSave(bmp);
@@ -103,17 +103,12 @@ namespace TrainingAccounter
 					userType = 1;
                 }
 				DBAccessHelper.SaveTraStudInfo(txbPidNo.Text.Trim(), txbUserName.Text.Trim(), UserPhoto, this.rdbMan.IsChecked == true ? "男" : "女", this.dpBirthDay.SelectedDate.Value, _sFingerPrint, cmbDrivingSchool.SelectedValue == null ? -1 : Convert.ToInt32(cmbDrivingSchool.SelectedValue.ToString()), this.txbPhoneNo.Text.Trim(), ".", dpRegDate.SelectedDate.Value.ToString("yyyy-MM-dd"), "", "", cmbLicenseTypeCd.SelectedValue.ToString(), "", "", "", "", Convert.ToDouble("0"), txbAddress.Text.Trim(), userType);
+                addDsrsrc.MainBarText = "学员：" + txbUserName.Text.Trim() + ",注册信息成功，可以进行预约";
                 tblSaveSta.Text = "保存成功";
                 txbPidNo.Text = "";
                 txbUserName.Text = "";
                 txbPhoneNo.Text = "";
-                txbAddress.Text = "";
-                //引发事件更新主窗体状态
-                //if (ChangeTextEvent != null)
-                //{
-                //    ChangeTextEvent( string.Format("学员：" + _name + ",注册信息成功，可以进行预约。"));
-                //}
-               
+                txbAddress.Text = "";               
             }
             catch (Exception ex)
             {

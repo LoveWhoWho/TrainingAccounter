@@ -19,3 +19,10 @@ D:\工作项目\训练管理\TrainingAccounter\DBAccessProc\bin\Debug\Microsoft.
 D:\工作项目\训练管理\TrainingAccounter\DBAccessProc\obj\Debug\DBAccessProc.csprojResolveAssemblyReference.cache
 D:\工作项目\训练管理\TrainingAccounter\DBAccessProc\obj\Debug\DBAccessProc.dll
 D:\工作项目\训练管理\TrainingAccounter\DBAccessProc\obj\Debug\DBAccessProc.pdb
+D:\CodeSource\gitData\TrainingAccounter\DBAccessProc\bin\Debug\DBAccessProc.dll
+D:\CodeSource\gitData\TrainingAccounter\DBAccessProc\bin\Debug\DBAccessProc.pdb
+D:\CodeSource\gitData\TrainingAccounter\DBAccessProc\bin\Debug\EncDecLib.dll
+D:\CodeSource\gitData\TrainingAccounter\DBAccessProc\bin\Debug\Microsoft.ApplicationBlocks.Data.dll
+D:\CodeSource\gitData\TrainingAccounter\DBAccessProc\obj\Debug\DBAccessProc.csprojResolveAssemblyReference.cache
+D:\CodeSource\gitData\TrainingAccounter\DBAccessProc\obj\Debug\DBAccessProc.dll
+D:\CodeSource\gitData\TrainingAccounter\DBAccessProc\obj\Debug\DBAccessProc.pdb
