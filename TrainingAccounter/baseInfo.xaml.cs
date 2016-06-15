@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -43,8 +44,12 @@ namespace TrainingAccounter
 					m_sChargeMode = "Tries";
 				else if (cboxChargeModes.Text == "按时间计费")
 					m_sChargeMode = "Time";
-				else
-					m_sChargeMode = "Mileage";
+                else if (cboxChargeModes.Text == "按学时计费")
+                {
+                    m_sChargeMode = "StudyTime";
+                }
+                else
+                    m_sChargeMode = "Mileage";
 				dsrsrc.TraSettingValues.Clear();
 				dsrsrc.TraSettingValues.Add("ChargingMode", m_sChargeMode + "|默认计费模式|");
 				dsrsrc.TraSettingValues.Add("MinTimeUnit", this.tboxMinTimeUnit.Text + "|最小计时单位（分钟）|");
@@ -122,14 +127,30 @@ namespace TrainingAccounter
 				MessageBox.Show("输入的数字格式不合法，请重新填写");
 				return;
 			}
+            double txtBoxStudy = 0;
+            if (double.TryParse(this.txtBoxStudy.Text, out txtBoxStudy))
+            {
+                if (txtBoxStudy < 0)
+                {
+                    MessageBox.Show("填写有误，请重新填写");
+                    return;
+                }
+            }
+            else
+            {
+                MessageBox.Show("输入的数字格式不合法，请重新填写");
+                return;
+            }
 			dsrsrc.TraSettingValues.Clear();
 			string sChargSt = "";
-			sChargSt = "Time:" + tboxChargeByTime.Text.Trim() + "*" + "Tries:" + tboxChargeByTries.Text.Trim() + "*" + "Mileage:" + tboxChargeByMileage.Text.Trim();
+            sChargSt = "Time:" + tboxChargeByTime.Text.Trim() + "*" + "Tries:" + tboxChargeByTries.Text.Trim() + "*" + "Mileage:" + tboxChargeByMileage.Text.Trim() + "*" + "StudyTime:" + txtBoxStudy;
 			dsrsrc.TraSettingValues.Add("ChargingStandard" + Cartype, sChargSt + "|" + Cartype + "计费标准|");
 			dsrsrc.TraSettingValues.Add("SingleTime" + Cartype, this.txtBoxTimes.Text.Trim() + "|" + Cartype + "单次训练限制时间（分钟）|");
 			dsrsrc.TraSettingValues.Add("VipStandard" + Cartype, this.txtBoxVip.Text.Trim() + "|" + Cartype + "自动转换VIP充值标准|");
 			dsrsrc.TraSettingValues.Add("VipPreferential" + Cartype, this.txtBoxVipPreferential.Text.Trim() + "|" + Cartype + "VIP充值优惠比例|");
+            dsrsrc.TraSettingValues.Add("StudyHasTime" + Cartype, txtBoxStudyTime.Text.Trim() + "|" + Cartype + "单位学时长度|");
 			dsrsrc.AddTraSetting();
+           
 		}
 		private void tboxChargeByTime_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
 		{
@@ -147,36 +168,91 @@ namespace TrainingAccounter
 		{
 			TextAllowInputInt(sender, e);
 		}
+       
+             
 		private void CboxCarTypes_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			tboxChargeByTime.Text = "";
-			tboxChargeByTries.Text = "";
-			tboxChargeByMileage.Text = "";
-			txtBoxTimes.Text = "";
-			for (int count = 0; count < dsrsrc.trainMangeDataSet.Tra_Setting.Rows.Count; count++)
-			{
-				string sRsTxt = dsrsrc.trainMangeDataSet.Tra_Setting.Rows[count]["RS_TXT"].ToString();
-				string sRsValue = dsrsrc.trainMangeDataSet.Tra_Setting.Rows[count]["RS_VALUE"].ToString();
-				string sCarType = "";
-				if (sRsTxt.Contains("ChargingStandard"))
-				{
-					sCarType = sRsTxt.Substring(16, 2);
-					if (sCarType == CboxCarTypes.SelectedItem.ToString())
-					{
-						tboxChargeByTime.Text = dsrsrc.GetChargingStandard(sChargingMode,sCarType).ToString();
-						tboxChargeByTries.Text = dsrsrc.GetChargingStandard(sChargingMode, sCarType).ToString();
-						tboxChargeByMileage.Text = dsrsrc.GetChargingStandard(sChargingMode,sCarType).ToString();
-					}
-				}
-				else if (sRsTxt.Contains("SingleTime"))
-				{
-					sCarType = sRsTxt.Substring(10, 2);
-					if (sCarType == CboxCarTypes.SelectedItem.ToString())
-					{
-						txtBoxTimes.Text = sRsValue;
-					}
-				}
-			}
+            tboxChargeByTime.Text = "";
+            tboxChargeByTries.Text = "";
+            tboxChargeByMileage.Text = "";
+            txtBoxTimes.Text = "";
+            txtBoxStudy.Text = "";
+            txtBoxStudyTime.Text = "";
+            txtBoxVipPreferential.Text = "";
+            txtBoxVip.Text = "";    
+            if (CboxCarTypes.SelectedValue == null)
+            {          
+                MessageBox.Show("所选车型为空。");
+                return;
+            }
+            string sCarType = "";        
+            DataTable drarry = dsrsrc.trainMangeDataSet.Tra_Setting.Clone();            
+            foreach (DataRow item in dsrsrc.trainMangeDataSet.Tra_Setting.Rows)
+            {
+                if (item["RS_TXT"].ToString().Contains(CboxCarTypes.SelectedItem.ToString()))
+                {
+                    drarry.Rows.Add(item.ItemArray);             
+                }
+            }
+            if (drarry != null)
+            {
+                for (int i = 0; i < drarry.Rows.Count;i++ )
+                {
+                    string sRsTxt = drarry.Rows[i]["RS_TXT"].ToString();
+                    string sRsValue = drarry.Rows[i]["RS_VALUE"].ToString();
+                    if (sRsTxt.Contains("ChargingStandard"))
+                    {
+                        sCarType = sRsTxt.Substring(16, 2);
+                        if (sCarType == CboxCarTypes.SelectedItem.ToString())
+                        {
+                            tboxChargeByTime.Text = dsrsrc.GetChargingStandard("Time", sCarType).ToString();
+                            tboxChargeByTries.Text = dsrsrc.GetChargingStandard("Tries", sCarType).ToString();
+                            tboxChargeByMileage.Text = dsrsrc.GetChargingStandard("Mileage", sCarType).ToString();
+                            txtBoxStudy.Text = dsrsrc.GetChargingStandard("StudyTime", sCarType).ToString();
+                        }
+
+                    }
+                    else if (sRsTxt.Contains("SingleTime"))
+                    {
+                        sCarType = sRsTxt.Substring(10, 2);
+                        if (sCarType == CboxCarTypes.SelectedItem.ToString())
+                        {
+                            txtBoxTimes.Text = sRsValue;
+                        }
+
+                    }
+                    else if (sRsTxt.Contains("StudyHasTime"))
+                    {
+                        sCarType = sRsTxt.Substring(12, 2);
+                        if (sCarType == CboxCarTypes.SelectedItem.ToString())
+                        {
+                            txtBoxStudyTime.Text = sRsValue;
+                        }
+
+                    }
+                    else if (sRsTxt.Contains("VipStandard"))
+                    {
+                        sCarType = sRsTxt.Substring(11, 2);
+                        if (sCarType == CboxCarTypes.SelectedItem.ToString())
+                        {
+                            txtBoxVip.Text = sRsValue;
+                        }
+
+                    }
+                    else if (sRsTxt.Contains("VipPreferential"))
+                    {
+                        sCarType = sRsTxt.Substring(15, 2);
+                        if (sCarType == CboxCarTypes.SelectedItem.ToString())
+                        {
+                            txtBoxVipPreferential.Text = sRsValue;
+                        }
+
+                    }
+                }
+               
+                }
+           
+			
 		}
 		/// <summary>
 		/// 刷新界面的方法
@@ -234,10 +310,12 @@ namespace TrainingAccounter
 							{
 								cboxChargeModes.SelectedIndex = 1;							
 							}
-							else
+                            else if (sChargingMode == "StudyTime")
 							{
 								cboxChargeModes.SelectedIndex = 2;							
 							}
+                            else
+                                cboxChargeModes.SelectedIndex = 3;	
 							break;
 						case "VipStandard":
 							txtBoxVip.Text = dsrsrc.trainMangeDataSet.Tra_Setting.Rows[count]["RS_VALUE"].ToString();
@@ -253,7 +331,7 @@ namespace TrainingAccounter
 							break;
 						case "StartTime":
 							this.comBoxStartTime.SelectedValue = dsrsrc.trainMangeDataSet.Tra_Setting.Rows[count]["RS_VALUE"].ToString();
-							break;
+							break;                                         
 						case "CarType":
 							string[] CarType = dsrsrc.trainMangeDataSet.Tra_Setting.Rows[count]["RS_VALUE"].ToString().Split(',');
 							for (int e = 0; e < CarType.Length; e++)

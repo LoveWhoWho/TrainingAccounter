@@ -86,9 +86,7 @@ namespace TrainingAccounter
 									var uPath = drive.Name.ToString() + "TrainLicense.dat";
 									var newUpath = drive.Name.ToString() + DateTime.Now.ToString("yyyy-MM-dd") + "-" + SeqNo[0] + "-TrainLicense.dat";
 									if (File.Exists(uPath))
-									{
-										File.Copy(uPath, newUpath, true);
-										File.Delete(uPath);
+									{										
 										//readResult[i].MileageLmt = 0;
 										//readResult[i].TimeLmt = 0;
 										//readResult[i].TriesLmt = 0;
@@ -102,6 +100,9 @@ namespace TrainingAccounter
 										textPara = string.Format("身份证号码为：" + m_sPidNo + " 的学员结算完成，账户余额：" + endBalance + "元");
 										if (dBalanceEnd > 0)
 											DBAccessProc.DBAccessHelper.InsRechargeRecord(dBalanceEnd, m_sPidNo, "", "结算返还");
+
+                                        File.Copy(uPath, newUpath, true);
+                                        File.Delete(uPath);
 									}
 								}
 

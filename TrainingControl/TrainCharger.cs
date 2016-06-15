@@ -13,21 +13,14 @@ namespace TrainingControl
     public class TrainCharger
     {
         public delegate void DelegateStop();
-        public delegate void DelegateStopNewExam();
-        public delegate void DelegateClearPostBackData();
-        public delegate void DelegateResetUiView();
         public DelegateStop StopDelegate = null;
-        public DelegateStopNewExam StopNewExamDelegate = null;
-        public DelegateClearPostBackData ClearPostBackDataDelegate = null;
-        public DelegateResetUiView ResetUiViewDelegate = null;
-
+        
         private List<TrainLicense> _trnLicenseCollection;
         private TrainLicense _trnLicense;
         private float _trnMileage;
-        private LicenseState _lincenseState;
         private readonly ReadAndWrite _usbHelper = new ReadAndWrite();
-        private ChargesInfo _chargesDisplayInfo;
-       
+        private ChargesInfo _chargesProcInfo;
+        private ChargeControlInfo _controlInfo;
         private readonly ConcurrentQueue<TrainProc> _trainProcQueue = new ConcurrentQueue<TrainProc>();
         private ChargingControl _currentInfoControl;
         private string _mLicensePath = string.Empty;
@@ -37,19 +30,57 @@ namespace TrainingControl
 
         private int _indexOfLicense = -1;
 
-        private bool IsChargerControlHide = false;
+        /// <summary>
+        /// 检查是否所有许可都可用
+        /// </summary>
+        public bool IsAllLincenseOk 
+        {
+            get
+            {
+                if (_trnLicenseCollection != null)
+                {
+                    foreach (TrainLicense tl in _trnLicenseCollection)
+                    {
+                        LicenseState state=tl.CheckLicense();
+                        if (state == LicenseState.Overdue || state == LicenseState.AutoTypeInvaild)
+                        {
+                            return false;
+                        }
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
 
-        double cacheTime = 0;
-        double detailTime = 0;
-        double detailMileage = 0;
-        DateTime startTime = DateTime.Now;
-        int detailTries = 0;
+        /// <summary>
+        /// 检查所有许可中是否含有有效许可
+        /// </summary>
+        public bool IsLincenseOk
+        {
+            get
+            {
+                if (_trnLicenseCollection != null)
+                {
+                    foreach (TrainLicense tl in _trnLicenseCollection)
+                    {
 
+                        if (tl.CheckLicense() == LicenseState.Normal)
+                        {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+        }
+        
         public string AutoId
         {
             private get;
             set;
         }
+        public string AutoTypeCd { get; set; }
         public TrainLicense Lincense
         {
             get
@@ -60,21 +91,6 @@ namespace TrainingControl
         public bool IsRunning
         {
             get; private set;
-        }
-        public bool IsCharging
-        {
-            get;
-            set;
-        }
-        private bool IsChargingThread
-        { get; set; }
-
-        public float SetCurrentMileage
-        {
-            set
-            {
-                _trnMileage = value / 1000f;
-            }
         }
 
         public int IndexOfLicense
@@ -95,9 +111,13 @@ namespace TrainingControl
             }
         }
 
-        public int GetNewIndexOfLicense(string autoTypeCd)
+        /// <summary>
+        /// 获取一个新的许可索引，如果当前可用返回当前索引
+        /// </summary>
+        /// <returns></returns>
+        public int GetNewIndexOfLicense()
         {
-            if (_trnLicense != null && _trnLicense.CheckLicense(autoTypeCd)== LicenseState.Normal)
+            if (_trnLicense != null && _trnLicense.CheckLicense()== LicenseState.Normal)
             {
                 return _indexOfLicense;
             }
@@ -112,7 +132,7 @@ namespace TrainingControl
                 currentIndex = _indexOfLicense + 1;
             for (int i = currentIndex; i < _trnLicenseCollection.Count; i++)
             {
-                if (_trnLicenseCollection[i].CheckLicense(autoTypeCd) == LicenseState.Normal)
+                if (_trnLicenseCollection[i].CheckLicense() == LicenseState.Normal)
                 {
                     _indexOfLicense = i;
                     return _indexOfLicense;
@@ -121,7 +141,7 @@ namespace TrainingControl
             //若未查询到可用许可，遍历所有许可，查看是否可用
             for (int j = 0; j < _trnLicenseCollection.Count; j++)
             {
-                if (_trnLicenseCollection[j].CheckLicense(autoTypeCd) == LicenseState.Normal)
+                if (_trnLicenseCollection[j].CheckLicense() == LicenseState.Normal)
                 {
                     _indexOfLicense = j;
                     return _indexOfLicense;
@@ -129,8 +149,6 @@ namespace TrainingControl
             }
             return -1;
         }
-
-
 
         /// <summary>
         /// Gets the TRN license collection.
@@ -148,14 +166,19 @@ namespace TrainingControl
         {
             try
             {
-                _sw = new StreamWriter("test.log", true, Encoding.UTF8)
-                    {
-                        AutoFlush = true
-                    };
+                _sw = new StreamWriter(DateTime.Now.ToString("yyyy-MM-dd") + ".log", true, Encoding.UTF8)
+                {
+                    AutoFlush = true
+                };
                 _sw.WriteLine(DateTime.Now.ToLocalTime() + ":" + "开始初始化……");
                 SqlLiteHelper.CreateAllTable();
+                _currentInfoControl = new ChargingControl();
+                _chargesProcInfo = new ChargesInfo();
+                AutoTypeCd = "C1";
+                AutoId = "C1";
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _sw.WriteLine(DateTime.Now.ToLocalTime() + ":" + "计费初始化失败：" + ex.Message);
                 throw ex;
@@ -163,13 +186,14 @@ namespace TrainingControl
         }
 
 
+
         /// <summary>
-        /// 根据盘符加载许可
+        /// 加载许可
         /// </summary>
-        /// <param name="usbDriveName">U盘名称，若为空则加载默认U盘</param>
-        /// <returns>成功返回True，否则为False</returns>
-        public int LoadLincese(string usbDriveName, string autoTypeCd)
-        {   
+        /// <param name="usbDriveName">指定U盘盘符，空则自动加载</param>
+        /// <returns>成功:True,失败：False</returns>
+        public bool LoadLincese(string usbDriveName)
+        {
             _indexOfLicense = -1;
             _sw.WriteLine(DateTime.Now.ToLocalTime() + ":" + "开始加载许可信息，参数为：" + usbDriveName);
             _trnLicenseCollection = string.IsNullOrEmpty(usbDriveName) ? _usbHelper.ReadTrainLicense() : _usbHelper.ReadTrainLicense(usbDriveName);
@@ -181,31 +205,33 @@ namespace TrainingControl
                 _sw.WriteLine(DateTime.Now.ToLocalTime() + ":" + "许可信息加载成功，并且已保存！");
                 foreach (TrainLicense tl in _trnLicenseCollection)
                 {
-                    if (tl.CheckLicense(autoTypeCd)== LicenseState.Normal)
+                    if (tl.CheckLicense()== LicenseState.Normal)
                     {
                         _indexOfLicense = _trnLicenseCollection.IndexOf(tl);
                         break;
                     }
                 }
             }
-            return _indexOfLicense;
+            if (_indexOfLicense >= 0)
+                return true;
+            return false;
+            
         }
 
-        public List<LicenseState> GetAllLicenseState(string usbDriveName, string autoTypeCd)
+       
+        public List<LicenseState> CheckAllLicenseState()
         {
-            List<LicenseState> state = new List<LicenseState>();
-            _trnLicenseCollection = string.IsNullOrEmpty(usbDriveName) ? _usbHelper.ReadTrainLicense() : _usbHelper.ReadTrainLicense(usbDriveName);
+            List<LicenseState> states = new List<LicenseState>();
             if (_trnLicenseCollection != null)
             {
                 foreach (TrainLicense tl in _trnLicenseCollection)
                 {
-                   
-                    state.Add(tl.CheckLicense(autoTypeCd));
+                    states.Add(tl.CheckLicense());
                 }
             }
-            return state;
+            return states;
         }
-
+        /*
         public bool StartTrain(string autoType)
         {
             _sw.WriteLine(DateTime.Now.ToLocalTime() + ":" + "………………………………开始训练…………………………");
@@ -229,94 +255,104 @@ namespace TrainingControl
             }
           
         }
+         */
 
-        public bool StartCharge(string autoType)
-        {
-            _sw.WriteLine(DateTime.Now.ToLocalTime() + ":" + "准备开始计费，开始检测许可信息……");
-            _lincenseState = _trnLicense.CheckLicense(autoType);
-            SqlLiteHelper.SaveTranineesInfo(_trnLicense);
-            if (_lincenseState== LicenseState.Normal)
+		public bool StartCharge()
+		{
+			_sw.WriteLine(DateTime.Now.ToLocalTime() + ":" + "开始计费，重新检测许可信息……");
+
+            if (_trnLicense.CheckLicense() == LicenseState.Normal)
             {
-                _sw.WriteLine(DateTime.Now.ToLocalTime() + ":" + "该许可信息有效……");
-                if (_currentInfoControl == null)
-                {
-                    _currentInfoControl = new ChargingControl();
-                    _currentInfoControl.Show();
-                }
-                else
-                {
-                    _currentInfoControl.Show();
-                }
-                IsChargerControlHide = false;
-                _chargesDisplayInfo = new ChargesInfo
+                _controlInfo = new ChargeControlInfo()
                 {
                     PidNo = _trnLicense.PidNo,
-                    Mode = _trnLicense.ChargeMode,
-                    SeqNo = Guid.NewGuid().ToString("N").ToUpper(),
-                    CurrentMileage = _trnLicense.MileageLmt,
-                    CurrentMinutes = _trnLicense.TimeLmt,
-                    SurplusTimes = _trnLicense.TriesLmt
+                    Name = _trnLicense.Name,
+                    Balance = _trnLicense.AccountBalance,
+                    Time = 0,
+                    Tries = 0
                 };
-                _currentInfoControl.CallShowTrainerName(_trnLicense.Name);
-                _currentInfoControl.CallShowTrainerPhoto(_trnLicense.Photo);
-                _currentInfoControl.CallChangesShowInfo(_chargesDisplayInfo);
-                IsChargingThread = true;
-                Thread chargingThread = new Thread(ChargingThread);
-                chargingThread.Start();
+                _sw.WriteLine(DateTime.Now.ToLocalTime() + ":" + "该许可信息有效……");
+                SqlLiteHelper.SaveTranineesInfo(_trnLicense);
+                _sw.WriteLine(DateTime.Now.ToLocalTime() + ":" + "已保存当前许可……");
+                IsRunning = true;
+                DateTime startTime = DateTime.Now;
+                if (_trnLicense.TrainDetail == null)
+                {
+                    _trnLicense.TrainDetail = new List<TrainDetail>();
+                }
+
+                _trnLicense.TrainDetail.Add(new TrainDetail());
+                int lastIndex = _trnLicense.TrainDetail.Count - 1;
+                _trnLicense.TrainDetail[lastIndex].TrainProcList = new List<TrainProc>();
+                _trnLicense.TrainDetail[lastIndex].TrainStartTs = startTime;
+                _trnLicense.TrainDetail[lastIndex].AutoId = AutoId;
+
+                _controlInfo.StartTime = _trnLicense.TrainDetail[lastIndex].TrainStartTs.ToString("HH:mm:ss");
+                _currentInfoControl.Show();
+
+                SaveChargProcInfo("开始训练");
+                Thread updateThread = new Thread(UpdateChargingControle);
+                updateThread.IsBackground = true;
+                updateThread.Start();
+                Thread timeThread = new Thread(ChargingTimeThread);
+                timeThread.IsBackground = true;
+                timeThread.Start(_trnLicense.ChargeMode == "Time");
+                Thread triesThread = new Thread(ChargingTriesThread);
+                triesThread.IsBackground = true;
+                triesThread.Start(_trnLicense.ChargeMode == "Tries");
                 return true;
+
             }
             else
             {
-                IsChargingThread = false;
-                IsCharging = false;
-                _sw.WriteLine(DateTime.Now.ToLocalTime() + ":" + "许可信息无效,失效类型：" + _lincenseState);
+                _sw.WriteLine(DateTime.Now.ToLocalTime() + ":" + "许可信息无效,失效类型：" + _trnLicense.CheckLicense());
                 return false;
+            }
+		}
+
+        public void UpdateChargingControle()
+        {
+            
+            while(IsRunning)
+            {
+                _currentInfoControl.CallChangeShowInfo(_controlInfo);
+                Thread.Sleep(500);
             }
         }
 
+        public int SaveChargProcInfo(string operationType)
+        {
+            string currentTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            _chargesProcInfo.AutoId = Lincense.AutoId;
+            _chargesProcInfo.CurrenBalance = Lincense.AccountBalance;
+            _chargesProcInfo.CurrentTries = Lincense.TriesLmt;
+            _chargesProcInfo.PidNo = Lincense.PidNo;
+            _chargesProcInfo.RemainingTime = Lincense.TimeLmt;
+            _chargesProcInfo.OperationTime = currentTime;
+            _chargesProcInfo.OperationType = operationType;
+            return SqlLiteHelper.SaveChargesProcInfo(_chargesProcInfo);
+        }
 
         public void StopCharging()
         {
-            IsChargingThread = false;
-            IsCharging = false;
-            SqlLiteHelper.SaveTranineesInfo(_trnLicense);
-            SqlLiteHelper.SaveChargesInfo(_chargesDisplayInfo);
-            SqlLiteHelper.SaveTraningInfo(_trnLicense);
-            writeToDisk();
-
-            if (StopNewExamDelegate != null)
+            IsRunning = false;
+            try
             {
-                StopNewExamDelegate();
+                //string endTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                //_trnLicense.TrainDetail.TrainEndTs = DateTime.Parse(endTime);
+            HideChargeControl();
+            SaveChargProcInfo("结束训练");
+                _trnLicenseCollection[_indexOfLicense] = _trnLicense;
+                _usbHelper.CreateLogFileAndWriteLog(_mLicensePath,JsonConvert.SerializeObject(_trnLicenseCollection), _usbSerialNumber);
             }
-        }
-
-        /// <summary>
-        /// Stops the train.
-        /// </summary>
-        /// <param name="isSave">if set to <c>true</c> [is save Train Info].</param>
-        public void StopTrain(bool isSave)
-        {
-            if (!IsChargerControlHide)
+            catch(Exception ex)
             {
-                IsRunning = false;
-                IsChargingThread = false;
-                IsCharging = false;
-                HideChargeControl();
-                if (ResetUiViewDelegate != null)
-                {
-                    ResetUiViewDelegate();
-                }
-                if(isSave)
-                {
-                    SqlLiteHelper.SaveTranineesInfo(_trnLicense);
-                    SqlLiteHelper.SaveChargesInfo(_chargesDisplayInfo);
-                    SqlLiteHelper.SaveTraningInfo(_trnLicense);
-                    writeToDisk();
-                }
-                IsChargerControlHide = true;
+                _sw.WriteLine("写许可时遇到错误：" + ex.Message + ",堆栈：" + ex.StackTrace);
             }
-        }
+            
+           
 
+        }
 
         public void AddProcInfo(string code, string mode, string timeStamp, string type)
         {
@@ -347,307 +383,149 @@ namespace TrainingControl
             }
         }
 
-        private void clearPostBackData()
+        private void ChargingTriesThread(object chargingTries)
         {
-            if (ClearPostBackDataDelegate != null)
-                ClearPostBackDataDelegate.Invoke();
-        }
-
-        private void CheckTrainProcThread()
-        {
-            bool canGo = false;
-            bool isEnd = false;
+            bool isTries = (bool)chargingTries;
+            _sw.WriteLine(DateTime.Now.ToLocalTime() + ":当前计费线程：次数，" + "计费前剩余余额：" + _trnLicense.AccountBalance + "，当前计费模式:" + _trnLicense.ChargeMode);
             while (IsRunning)
             {
                 if (_trainProcQueue.Count > 0)
                 {
-                    _sw.WriteLine(DateTime.Now.ToLocalTime() + ":" + "发现" + _trainProcQueue.Count + "条过程数据，开始处理……");
+                    _sw.WriteLine(DateTime.Now.ToLocalTime() + ":计费线程：" + "发现" + _trainProcQueue.Count + "条过程数据，开始处理……");
                     TrainProc tp;
                     if (!_trainProcQueue.TryDequeue(out tp) || tp == null)
                     {
                         throw new InvalidOperationException("队列处理失败");
                     }
-                    _sw.WriteLine(DateTime.Now.ToLocalTime() + ":" + "过程数据:" + tp.Code + "," + tp.Type);
+                    _sw.WriteLine(DateTime.Now.ToLocalTime() + ":计费线程：" + "过程数据:" + tp.Code + "," + tp.Type);
+                    SaveTrainingInfo(tp);
+                    SqlLiteHelper.SaveTraningProInfo(_trnLicense.PidNo, tp);
+                    writeToDisk();
                     if (tp.Code == "10000" && tp.Type == "S")
                     {
-                        cacheTime = 0;
-                        detailTime = 0;
-                        detailMileage = 0;
-                        detailTries = 0;
-                        startTime = DateTime.Now;
-                        canGo = true;
-                        isEnd = false;
-                        if (_trnLicense.TrainDetail == null)
+                        _sw.WriteLine(DateTime.Now.ToLocalTime() + ":计费线程：" + "过程数据为10000，状态为S,初始化状态信息……");
+                        _trnLicense.TriesLmt = _trnLicense.TriesLmt--;
+                        _trnLicense.TrainDetail[_trnLicense.TrainDetail.Count - 1].TrainTries += 1;
+                        _controlInfo.Tries = _trnLicense.TrainDetail[_trnLicense.TrainDetail.Count - 1].TrainTries;
+                        if (isTries)
                         {
-                            _trnLicense.TrainDetail = new TrainDetail
-                            {
-                                TrainStartTs = startTime
-                            };
+                            _trnLicense.AccountBalance = _trnLicense.AccountBalance - _trnLicense.ChargingStandard;
+                            _controlInfo.Balance = _trnLicense.AccountBalance;
+                            SqlLiteHelper.SaveTranineesInfo(_trnLicense);
                         }
-                        else
-                        {
-                            detailMileage = _trnLicense.TrainDetail.TrainMileage;
-                            detailTime = _trnLicense.TrainDetail.TrainTime;
-                            detailTries = _trnLicense.TrainDetail.TrainTries;
-                        }
-                        if (_trnLicense.TrainDetail.TrainProcList == null)
-                        {
-                            _trnLicense.TrainDetail.TrainProcList = new List<TrainProc>();
-                        }
-                        SaveTrainingInfo(tp);
-                        SqlLiteHelper.SaveChargesInfo(_chargesDisplayInfo);
-                        SqlLiteHelper.SaveTraningInfo(_trnLicense);
-                        writeToDisk();
-                        _sw.WriteLine(DateTime.Now.ToLocalTime() + ":" + "过程数据为10000，状态为S,初始化状态信息……");
                         
-                        IsCharging = true;
-                        _sw.WriteLine(DateTime.Now.ToLocalTime() + ":" + "状态信息初始化完毕，开启训练线程……");
-                        continue;
-                    }
-                    if (!canGo)
-                    {
-                        if (tp.Code == "10000" && tp.Type == "T")
-                        {
-                            StopCharging();
-                            _sw.WriteLine(DateTime.Now.ToLocalTime() + ":" + "训练未开始，关闭训练！");
-                        }
-                        else
-                            _sw.WriteLine(DateTime.Now.ToLocalTime() + ":" + "训练未开始，当前数据无效，已丢弃！");
-                        continue;
-                    }
-                    if (tp.Code == "10000" && tp.Type == "T")
-                    {
-                        if (!IsRunning)
-                            continue;
-                        if (_trnLicense.TrainDetail != null)
-                        {
-                            _trnLicense.TrainDetail.TrainEndTs = DateTime.Now;
-                        }
-                        _lincenseState = LicenseState.Invaild;
-                        _sw.WriteLine(DateTime.Now.ToLocalTime() + ":" + @"过程数据为10000，状态为T,准备保存状态信息……");
-                        SaveTrainingInfo(tp);
-                        StopTrain(true);
-                        _sw.WriteLine(DateTime.Now.ToLocalTime() + ":" + "本次状态信息保存完毕，关闭训练界面，返回验证界面……");
-                        continue;
                     }
                     if (tp.Code == "10000" && tp.Type == "E")
                     {
-                        if (!isEnd)
+                        if (isTries)
                         {
-                            isEnd = true;
-                            SaveTrainingInfo(tp);
-                            if (_trnLicense.ChargeMode == "Tries")
+                            if (_trnLicense.CheckLicense()== LicenseState.Invaild)
                             {
-                                _sw.WriteLine(DateTime.Now.ToLocalTime() + ":" + @"过程数据为10000，状态为E,计费模式为[次数]，检查许可信息……");
-                                if (_trnLicense.TriesLmt <= 0)
-                                {
-                                    _sw.WriteLine(DateTime.Now.ToLocalTime() + ":" + "训练次数为0，停止计费……");
-                                    StopCharging();
-                                    if (StopDelegate != null)
-                                    {
-                                        StopDelegate();
-                                    }
-                                    continue;
-                                }
+                                _sw.WriteLine(DateTime.Now.ToLocalTime() + ":计费线程：" + "训练次数为0，停止计费……");
+                                IsRunning = false;
+                                if (StopDelegate != null)
+                                    StopDelegate();
                             }
-                            StopCharging();
-                            _sw.WriteLine(DateTime.Now.ToLocalTime() + ":" + "本次训练过程信息保存完毕，本次训练结束……");
                         }
-                        continue;
                     }
-                    SaveTrainingInfo(tp);
-                    SqlLiteHelper.SaveChargesInfo(_chargesDisplayInfo);
-                    SqlLiteHelper.SaveTraningInfo(_trnLicense);
-                    writeToDisk();
+                   
+                   
                 }
-                Thread.Sleep(100);
+                Thread.Sleep(500);
             }
         }
 
-        private void ChargingThread()
+        private void ChargingTimeThread(object chargingTime)
         {
-            while (IsChargingThread)
+            bool isTimesCharging = (bool)chargingTime;
+            double totalTime = _trnLicense.TimeLmt;
+            _sw.WriteLine(DateTime.Now.ToLocalTime() + ":当前计费线程：时间，" + "计费前剩余余额：" + _trnLicense.AccountBalance + "，当前计费模式:" + _trnLicense.ChargeMode);
+            if (isTimesCharging)
             {
-                Thread.Sleep(300);
-                double spanTime = 2;
-                if (IsCharging && _lincenseState == LicenseState.Normal)
+                _trnLicense.AccountBalance = _trnLicense.AccountBalance - _trnLicense.ChargingStandard;
+                _controlInfo.Balance = _trnLicense.AccountBalance;
+            }
+            DateTime lastHandleTime = _trnLicense.TrainDetail[_trnLicense.TrainDetail.Count - 1].TrainStartTs;
+            _trnLicense.TrainDetail[_trnLicense.TrainDetail.Count - 1].TrainEndTs = lastHandleTime.AddMinutes(1);
+            _trnLicense.TrainDetail[_trnLicense.TrainDetail.Count - 1].TrainTime =
+                (_trnLicense.TrainDetail[_trnLicense.TrainDetail.Count - 1].TrainEndTs
+                - _trnLicense.TrainDetail[_trnLicense.TrainDetail.Count - 1].TrainStartTs).TotalMinutes;
+            while (IsRunning)
+            {
+
+                DateTime now = DateTime.Now;
+                TimeSpan ts = now - lastHandleTime;
+                _controlInfo.Time = (now - _trnLicense.TrainDetail[_trnLicense.TrainDetail.Count - 1].TrainStartTs).TotalSeconds;
+
+                if (isTimesCharging)
                 {
-                   
-                    DateTime lastHandleTime = DateTime.Now;
-                    double totalMileage = _trnLicense.MileageLmt;
-                    double totalTime = _trnLicense.TimeLmt;
-                    _sw.WriteLine(DateTime.Now.ToLocalTime() + ":" + "计费前里程剩余：" + totalMileage + "，次数剩余：" + _trnLicense.TriesLmt + "，时间剩余：" + totalTime + "，当前计费模式:" + _trnLicense.ChargeMode);
-                    SqlLiteHelper.SaveChargesInfo(_chargesDisplayInfo);
-                    _chargesDisplayInfo.StartTime = startTime.ToString("yyyy-MM-dd HH:mm:ss");
-                    _trnLicense.TriesLmt = _trnLicense.TriesLmt - 1;
-                    detailTries += 1;
-                    if (_trnLicense.ChargeMode == "Tries")
+                    if (ts.TotalMinutes >= _trnLicense.MinTimeUnit)
                     {
-                        if (_trnLicense.TriesLmt < 0)
+                        
+                        lastHandleTime = _trnLicense.TrainDetail[_trnLicense.TrainDetail.Count - 1].TrainEndTs;
+                        if (_trnLicense.CheckLicense() == LicenseState.Invaild)
                         {
-                            _sw.WriteLine(DateTime.Now.ToLocalTime() + ":" + "训练次数非法，准备终止训练……");
-                            StopCharging();
+                            IsRunning = false;
                             if (StopDelegate != null)
-                            {
                                 StopDelegate();
-                            }
-                            continue;
+                            break;
                         }
-                    }
-                    else
-                    {
-                        SqlLiteHelper.SaveChargesInfo(_chargesDisplayInfo);
+                        _trnLicense.AccountBalance = _trnLicense.AccountBalance - _trnLicense.ChargingStandard * _trnLicense.MinTimeUnit;
+                        _controlInfo.Balance = _trnLicense.AccountBalance;
+                        _trnLicense.TrainDetail[_trnLicense.TrainDetail.Count - 1].TrainEndTs = lastHandleTime.AddMinutes(1);
+                        _trnLicense.TrainDetail[_trnLicense.TrainDetail.Count - 1].TrainTime = 
+                            (_trnLicense.TrainDetail[_trnLicense.TrainDetail.Count - 1].TrainEndTs 
+                            - _trnLicense.TrainDetail[_trnLicense.TrainDetail.Count - 1].TrainStartTs).TotalMinutes;
+                       
                         writeToDisk();
-                    }
-                    while (IsCharging && _lincenseState == LicenseState.Normal)
-                    {
-                        DateTime now = DateTime.Now;
-                        TimeSpan ts = now - lastHandleTime;
-                        double diff = Math.Round((now - startTime).TotalHours, 4);
-                        cacheTime = totalTime - diff;
-                        if (_trnLicense.ChargeMode == "Time")
-                        {
-                            _trnLicense.TimeLmt = cacheTime;
-                        }
-                        _trnLicense.MileageLmt = totalMileage - Math.Round(_trnMileage, 4);
-                        _trnLicense.TriesLmt = _trnLicense.TriesLmt;
-                        if (_trnLicense.TrainDetail != null)
-                        {
-                            _trnLicense.TrainDetail.TrainTime = detailTime + diff;
-                            _trnLicense.TrainDetail.TrainMileage = detailMileage + _trnMileage;
-                            _trnLicense.TrainDetail.TrainTries = detailTries;
-                            _trnLicense.TrainDetail.AutoId = AutoId;
-                        }
-                        _chargesDisplayInfo.SurplusTimes = _trnLicense.TriesLmt;
-                        _chargesDisplayInfo.CurrentMinutes = cacheTime;
-                        _chargesDisplayInfo.CurrentMileage = _trnLicense.MileageLmt;
-                        string chargeMode = _trnLicense.ChargeMode;
-                        if (chargeMode != null)
-                        {
-                            switch (chargeMode)
-                            {
-                                case "Time":
-                                    {
-                                        if (_trnLicense.TimeLmt > 0.0)
-                                        {
-                                            if (ts.TotalMinutes >= spanTime)
-                                            {
-                                                lastHandleTime = now;
-                                                SqlLiteHelper.SaveChargesInfo(_chargesDisplayInfo);
-                                                writeToDisk();
-                                                clearPostBackData();
-                                            }
-                                        }
-                                        else
-                                        {
-                                            StopCharging();
-                                            if (StopDelegate != null)
-                                            {
-                                                StopDelegate();
-                                            }
-                                        }
-                                        break;
-                                    }
-                                case "Mileage":
-                                    {
-                                        if (cacheTime <= 0.0 || _trnLicense.MileageLmt > 0.0)
-                                        {
-                                            if (ts.TotalMinutes >= spanTime)
-                                            {
-                                                lastHandleTime = now;
-                                                SqlLiteHelper.SaveChargesInfo(_chargesDisplayInfo);
-                                                writeToDisk();
-                                                clearPostBackData();
-                                            }
-                                        }
-                                        else
-                                        {
-                                            StopCharging();
-                                            if (StopDelegate != null)
-                                            {
-                                                StopDelegate();
-                                            }
-                                        }
-                                        break;
-                                    }
-                                case "Tries":
-                                    {
-                                        if (_trnLicense.TriesLmt >= 0)
-                                        {
-                                            if (cacheTime <= 0.0)
-                                            {
-                                                StopCharging();
-                                                _sw.WriteLine(DateTime.Now.ToLocalTime() + ":" + "时间耗尽，训练已停止！");
-                                                if (_trnLicense.TriesLmt <= 0)
-                                                {
-                                                    if (StopDelegate != null)
-                                                    {
-                                                        StopDelegate();
-                                                    }
-                                                }
-                                                continue;
-                                            }
-                                            if (ts.TotalMinutes >= spanTime)
-                                            {
-                                                lastHandleTime = now;
-                                                SqlLiteHelper.SaveChargesInfo(_chargesDisplayInfo);
-                                                writeToDisk();
-                                                clearPostBackData();
-                                            }
-                                        }
-                                        else
-                                        {
-                                            StopCharging();
-                                            if (StopDelegate != null)
-                                            {
-                                                StopDelegate();
-                                            }
-                                        }
-                                        break;
-                                    }
-                                default:
-                                    {
-                                        if (_trnLicense.TimeLmt > 0.0)
-                                        {
-                                            if (ts.TotalMinutes >= 5.0)
-                                            {
-                                                lastHandleTime = now;
-                                                SqlLiteHelper.SaveChargesInfo(_chargesDisplayInfo);
-                                                writeToDisk();
-                                            }
-                                        }
-                                        else
-                                        {
-                                            StopCharging();
-                                            if (StopDelegate != null)
-                                            {
-                                                StopDelegate();
-                                            }
-                                        }
-                                        break;
-                                    }
-                            }
-                        }
-                        if (_currentInfoControl != null)
-                            _currentInfoControl.CallChangesShowInfo(_chargesDisplayInfo);
-                        Thread.Sleep(800);
+                        
                     }
                 }
+                //_currentInfoControl.CallChangeShowInfo(_controlInfo);
+                #region
+                //if (_trnLicense.TrainDetail != null)
+                //{
+                //    _trnLicense.TrainDetail.TrainTime = detailTime + diff;
+                //    _trnLicense.TrainDetail.TrainMileage = detailMileage + _trnMileage;
+                //    _trnLicense.TrainDetail.TrainTries = detailTries;
+                //    _trnLicense.TrainDetail.AutoId = AutoId;
+                //}
+                //if (_currentInfoControl != null)
+                //    _currentInfoControl.CallChangesShowInfo(_chargesDisplayInfo);
+                #endregion
+
+
+                Thread.Sleep(300);
             }
-            
+
         }
 
         private void writeToDisk()
         {
+            try
+            {
             _trnLicenseCollection[_indexOfLicense] = _trnLicense;
             _usbHelper.CreateLogFileAndWriteLog(_mLicensePath,
                                                    JsonConvert.SerializeObject(_trnLicenseCollection), _usbSerialNumber);
+        }
+            catch(Exception ex)
+            {
+                IsRunning = false;
+                if (StopDelegate != null)
+                    StopDelegate();
+            }
         }
 
         private void SaveTrainingInfo(TrainProc tpInfo)
         {
             if (_trnLicense != null && _trnLicense.TrainDetail != null)
-                _trnLicense.TrainDetail.TrainProcList.Add(tpInfo);
+                _trnLicense.TrainDetail[_trnLicense.TrainDetail.Count - 1].TrainProcList.Add(tpInfo);
+        }
+
+        public void Dispose()
+        {
+            _sw.Close();
+            _sw.Dispose();
         }
 
         //private void axZKFPEngX_OnFeatureInfo(object sender, AxZKFPEngXControl.IZKFPEngXEvents_OnFeatureInfoEvent e)

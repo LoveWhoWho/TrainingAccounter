@@ -1,0 +1,7 @@
+D:\CodeSource\gitData\TrainingAccounter\DBAccessProc\bin\Release\DBAccessProc.dll
+D:\CodeSource\gitData\TrainingAccounter\DBAccessProc\bin\Release\DBAccessProc.pdb
+D:\CodeSource\gitData\TrainingAccounter\DBAccessProc\bin\Release\EncDecLib.dll
+D:\CodeSource\gitData\TrainingAccounter\DBAccessProc\bin\Release\Microsoft.ApplicationBlocks.Data.dll
+D:\CodeSource\gitData\TrainingAccounter\DBAccessProc\obj\Release\DBAccessProc.csprojResolveAssemblyReference.cache
+D:\CodeSource\gitData\TrainingAccounter\DBAccessProc\obj\Release\DBAccessProc.dll
+D:\CodeSource\gitData\TrainingAccounter\DBAccessProc\obj\Release\DBAccessProc.pdb

@@ -284,8 +284,6 @@ D:\工作项目\训练管理\TrainingAccounter\TrainingAccounter\obj\Debug\Train
 D:\工作项目\训练管理\TrainingAccounter\TrainingAccounter\obj\Debug\TrainingAccounter.csproj.GenerateResource.Cache
 D:\工作项目\训练管理\TrainingAccounter\TrainingAccounter\bin\Debug\Refrence\msxsl.exe
 D:\CodeSource\gitData\TrainingAccounter\TrainingAccounter\bin\Debug\TrainingAccounter.exe.config
-D:\CodeSource\gitData\TrainingAccounter\TrainingAccounter\obj\Debug\Interop.DSOFramer.dll
-D:\CodeSource\gitData\TrainingAccounter\TrainingAccounter\obj\Debug\AxInterop.DSOFramer.dll
 D:\CodeSource\gitData\TrainingAccounter\TrainingAccounter\obj\Debug\TrainingAccounter.csproj.ResolveComReference.cache
 D:\CodeSource\gitData\TrainingAccounter\TrainingAccounter\obj\Debug\TrainingAccounter.exe
 D:\CodeSource\gitData\TrainingAccounter\TrainingAccounter\obj\Debug\TrainingAccounter.pdb
@@ -373,8 +371,6 @@ D:\CodeSource\gitData\TrainingAccounter\TrainingAccounter\bin\Debug\AxLib.pdb
 D:\CodeSource\gitData\TrainingAccounter\TrainingAccounter\bin\Debug\DBAccessProc.pdb
 D:\CodeSource\gitData\TrainingAccounter\TrainingAccounter\bin\Debug\TrainingControl.pdb
 D:\CodeSource\gitData\TrainingAccounter\TrainingAccounter\bin\Debug\WPF.DazzleUI2.pdb
-D:\CodeSource\gitData\TrainingAccounter\TrainingAccounter\bin\Debug\Interop.DSOFramer.dll
-D:\CodeSource\gitData\TrainingAccounter\TrainingAccounter\bin\Debug\AxInterop.DSOFramer.dll
 D:\CodeSource\gitData\TrainingAccounter\TrainingAccounter\obj\Debug\TrainingAccounter.csprojResolveAssemblyReference.cache
 D:\CodeSource\gitData\TrainingAccounter\TrainingAccounter\obj\Debug\AddTrainee.baml
 D:\CodeSource\gitData\TrainingAccounter\TrainingAccounter\obj\Debug\baseInfo.baml
@@ -424,5 +420,5 @@ D:\CodeSource\gitData\TrainingAccounter\TrainingAccounter\obj\Debug\TrainDetailI
 D:\CodeSource\gitData\TrainingAccounter\TrainingAccounter\obj\Debug\TrainingAccounter.g.resources
 D:\CodeSource\gitData\TrainingAccounter\TrainingAccounter\obj\Debug\TrainingAccounter.PrintPreview.resources
 D:\CodeSource\gitData\TrainingAccounter\TrainingAccounter\obj\Debug\TrainingAccounter.Properties.Resources.resources
-D:\CodeSource\gitData\TrainingAccounter\TrainingAccounter\obj\Debug\TrainingAccounter.wordView.resources
 D:\CodeSource\gitData\TrainingAccounter\TrainingAccounter\obj\Debug\TrainingAccounter.csproj.GenerateResource.Cache
+D:\CodeSource\gitData\TrainingAccounter\TrainingAccounter\bin\Debug\NPOI.xml

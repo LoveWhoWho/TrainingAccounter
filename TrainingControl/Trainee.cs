@@ -254,23 +254,23 @@ namespace TrainingControl
             set { m_sTrainingMode = value; }
         }
         #endregion
-
-		/// <summary>
-		/// 查询学员信息
-		/// </summary>
-		/// <param name="sPidNo">身份证</param>
-		/// <param name="sName">姓名</param>
-		/// <param name="sSex">性别</param>
-		/// <param name="sLicenseType">车型</param>
-		/// <param name="sTrainer">教练员</param>
-		/// <param name="drSchoolId">驾校ID</param>
-		/// <param name="sBeginDt">开始时间</param>
-		/// <param name="sEndDt">结束时间</param>
-		public void SearchTrainee()
-		{
-			dsrsrc.trainMangeDataSet.TraineeDataTable.Clear();
-			DBAccessHelper.GetTraStudInfo(Trainee.m_sPidNo, Trainee.m_sName, Trainee.m_sTrainerNo, Trainee.m_sAutoType, Trainee.m_sDrvSchoolId, Trainee.m_sBeginDt, Trainee.m_sEndDt, "1", dsrsrc.trainMangeDataSet);
-		}
+        
+        /// <summary>
+        /// 查询学员信息
+        /// </summary>
+        /// <param name="sPidNo">身份证</param>
+        /// <param name="sName">姓名</param>
+        /// <param name="sSex">性别</param>
+        /// <param name="sLicenseType">车型</param>
+        /// <param name="sTrainer">教练员</param>
+        /// <param name="drSchoolId">驾校ID</param>
+        /// <param name="sBeginDt">开始时间</param>
+        /// <param name="sEndDt">结束时间</param>
+        //public void SearchTrainee()
+        //{
+        //    dsrsrc.trainMangeDataSet.TraineeDataTable.Clear();
+        //    DBAccessHelper.GetTraStudInfo(Trainee.m_sPidNo, Trainee.m_sName, Trainee.m_sTrainerNo, Trainee.m_sAutoType, Trainee.m_sDrvSchoolId, Trainee.m_sBeginDt, Trainee.m_sEndDt, dsrsrc.trainMangeDataSet);
+        //}
         /// <summary>
         /// 通过身份证查询学员信息
         /// </summary>

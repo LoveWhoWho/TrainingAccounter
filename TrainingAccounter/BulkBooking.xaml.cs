@@ -36,22 +36,23 @@ namespace TrainingAccounter
               this.cboxSerCarType.ItemsSource = dsrsrc.TrainLicenseType;
               this.cboxSerCarType.SelectedIndex = 0;
 			}       
-            cboxSubject.SelectedIndex = 0;
-			if(dsrsrc.BillingMode!=null)
-			{
-            cboxBillModeBook.ItemsSource = dsrsrc.BillingMode;
+            cboxSubject.SelectedIndex = 0;    
 			if (dsrsrc.sBillingMode == "Tries")
-				cboxBillModeBook.SelectedIndex=0;
+                cboxBillModeBook.Text= "按次数计费";
 			else if(dsrsrc.sBillingMode=="Time")
-				cboxBillModeBook.SelectedIndex = 1;
-			else
-			{
-				cboxBillModeBook.SelectedIndex = 2;
-			}
+                cboxBillModeBook.Text = "按时间计费";
+            else if (dsrsrc.sBillingMode == "StudyTime")
+            {
+                cboxBillModeBook.Text = "按学时计费";
+            }
+            else
+            {
+                cboxBillModeBook.Text = "按里程计费";            
+            }
 			sChargingMode = dsrsrc.sBillingMode;
-		    }
+		 
 			cboxList.IsChecked = true;
-			cboxBillModeBook.IsEditable = false;
+		
         }
 		string sChargingMode ="";
         string sRunningMode = DBAccessProc.Common.RunningMode;
@@ -142,7 +143,7 @@ namespace TrainingAccounter
 					}
 				}
 			}
-			if (cboxBillModeBook.SelectedValue.ToString() == "按时间计费")
+			if (cboxBillModeBook.Text == "按时间计费")
 			{
 				double timeLenth = 0;
 				sChargingMode = "Time";
@@ -167,7 +168,7 @@ namespace TrainingAccounter
 				TraBookInfo.TraAmount = timeLenth.ToString();
 				TraBookInfo.ThisBalance = Math.Round(dChargingStandard * traAmount, 2);//本次预约费用
 			}
-			else if (cboxBillModeBook.SelectedValue.ToString() == "按次数计费")
+			else if (cboxBillModeBook.Text == "按次数计费")
 			{
 				sChargingMode = "Tries";
 				if (tboxTraCnt.Text.Trim() == "")
@@ -187,27 +188,52 @@ namespace TrainingAccounter
 				TraBookInfo.TraAmount = dSingleTime.ToString();
 				TraBookInfo.ThisBalance = Math.Round(dChargingStandard * TraBookInfo.TriesAmount, 2);//本次预约费用
 			}
-			else if (cboxBillModeBook.SelectedValue.ToString() == "按里程计费")
-			{
-				sChargingMode = "Mileage";
-				TraBookInfo.TraAmount = dSingleTime.ToString();
-				if (tboxTraMil.Text.Trim() == "")
-				{
-					System.Windows.MessageBox.Show("请填入训练里程！");
-					tboxTraMil.Focus();
-					return;
-				}
-				else if (Convert.ToSingle(tboxTraMil.Text.Trim()) <= 0)
-				{
-					System.Windows.MessageBox.Show("输入的里程数不合法！");
-					tboxTraMil.Text = "";
-					tboxTraMil.Focus();
-					return;
-				}
-				TraBookInfo.MileageAmount = Convert.ToSingle(tboxTraMil.Text.Trim());
-				TraBookInfo.TraAmount = (dSingleTime * TraBookInfo.MileageAmount).ToString();
-				TraBookInfo.ThisBalance = Math.Round(dChargingStandard * TraBookInfo.MileageAmount, 2);//本次预约费用
-			}
+            else if (cboxBillModeBook.Text == "按里程计费")
+            {
+                sChargingMode = "Mileage";
+                TraBookInfo.TraAmount = dSingleTime.ToString();
+                if (tboxTraMil.Text.Trim() == "")
+                {
+                    System.Windows.MessageBox.Show("请填入训练里程！");
+                    tboxTraMil.Focus();
+                    return;
+                }
+                else if (Convert.ToSingle(tboxTraMil.Text.Trim()) <= 0)
+                {
+                    System.Windows.MessageBox.Show("输入的里程数不合法！");
+                    tboxTraMil.Text = "";
+                    tboxTraMil.Focus();
+                    return;
+                }
+                TraBookInfo.MileageAmount = Convert.ToSingle(tboxTraMil.Text.Trim());
+                TraBookInfo.TraAmount = (dSingleTime * TraBookInfo.MileageAmount).ToString();
+                TraBookInfo.ThisBalance = Math.Round(dChargingStandard * TraBookInfo.MileageAmount, 2);//本次预约费用
+            }
+            else
+            {
+                double timeLenth = 0;
+                sChargingMode = "StudyTime";
+                if (tboxTraStudyTime.Text.Trim() == "")
+                { tboxTraStudyTime.Text = "0"; }
+                else
+                {
+                    //	System.Windows.MessageBox.Show("请填入训练时间！");
+                    //	tboxTraTime.Focus();
+                    //	return;
+                    //}
+                    //else			
+                    if (!double.TryParse(tboxTraStudyTime.Text.Trim(), out timeLenth))
+                    {
+                        System.Windows.MessageBox.Show("输入的时间数不合法！");
+                        tboxTraStudyTime.Text = "";
+                        tboxTraStudyTime.Focus();
+                        return;
+                    }
+                }
+                traAmount = timeLenth;
+                TraBookInfo.TraAmount = timeLenth.ToString();
+                TraBookInfo.ThisBalance = Math.Round(dChargingStandard * traAmount, 2);//本次预约费用
+            }
 
 			TraBookInfo.BillMode = sChargingMode;
 			TraBookInfo.TrainDt = DateTime.Now.ToString("yyyy-MM-dd");
@@ -251,12 +277,14 @@ namespace TrainingAccounter
 						continue;
 					}
 					dsrsrc.AddTraBookInfo("");
-					if (cboxBillModeBook.SelectedValue.ToString() == "按时间计费")
+					if (cboxBillModeBook.Text== "按时间计费")
 						dsrsrc.InsRechargeRecord(TraBookInfo.ThisBalance, TraBookInfo.PidNo, "", "预约 " + TraBookInfo.TraAmount + " 小时");
-					else if (cboxBillModeBook.SelectedValue.ToString() == "按次数计费")
+					else if (cboxBillModeBook.Text== "按次数计费")
 						dsrsrc.InsRechargeRecord(TraBookInfo.ThisBalance, TraBookInfo.PidNo, "", "预约 " + TraBookInfo.TriesAmount + " 次");
-					else if (cboxBillModeBook.SelectedValue.ToString() == "按里程计费")
+					else if (cboxBillModeBook.Text == "按里程计费")
 						dsrsrc.InsRechargeRecord(TraBookInfo.ThisBalance, TraBookInfo.PidNo, "", "预约 " + TraBookInfo.MileageAmount + " 公里");
+                    else
+                        dsrsrc.InsRechargeRecord(TraBookInfo.ThisBalance, TraBookInfo.PidNo, "", "预约 " + TraBookInfo.TraAmount + " 个学时");
 				}
 
 
@@ -311,8 +339,7 @@ namespace TrainingAccounter
 							continue;
 						}
 					}
-				}
-				MessageBox.Show("取消预约成功！");
+				}			
 				PopuBulkBooking();
 			}
 			else
@@ -321,42 +348,7 @@ namespace TrainingAccounter
 				return;
 			}
 		}
-		private void cboxBillModeBook_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			if (cboxBillModeBook.SelectedValue.ToString() == "按时间计费")
-			{
-				sChargingMode = "Time";
-				tboxTraCnt.IsEnabled = false;
-				tboxTraMil.IsEnabled = false;
-				tboxTraCnt.Text = "";
-				tboxTraMil.Text = "";
-				tboxTraTime.IsEnabled = true;
-				tboxTraTime.Text = "";
-				tboxTraTime.Focus();
-			}
-			else if (cboxBillModeBook.SelectedValue.ToString() == "按次数计费")
-			{
-				sChargingMode = "Tries";
-				tboxTraCnt.IsEnabled = true;
-				tboxTraMil.IsEnabled = false;
-				tboxTraCnt.Text = "";
-				tboxTraMil.Text = "";
-				tboxTraCnt.Focus();
-				tboxTraTime.Text = "";
-				tboxTraTime.IsEnabled = false;
-			}
-			else if (cboxBillModeBook.SelectedValue.ToString() == "按里程计费")
-			{
-				sChargingMode = "Mileage";
-				tboxTraCnt.IsEnabled = false;
-				tboxTraMil.IsEnabled = true;
-				tboxTraCnt.Text = "";
-				tboxTraMil.Text = "";
-				tboxTraMil.Focus();
-				tboxTraTime.Text = "";
-				tboxTraTime.IsEnabled = false;
-			}
-		}
+
 		/// <summary>
 		/// 屏蔽非法按键，只能输入整数
 		/// </summary>
@@ -554,5 +546,65 @@ namespace TrainingAccounter
 			if (dsrsrc.displayBookhistory("", "", DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd")), DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd"))) != null)
 				dgBookRecord.ItemsSource = dsrsrc.displayBookhistory("", "", DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd")), DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd"))).DefaultView;
 		}
+
+      
+        private void cboxBillModeBook_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (cboxBillModeBook.Text == "按时间计费")
+            {
+                sChargingMode = "Time";
+                tboxTraCnt.IsEnabled = false;
+                tboxTraMil.IsEnabled = false;
+                tboxTraCnt.Text = "";
+                tboxTraMil.Text = "";
+                tboxTraTime.IsEnabled = true;
+                tboxTraTime.Text = "";
+                tboxTraTime.Focus();
+                tboxTraStudyTime.IsEnabled = false;
+            }
+            else if (cboxBillModeBook.Text == "按次数计费")
+            {
+                sChargingMode = "Tries";
+                tboxTraCnt.IsEnabled = true;
+                tboxTraMil.IsEnabled = false;
+                tboxTraCnt.Text = "";
+                tboxTraMil.Text = "";
+                tboxTraCnt.Focus();
+                tboxTraTime.Text = "";
+                tboxTraTime.IsEnabled = false;
+                tboxTraStudyTime.IsEnabled = false;
+            }
+            else if (cboxBillModeBook.Text == "按里程计费")
+            {
+                sChargingMode = "Mileage";
+                tboxTraCnt.IsEnabled = false;
+                tboxTraMil.IsEnabled = true;
+                tboxTraCnt.Text = "";
+                tboxTraMil.Text = "";
+                tboxTraMil.Focus();
+                tboxTraTime.Text = "";
+                tboxTraTime.IsEnabled = false;
+                tboxTraStudyTime.IsEnabled = false;
+            }
+            else
+            {
+                sChargingMode = "StudyTime";
+                tboxTraStudyTime.IsEnabled = true;
+                tboxTraCnt.IsEnabled = false;
+                tboxTraMil.IsEnabled = false;
+                tboxTraCnt.Text = "";
+                tboxTraMil.Text = "";
+                tboxTraStudyTime.Focus();
+                tboxTraTime.Text = "";
+                tboxTraTime.IsEnabled = false;
+            }
+        }
+
+        private void tboxTraStudyTime_KeyDown(object sender, KeyEventArgs e)
+        {
+            TextAllowInputIntAndDecimal(sender, e);
+        }
+
+      
 	}
 }

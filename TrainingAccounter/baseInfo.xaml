@@ -17,64 +17,75 @@
                 <TextBlock Text="计费标准配置" VerticalAlignment="Center"  HorizontalAlignment="Left" TextAlignment="Center" Background="DodgerBlue" Height="20" Width="520"/>
             </StackPanel>
             <Border BorderThickness="2" BorderBrush="BlanchedAlmond">
-            <StackPanel>
-                <StackPanel Orientation="Horizontal"  Height="25" Margin="0,30,0,0" Grid.ColumnSpan="2">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal"  Height="25" Margin="0,30,0,0" Grid.ColumnSpan="2">
                         <Label   FontSize="13" Content="训练车型："/>
                         <ComboBox    FontSize="13" x:Name="CboxCarTypes" Width="98"  SelectionChanged="CboxCarTypes_SelectionChanged" />
                     </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                    <StackPanel>
-                    <StackPanel Orientation="Horizontal" Height="25" Margin="200,10,0,0">
-                        <Label Content=" 按时间计费标准："   FontSize="13"  Width="115" />
-                        <TextBox FontSize="13" Style="{StaticResource RadiusTextBoxStyle}"  x:Name="tboxChargeByTime" Width="150"  Grid.Row="1" KeyDown="tboxChargeByTime_KeyDown"  >
-                            <TextBox.ToolTip>每辆车每小时的收费金额</TextBox.ToolTip>
-                        </TextBox>
-                        <Label Content="元/每小时" Width="70"  Foreground="Red" HorizontalAlignment="Left"  />
-                        <Label Content=" 按次数计费标准："  Margin="8,0,0,0"  FontSize="13"  Width="116"  />
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Height="25" Margin="200,10,0,0">
+                                <Label Content=" 按时间计费标准：" Margin="5,0,0,0"   FontSize="13"  Width="115" />
+                                <TextBox FontSize="13" Style="{StaticResource RadiusTextBoxStyle}"  x:Name="tboxChargeByTime" Width="150"  Grid.Row="1" KeyDown="tboxChargeByTime_KeyDown"  >
+                                    <TextBox.ToolTip>每辆车每小时的收费金额</TextBox.ToolTip>
+                                </TextBox>
+                                <Label Content="元/每小时" Width="70"  Foreground="Red" HorizontalAlignment="Left"  />
+                                <Label Content=" 按次数计费标准："  Margin="8,0,0,0"  FontSize="13"  Width="116"  />
                                 <TextBox FontSize="13" Style="{StaticResource RadiusTextBoxStyle}"  x:Name="tboxChargeByTries"  Width="150"  KeyDown="tboxChargeByTries_KeyDown"  >
-                            <TextBox.ToolTip>每辆车每次的收费金额</TextBox.ToolTip>
-                        </TextBox>
-                        <Label Content="元/每次" Width="92" Foreground="Red"  />
-                    </StackPanel>
+                                    <TextBox.ToolTip>每辆车每次的收费金额</TextBox.ToolTip>
+                                </TextBox>
+                                <Label Content="元/每次" Width="92" Foreground="Red"  />
+                            </StackPanel>
 
-                    <StackPanel Orientation="Horizontal" Height="25" Margin="200,15,0,0">
-                        <Label Content=" 按里程计费标准："   FontSize="13"  Width="116"  />
+                            <StackPanel Orientation="Horizontal" Height="25" Margin="200,15,0,0">
+                                <Label Content=" 单位学时收费标准:"    FontSize="13"  Width="121" Margin="0,0,0,-0.2"  />
+                                <TextBox x:Name="txtBoxStudy" Style="{StaticResource RadiusTextBoxStyle}" FontSize="13" Width="150" />
+                                <Label Content="元" Foreground="Red" Width="40" />
+                                <Label Content=" 按里程计费标准："  Margin="38,0,0,0" FontSize="13"  Width="116"  />
                                 <TextBox Style="{StaticResource RadiusTextBoxStyle}" FontSize="13"  x:Name="tboxChargeByMileage"  Width="150"  KeyDown="tboxChargeByMileage_KeyDown"  >
-                            <TextBox.ToolTip>每辆车每公里行程的收费金额</TextBox.ToolTip>
-                        </TextBox>
-                        <Label Content="元/每公里"  Foreground="Red" Width="70" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0" Height="33" Grid.Row="1" />
-                        <Label Content=" 单次训练限制时间:" x:Name="label97"  FontSize="13"  Width="124" />
-                                <TextBox x:Name="txtBoxTimes" Style="{StaticResource RadiusTextBoxStyle}" FontSize="13"  Width="150"  KeyDown="txtBoxTimes_KeyDown" >
-                            <TextBox.ToolTip>每辆车每次训练单位完成的平均时间</TextBox.ToolTip>
-                        </TextBox>
-                        <Label Content="分钟" Foreground="Red" Width="40"/>
-                    </StackPanel>
-                    <StackPanel  Orientation="Horizontal" Margin="278,5,167,0">
+                                    <TextBox.ToolTip>每辆车每公里行程的收费金额</TextBox.ToolTip>
+                                </TextBox>
+                                <Label Content="元/每公里"  Foreground="Red" Width="70" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0" Height="33" Grid.Row="1" />
+                               
+                            </StackPanel>
+                            <StackPanel  Orientation="Horizontal" Margin="278,5,167,0">
 
-                    </StackPanel>
-                    <StackPanel Margin="200,10,0,45" Height="25" Orientation="Horizontal">
-                        <Label Content=" 默认VIP充值金额:"    FontSize="13"  Width="116"  />
-                                <TextBox x:Name="txtBoxVip" Style="{StaticResource RadiusTextBoxStyle}" FontSize="13" Width="150" />
-                        <Label Content="元" Foreground="Red" Width="40" />
-                        <Label Content="VIP优惠比例:"  FontSize="13" Margin="65,0,0,0"  Width="90" />
+                            </StackPanel>
+                            <StackPanel Margin="200,10,0,5" Height="25" Orientation="Horizontal">
+                                <Label Content=" 单位学时对应时间:"    Margin="0,0,0,-0.2" FontSize="13"  Width="122"  />
+                                <TextBox x:Name="txtBoxStudyTime" Style="{StaticResource RadiusTextBoxStyle}" FontSize="13" Width="150" />
+                                <Label Content="分钟" Foreground="Red" Width="40"/>
+                            
+                                <Label Content="VIP优惠比例:"  FontSize="13" Margin="63,0,0,0"  Width="90" />
                                 <TextBox x:Name="txtBoxVipPreferential" Style="{StaticResource RadiusTextBoxStyle}" FontSize="13" Width="150"  >
-                            <TextBox.ToolTip>例如：0.1表示VIP用户在原来充值金额基础上增加原充值金额的百分之十为最终充值金额</TextBox.ToolTip>
-                        </TextBox>
+                                    <TextBox.ToolTip>例如：0.1表示VIP用户在原来充值金额基础上增加原充值金额的百分之十为最终充值金额</TextBox.ToolTip>
+                                </TextBox>
+                            </StackPanel>
+                            <StackPanel Margin="200,10,0,45" Height="25" Orientation="Horizontal">
+                                <Label Content=" 默认VIP充值金额:"   Margin="5,0,0,0"  FontSize="13"  Width="116"  />
+                                <TextBox x:Name="txtBoxVip" Style="{StaticResource RadiusTextBoxStyle}" FontSize="13" Width="150" />
+                                <Label Content="元" Foreground="Red" Width="40" />
+                                <Label Content=" 单次训练限制时间:" x:Name="label97" Margin="31,0,0,0"  FontSize="13"  Width="124" />
+                                <TextBox x:Name="txtBoxTimes" Style="{StaticResource RadiusTextBoxStyle}" FontSize="13"  Width="150"  KeyDown="txtBoxTimes_KeyDown" >
+                                    <TextBox.ToolTip>每辆车每次训练单位完成的平均时间</TextBox.ToolTip>
+                                </TextBox>
+                                <Label Content="分钟" Foreground="Red" Width="40"/>
+                                
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel >
+                            <Button Content="保存计费标准" Template="{StaticResource GlassButton}" Margin="0,50,0,0" x:Name="btnSaveChargingMode" Width="120" FontSize="16" Background="LightGray" Click="btnSaveChargingMode_Click"  Height="40" VerticalAlignment="Top"  />
+                        </StackPanel>
                     </StackPanel>
                 </StackPanel>
-                <StackPanel >
-                    <Button Content="保存计费标准" Template="{StaticResource GlassButton}" Margin="0,50,0,0" x:Name="btnSaveChargingMode" Width="120" FontSize="16" Background="LightGray" Click="btnSaveChargingMode_Click"  Height="40" VerticalAlignment="Top"  />
-                </StackPanel>
-            </StackPanel>
-            </StackPanel>
             </Border>
 
 
-        </StackPanel>           
-          
-      
- 
-       
+        </StackPanel>
+
+
+
+
         <StackPanel Grid.Row="1">
             <StackPanel Height="20">
                 <TextBlock Text="基本信息配置" VerticalAlignment="Center"  HorizontalAlignment="Left" TextAlignment="Center" Background="DodgerBlue" Height="20" Width="520"/>

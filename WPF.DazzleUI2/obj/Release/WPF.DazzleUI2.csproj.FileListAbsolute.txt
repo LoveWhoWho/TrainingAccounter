@@ -1,0 +1,16 @@
+D:\CodeSource\gitData\TrainingAccounter\WPF.DazzleUI2\bin\Release\WPF.DazzleUI2.dll
+D:\CodeSource\gitData\TrainingAccounter\WPF.DazzleUI2\bin\Release\WPF.DazzleUI2.pdb
+D:\CodeSource\gitData\TrainingAccounter\WPF.DazzleUI2\obj\Release\WPF.DazzleUI2.csprojResolveAssemblyReference.cache
+D:\CodeSource\gitData\TrainingAccounter\WPF.DazzleUI2\obj\Release\Themes\Generic.baml
+D:\CodeSource\gitData\TrainingAccounter\WPF.DazzleUI2\obj\Release\GeneratedInternalTypeHelper.g.cs
+D:\CodeSource\gitData\TrainingAccounter\WPF.DazzleUI2\obj\Release\WPF.DazzleUI2_MarkupCompile.cache
+D:\CodeSource\gitData\TrainingAccounter\WPF.DazzleUI2\obj\Release\WPF.DazzleUI2_MarkupCompile.lref
+D:\CodeSource\gitData\TrainingAccounter\WPF.DazzleUI2\obj\Release\Themes\DazzleButton.baml
+D:\CodeSource\gitData\TrainingAccounter\WPF.DazzleUI2\obj\Release\Themes\DazzleTabControl.baml
+D:\CodeSource\gitData\TrainingAccounter\WPF.DazzleUI2\obj\Release\Themes\DazzleTabItem.baml
+D:\CodeSource\gitData\TrainingAccounter\WPF.DazzleUI2\obj\Release\Themes\DazzleWindow.baml
+D:\CodeSource\gitData\TrainingAccounter\WPF.DazzleUI2\obj\Release\WPF.DazzleUI2.g.resources
+D:\CodeSource\gitData\TrainingAccounter\WPF.DazzleUI2\obj\Release\WPF.DazzleUI2.Properties.Resources.resources
+D:\CodeSource\gitData\TrainingAccounter\WPF.DazzleUI2\obj\Release\WPF.DazzleUI2.csproj.GenerateResource.Cache
+D:\CodeSource\gitData\TrainingAccounter\WPF.DazzleUI2\obj\Release\WPF.DazzleUI2.dll
+D:\CodeSource\gitData\TrainingAccounter\WPF.DazzleUI2\obj\Release\WPF.DazzleUI2.pdb

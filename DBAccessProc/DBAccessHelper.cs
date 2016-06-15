@@ -523,7 +523,7 @@ namespace DBAccessProc
                connection.Open();               
                for (int i = 0; i < sBookSeqNo.Length; i++)
                {
-				   sqltext = "update  TRA_STUDINFO  set balance=0，UNDER_BALANCE=0  where pid_no='" + sPidNo + "'" + "" + "update TRA_BOOK_INFO set CHECKSTATUS='SK' where SEQ_NO='" + sBookSeqNo[i] + "'";
+				   sqltext = "update  TRA_STUDINFO  set balance=0,UNDER_BALANCE=0  where pid_no='" + sPidNo + "'" + "" + "update TRA_BOOK_INFO set CHECKSTATUS='SK' where SEQ_NO='" + sBookSeqNo[i] + "'";
                    SqlCommand cmd = new SqlCommand(sqltext, connection);
                    cmd.ExecuteNonQuery();   
                }              

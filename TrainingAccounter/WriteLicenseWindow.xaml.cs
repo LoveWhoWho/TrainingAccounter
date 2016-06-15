@@ -80,6 +80,7 @@ namespace TrainingAccounter
 						MessageBox.Show("写入许可失败。请重新写入。");
 						return;
 					}
+                    dsrsrc.MainBarText = string.Format("学员:" + pidNo + "  签到成功，已经向移动设备中写入许可");
 				}
 				catch (Exception exm)
 				{

@@ -17,7 +17,7 @@ namespace TrainingControl
         /// <summary>
         /// 数据库全路径
         /// </summary>
-        private static readonly string ConnString = "Data Source= Backup.dat";
+        private static readonly string ConnString = "Data Source=" + DateTime.Now.ToString("yyyy-MM-dd") + "-Backup.dat";
 
         /// <summary>
         /// 判断是否有该表，没有则创建
@@ -53,7 +53,7 @@ namespace TrainingControl
         /// </summary>
         private static void CreateTranineesTable()
         {
-            SqlLiteHelper.CreatTabel("Traninees", "CREATE TABLE Traninees (sfzmhm VARCHAR(30) NOT NULL,currenttime VARCHAR( 10 ),licenseinfo TEXT);");
+            SqlLiteHelper.CreatTabel("Traninees", "CREATE TABLE Traninees (pidNo VARCHAR(30) NOT NULL,currentTime VARCHAR( 10 ),licenseInfo TEXT);");
         }
 
         /// <summary>
@@ -61,15 +61,15 @@ namespace TrainingControl
         /// </summary>
         private static void CreateTraningProcInfo()
         {
-            SqlLiteHelper.CreatTabel("TraningProcInfo", "CREATE TABLE TraningProcInfo (sfzmhm VARCHAR(30) NOT NULL,currenttime VARCHAR( 10 ),procinfo TEXT);");
+            SqlLiteHelper.CreatTabel("TraningProcInfo", "CREATE TABLE TraningProcInfo (pidNo VARCHAR(30) NOT NULL,timeStamp VARCHAR( 10 ),code varchar(20),mode varchar(10),type varchar(20));");
         }
 
         /// <summary>
         /// Creates the charg proc information.
         /// </summary>
-        private static void CreateChargProcInfo()
+        private static void CreateChargeProcInfo()
         {
-            SqlLiteHelper.CreatTabel("ChargeProcInfo", "CREATE TABLE ChargeProcInfo ( sfzmhm VARCHAR( 30 )  NOT NULL,autoid VARCHAR( 10 ),starttime VARCHAR( 25 ),endtime  VARCHAR( 25 ),mode VARCHAR( 20 ),currentmileage NUMERIC( 20 ),currentminutes NUMERIC( 20 ),surplustimes INT );");
+            SqlLiteHelper.CreatTabel("ChargeProcInfo", "CREATE TABLE ChargeProcInfo (pidNo VARCHAR( 30 ),autoId VARCHAR( 10 ),chargeMode VARCHAR(50),operationType VARCHAR( 100 ),operationTime VARCHAR( 30 ),currenBalance NUMERIC( 15, 5 ),currentTries INT,remainingTime NUMERIC( 15, 3 ));");
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace TrainingControl
         /// </summary>
         public static void CreateAllTable()
         {
-            CreateChargProcInfo();
+            CreateChargeProcInfo();
             CreateTranineesTable();
             CreateTraningProcInfo();
         }
@@ -129,22 +129,22 @@ namespace TrainingControl
         /// </summary>
         /// <param name="info">The information.</param>
         /// <returns></returns>
-        public static int SaveChargesInfo(ChargesInfo info)
+        public static int SaveChargesProcInfo(ChargesInfo info)
         {
             if (info != null)
             {
                 List<SQLiteParameter> cmdparams = new List<SQLiteParameter>
                 {
-                    new SQLiteParameter("sfzmhm", info.PidNo),
-                    new SQLiteParameter("autoid", info.AutoId),
-                    new SQLiteParameter("starttime", info.StartTime),
-                    new SQLiteParameter("endtime", info.EndTime),
-                    new SQLiteParameter("mode", info.Mode),
-                    new SQLiteParameter("currentmileage", info.CurrentMileage),
-                    new SQLiteParameter("currentminutes", info.CurrentMinutes),
-                    new SQLiteParameter("surplustimes", info.SurplusTimes)
+                    new SQLiteParameter("pidNo", info.PidNo),
+                    new SQLiteParameter("autoId", info.AutoId),
+                    new SQLiteParameter("chargeMode", info.ChargeMode),
+                    new SQLiteParameter("operationType", info.OperationType),
+                    new SQLiteParameter("operationTime", info.OperationTime),
+                    new SQLiteParameter("currenBalance", info.CurrenBalance),
+                    new SQLiteParameter("currentTries", info.CurrentTries),
+                    new SQLiteParameter("remainingTime", info.RemainingTime),
                 };
-                return SqlLiteHelper.ExecuteNonQuery("insert into ChargeProcInfo (sfzmhm,autoid,starttime,endtime,mode,currentmileage,currentminutes,surplustimes) values (@sfzmhm,@autoid,@starttime,@endtime,@mode,@currentmileage,@currentminutes,@surplustimes)", cmdparams);
+                return SqlLiteHelper.ExecuteNonQuery("insert into ChargeProcInfo (pidNo,autoid,chargeMode,operationType,operationTime,currenBalance,currentTries,remainingTime) values (@pidNo,@autoid,@chargeMode,@operationType,@operationTime,@currenBalance,@currentTries,@remainingTime)", cmdparams);
             }
             return 0;
         }
@@ -154,17 +154,19 @@ namespace TrainingControl
         /// </summary>
         /// <param name="license">The license.</param>
         /// <returns></returns>
-        public static int SaveTraningInfo(TrainLicense license)
+        public static int SaveTraningProInfo(string pidNo,TrainProc proc)
         {
-            if (license != null)
+            if (proc != null)
             {
                 List<SQLiteParameter> cmdparams = new List<SQLiteParameter>
                 {
-                    new SQLiteParameter("sfzmhm", license.PidNo),
-                    new SQLiteParameter("currenttime", DateTime.Now.ToLocalTime().ToString()),
-                    new SQLiteParameter("procinfo", JsonConvert.SerializeObject(license.TrainDetail))
+                    new SQLiteParameter("pidNo", pidNo),
+                    new SQLiteParameter("timeStamp", proc.Timestamp),
+                     new SQLiteParameter("code", proc.Code),
+                      new SQLiteParameter("mode", proc.Mode),
+                    new SQLiteParameter("type", proc.Type)
                 };
-                return ExecuteNonQuery("insert into TraningProcInfo (sfzmhm,currenttime,procinfo) values (@sfzmhm,@currenttime,@procinfo)", cmdparams);
+                return ExecuteNonQuery("insert into TraningProcInfo (pidNo,timeStamp,code,mode,type) values (@pidNo,@timeStamp,@code,@mode,@type)", cmdparams);
             }
             return 0;
         }
@@ -180,13 +182,39 @@ namespace TrainingControl
             {
                 List<SQLiteParameter> cmdparams = new List<SQLiteParameter>
                 {
-                    new SQLiteParameter("sfzmhm", license.PidNo),
-                    new SQLiteParameter("currenttime", DateTime.Now.ToLocalTime().ToString()),
-                    new SQLiteParameter("licenseinfo", JsonConvert.SerializeObject(license))
+                    new SQLiteParameter("pidNo", license.PidNo),
+                    new SQLiteParameter("currentTime", DateTime.Now.ToLocalTime().ToString()),
+                    new SQLiteParameter("licenseInfo", JsonConvert.SerializeObject(license))
                 };
-                return SqlLiteHelper.ExecuteNonQuery("insert into Traninees (sfzmhm,currenttime,licenseinfo) values (@sfzmhm,@currenttime,@licenseinfo)", cmdparams);
+                return SqlLiteHelper.ExecuteNonQuery("insert into Traninees (pidNO,currentTime,licenseInfo) values (@pidNo,@currentTime,@licenseInfo)", cmdparams);
             }
             return 0;
         }
+
+        //public static TrainingDetail GetTrainningDetail(TrainLicense license)
+        //{
+        //    TrainingDetail detail = new TrainingDetail();
+        //    detail.Name = license.Name;
+        //    detail.PidNo = license.PidNo;
+        //    detail.StartTime = license.TrainDetail.TrainStartTs.ToString("");
+        //    detail.EndTime = license.TrainDetail.TrainEndTs.ToString("");
+        //    detail.TrainningTime = (license.TrainDetail.TrainEndTs - license.TrainDetail.TrainStartTs).TotalMinutes.ToString("{0:N2}");
+        //    detail.Balance = license.AccountBalance;
+        //    detail.State = license.CheckLicense() == LicenseState.Normal ? "正常" : "余额不足";
+        //    List<TrainProc> proc=license.TrainDetail.TrainProcList;
+        //    var tries = from item in proc
+        //                where item.Code == "10000" && item.Type == "S"
+        //                select item;
+        //    var itemCount = from item in proc
+        //             where item.Code != "10000" && item.Type == "S"
+        //             select item;
+        //    var deduckPoints = from item in proc
+        //             where item.Type == "P"
+        //             select item.Code;
+        //    detail.TrainingTries = tries.Count();
+        //    detail.TrainingItemCount = itemCount.Count();
+        //    detail.Deduck = deduckPoints.ToList();
+        //}
+        
     }
 }

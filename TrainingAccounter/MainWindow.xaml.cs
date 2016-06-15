@@ -17,6 +17,9 @@ using TrainingControl;
 using System.Threading;
 using WPF.DazzleUI2;
 using System.Reflection;
+using System.Windows.Interop;
+using DBAccessProc;
+using System.IO;
 
 namespace TrainingAccounter
 {
@@ -28,7 +31,6 @@ namespace TrainingAccounter
 		public MainWindow()
 		{
 			DBAccessProc.ConfigurationManager.ConfigFileName = "TraineeManage.config";
-			//注册控件
 			if (dsrsrc.RegisterControls("TrainingAccounter"))
 				axLibCtl = new AxLib.AxLibControl();
 			InitializeComponent();
@@ -252,7 +254,20 @@ namespace TrainingAccounter
 		{
 			Environment.Exit(0);
 		}
-		
+          protected override void OnSourceInitialized(EventArgs e)
+        {
+           
+                base.OnSourceInitialized(e);
+                var source = PresentationSource.FromVisual(this) as HwndSource;
+                if (source != null)
+                {
+                   source.AddHook(dsrsrc.WndProc);
+                }
+           
+        }
+       
 
 	}
+    
+
 }

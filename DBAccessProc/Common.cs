@@ -41,7 +41,7 @@ namespace DBAccessProc
 			get
 			{
 				return ConfigurationManager.ConfigFileName;
-			}
+			} 
 		}
 
         public static String OracleDBConnectionString
@@ -141,7 +141,7 @@ namespace DBAccessProc
                         string sIPAddress = sPlainTxt.Substring(nIdx + 1);
                         if (sIPAddress == string.Empty)
                             _dbConnectionString = "Data Source=YHC\\YHCSERVER;Initial Catalog=TRADBTEST;User Id=sa;Password=iddqd_3852;";
-                         //   _dbConnectionString = ced.DecryptWork(sEncrypted);
+                         //  _dbConnectionString = ced.DecryptWork(sEncrypted);
                         else
                         {
                             bool bIsFound = false;

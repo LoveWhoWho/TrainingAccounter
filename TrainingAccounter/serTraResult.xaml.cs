@@ -32,11 +32,14 @@ namespace TrainingAccounter
 			dsrsrc.GetAllTrainer();
 			dsrsrc.getAllTraCar();
 			CboxDrvName.ItemsSource = dsrsrc.trainMangeDataSet.DrvSchoolDataTable.DefaultView;	
+           
 			this.CboxSisCarType.ItemsSource = dsrsrc.TrainLicenseType;
+            cbxModel.ItemsSource = m_BillingMode;
 			CboxSisCarType.SelectedIndex = 0;
 	
 			
 		}
+        private static string[] m_BillingMode = {"","按次数计费", "按时间计费", "按学时计费", "按里程计费" };
 		DsRsrc dsrsrc;		
 		string m_sFilePath = Common.PrintFilePath;//打印文件存放地址
 		private void miGetDetailRecords_Click(object sender, RoutedEventArgs e)
@@ -121,10 +124,27 @@ namespace TrainingAccounter
 				var m_sTrainer = CboxTrainer.Text.Trim();
 				var m_sDsId = CboxDrvName.SelectedValue != null ? int.Parse(CboxDrvName.SelectedValue.ToString()) : -1;
 				var m_sAutoId = CboxAutoId.Text.Trim();
-
+                var m_sModel = cbxModel.SelectedValue != null ? cbxModel.SelectedItem.ToString() : "";
 				var item = CboxTraCD.SelectedItem as ComboBoxItem;
 				dsrsrc.getTraProcessInfo(item != null && item.Content.ToString() == "科目二" ? "RE" : "SE", m_sCarType, m_sTrainer, m_sDsId, StrTime.SelectedDate.Value.ToString("yyyy-MM-dd"), EndTime.SelectedDate.Value.ToString("yyyy-MM-dd"), SisName.Text.Trim(), SisPidNo.Text.Trim(), m_sAutoId, 0);
-				dataGridSisSerch.ItemsSource = dsrsrc.trainMangeDataSet.TraProcessInfoDataTable.DefaultView;
+                DataRow[] dataFilter = null;
+                if (m_sModel != "")
+                {
+                    dataFilter = dsrsrc.trainMangeDataSet.TraProcessInfoDataTable.Select("BILL_MODEL='" + m_sModel + "'");                 
+                    DataTable newTable = dsrsrc.trainMangeDataSet.TraProcessInfoDataTable.Clone();
+                    if (dataFilter != null && dataFilter.Length > 0)
+                    {
+                        foreach (DataRow row in dataFilter)
+                        {
+                            newTable.Rows.Add(row.ItemArray);
+                        }
+                        dataGridSisSerch.ItemsSource = newTable.DefaultView;
+                    }
+                    else
+                        dataGridSisSerch.ItemsSource = null;
+                }
+                else
+				    dataGridSisSerch.ItemsSource = dsrsrc.trainMangeDataSet.TraProcessInfoDataTable.DefaultView;
 				//dsrsrc.trainMangeDataSet.TraProcessPointsDataTable.Clear();
 				//if (dsrsrc.trainMangeDataSet.TraProcessInfoDataTable.Rows.Count > 0)
 				//{
@@ -179,6 +199,11 @@ namespace TrainingAccounter
 					}
 				}
 		}
+
+        private void cbxModel_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
 	
 
 		

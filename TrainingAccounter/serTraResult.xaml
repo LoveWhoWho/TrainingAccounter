@@ -54,8 +54,12 @@
                 <Label Content="结束时间：" Margin="9,2" Height="25" FontSize="13" Width="68"/>
                 <DatePicker  x:Name="EndTime" SelectedDate="{x:Static sys:DateTime.Now}" FontSize="13" Height="25" Width="149" Margin="0,2"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="30,0,0,0" Height="30" Width="100" HorizontalAlignment="Center">
-                <Button  FontSize="15" Template="{StaticResource GlassButton}"  HorizontalAlignment="Center"   VerticalAlignment="Center" x:Name="BtnSisSerch" Height="28" Width="80" Click="BtnSisSerch_Click">
+            <StackPanel Orientation="Horizontal" Margin="10,0,0,0" Height="30" Width="290" HorizontalAlignment="Center">
+                <Label Height="25" FontSize="13">计费模式:</Label>
+                <ComboBox Name="cbxModel" Height="25" FontSize="13" Width="100" SelectionChanged="cbxModel_SelectionChanged">
+                    
+                </ComboBox>
+                <Button  FontSize="15"  Margin="10,0,0,0" Template="{StaticResource GlassButton}"  HorizontalAlignment="Center"   VerticalAlignment="Center" x:Name="BtnSisSerch" Height="28" Width="80" Click="BtnSisSerch_Click">
                     <ContentControl>
                         <StackPanel Orientation="Horizontal">
                             <Image Source="/resource/cx.png"></Image>

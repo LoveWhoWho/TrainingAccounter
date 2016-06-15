@@ -72,12 +72,10 @@ D:\工作项目\训练管理\TrainingAccounter\TrainingControl\obj\Debug\Trainin
 D:\工作项目\训练管理\TrainingAccounter\TrainingControl\obj\Debug\TrainingControl.pdb
 D:\CodeSource\gitData\TrainingAccounter\TrainingControl\bin\Debug\TrainingControl.dll
 D:\CodeSource\gitData\TrainingAccounter\TrainingControl\bin\Debug\TrainingControl.pdb
-D:\CodeSource\gitData\TrainingAccounter\TrainingControl\bin\Debug\AxInterop.ZKFPEngXControl.dll
 D:\CodeSource\gitData\TrainingAccounter\TrainingControl\bin\Debug\AxLib.dll
 D:\CodeSource\gitData\TrainingAccounter\TrainingControl\bin\Debug\DBAccessProc.dll
 D:\CodeSource\gitData\TrainingAccounter\TrainingControl\bin\Debug\Newtonsoft.Json.dll
 D:\CodeSource\gitData\TrainingAccounter\TrainingControl\bin\Debug\NPOI.dll
-D:\CodeSource\gitData\TrainingAccounter\TrainingControl\bin\Debug\System.Data.SQLite.dll
 D:\CodeSource\gitData\TrainingAccounter\TrainingControl\bin\Debug\AxTERMBLib.dll
 D:\CodeSource\gitData\TrainingAccounter\TrainingControl\bin\Debug\AxInterop.DORONURUACTIVEXLib.dll
 D:\CodeSource\gitData\TrainingAccounter\TrainingControl\bin\Debug\AxInterop.AVCAPUTURECTRLLib.dll
@@ -94,3 +92,5 @@ D:\CodeSource\gitData\TrainingAccounter\TrainingControl\obj\Debug\TrainingContro
 D:\CodeSource\gitData\TrainingAccounter\TrainingControl\obj\Debug\TrainingControl.csproj.GenerateResource.Cache
 D:\CodeSource\gitData\TrainingAccounter\TrainingControl\obj\Debug\TrainingControl.dll
 D:\CodeSource\gitData\TrainingAccounter\TrainingControl\obj\Debug\TrainingControl.pdb
+D:\CodeSource\gitData\TrainingAccounter\TrainingControl\bin\Debug\ICSharpCode.SharpZipLib.dll
+D:\CodeSource\gitData\TrainingAccounter\TrainingControl\bin\Debug\NPOI.xml

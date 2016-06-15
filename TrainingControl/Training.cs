@@ -6,57 +6,6 @@ using System.Collections;
 
 namespace TrainingControl
 {
-
-    public class ChargesInfo
-    {
-        public string SeqNo { get; set; }
-        public string PidNo { get; set; }
-        public string AutoId { get; set; }
-        public string StartTime {get; set; }
-        public string EndTime { get; set; }
-        public string Mode { get; set; }
-        public double CurrentMileage { get; set; }
-        public double CurrentMinutes { get; set; }
-        public int CurrentTimes { get; set; }
-        public int SurplusTimes
-        {
-            get;
-            set;
-        }
-        public ChargesInfo()
-        {
-            SeqNo = "";
-            PidNo = "";
-            AutoId = "";
-            StartTime = "";
-            EndTime = "";
-            Mode ="TIME";
-            CurrentMileage = 0;
-            CurrentMinutes = 0;
-            CurrentTimes = 0;
-            SurplusTimes = 0;
-        }
-    }
-
-    /// <summary>
-    /// 计费方式
-    /// </summary>
-    public enum ChargeMode
-    {
-        /// <summary>
-        /// 计时间
-        /// </summary>
-        TIME,
-        /// <summary>
-        /// 计次数
-        /// </summary>
-        TRIES,
-        /// <summary>
-        /// 计里程
-        /// </summary>
-        MILEAGE
-    }
-
     /// <summary>
     /// 训练时段
     /// </summary>
@@ -181,20 +130,21 @@ namespace TrainingControl
         string m_sAutoType;
         string m_sChargeMode;
         string m_sFingerprint;
+        //public int Student_Type { get; set; }
+        public int MinTimeUnit { get; set; }
+        public double ChargingStandard { get; set; }
+        public double AccountBalance { get; set; }
         string m_sPhoto;
         double m_nTimeLmt;
         int m_nTriesLmt;
         int m_traBookSeqNo;
         double m_fMileageLmt;
-        TrainDetail m_sTrainDetail;
+        List<TrainDetail> m_sTrainDetail;
 
 		///<summary>
 		///学员类型
 		/// </summary>
-		public int StudentType { get; set; }
-		public int MinTimeUnit { get; set; }
-		public double ChargingStandard { get; set; }
-		public double AccountBalance { get; set; }
+		public int StudentType { get; set; }	
         /// <summary>
         /// 预约序号
         /// </summary>
@@ -311,22 +261,25 @@ namespace TrainingControl
         /// <summary>
         /// 训练明细
         /// </summary>
-        public TrainDetail TrainDetail
+        public List<TrainDetail> TrainDetail
         {
             get { return m_sTrainDetail; }
             set { m_sTrainDetail = value; }
         }
 
-        public LicenseState CheckLicense(string autoTypeCd)
+        public LicenseState CheckLicense()
         {
             LicenseState lincenseState = LicenseState.Invaild;
             string[] time = m_trnDate.Split('|');
-            if (!time.Any(s => s.Equals(DateTime.Now.ToString("yyyy-MM-dd"))))
+            if (StudentType == 0)
             {
-                lincenseState = LicenseState.Overdue;
-                return lincenseState;
+                if (!time.Any(s => s.Equals(DateTime.Now.ToString("yyyy-MM-dd"))))
+                {
+                    lincenseState = LicenseState.Overdue;
+                    return lincenseState;
+                }
             }
-            if (!m_sAutoType.Equals(autoTypeCd.Trim()))
+            if (!m_sAutoType.Equals(AutoType))
             {
                 lincenseState = LicenseState.AutoTypeInvaild;
                 return lincenseState;
@@ -337,7 +290,7 @@ namespace TrainingControl
                 {
                     case "Time":
                         {
-                            lincenseState = (m_nTimeLmt > 0.0) ? LicenseState.Normal : LicenseState.Invaild;
+                            lincenseState = (AccountBalance >= MinTimeUnit * ChargingStandard) ? LicenseState.Normal : LicenseState.Invaild;
                             break;
                         }
                     case "Mileage":
@@ -347,7 +300,7 @@ namespace TrainingControl
                         }
                     case "Tries":
                         {
-                            lincenseState = (m_nTriesLmt > 0) ? LicenseState.Normal : LicenseState.Invaild;
+                            lincenseState = (AccountBalance >= ChargingStandard) ? LicenseState.Normal : LicenseState.Invaild;
                             break;
                         }
                     default:
@@ -357,10 +310,40 @@ namespace TrainingControl
             }
             else
             {
-                throw new MissingFieldException("许可模式不能为空！");
+                throw new MissingFieldException("许可无效！");
             }
             return lincenseState;
         }
+
+        public TrainingDetail GetTrainningDetail()
+        {
+            TrainingDetail detail = new TrainingDetail();
+            detail.Name = Name;
+            detail.PidNo = PidNo;
+            detail.Balance = AccountBalance.ToString();
+            detail.State = CheckLicense() == LicenseState.Normal ? "正常" : "余额不足";
+            if (TrainDetail != null)
+            {
+                detail.StartTime = TrainDetail[TrainDetail.Count - 1].TrainStartTs.ToString();
+                detail.EndTime = TrainDetail[TrainDetail.Count - 1].TrainEndTs.ToString();
+                detail.TrainingTime = Math.Round((TrainDetail[TrainDetail.Count - 1].TrainEndTs - TrainDetail[TrainDetail.Count - 1].TrainStartTs).TotalMinutes, 1).ToString();
+                List<TrainProc> proc = TrainDetail[TrainDetail.Count - 1].TrainProcList;
+                var tries = from item in proc
+                            where item.Code == "10000" && item.Type == "S"
+                            select item;
+                var itemCount = from item in proc
+                                where item.Code != "10000" && item.Type == "S"
+                                select item;
+                var deduckPoints = from item in proc
+                                   where item.Type == "V"
+                                   select item.Code;
+                detail.TrainingTries = tries.Count();
+                detail.TrainingItemCount = itemCount.Count();
+                detail.Deduck = deduckPoints.ToList();
+            }
+            return detail;
+        }
+
     }
 
 
@@ -489,5 +472,163 @@ namespace TrainingControl
         }
     }
 
-    
+    public class ChargesInfo
+    {
+        /// <summary>
+        /// Gets or sets the 序号.
+        /// </summary>
+        /// <value>
+        /// The seq no.
+        /// </value>
+        public string SeqNo { get; set; }
+        /// <summary>
+        /// 获取或设置身份证号
+        /// </summary>
+        /// <value>
+        /// The pid no.
+        /// </value>
+        public string PidNo { get; set; }
+        /// <summary>
+        /// 获取或设置车号
+        /// </summary>
+        /// <value>
+        /// The automatic identifier.
+        /// </value>
+        public string AutoId { get; set; }
+
+        /// <summary>
+        /// 计费模式
+        /// </summary>
+        /// <value>
+        /// The charge mode.
+        /// </value>
+        public string ChargeMode { get; set; }
+
+        /// <summary>
+        /// 获取或设置训练类型
+        /// </summary>
+        /// <value>
+        /// The type of the operation.
+        /// </value>
+        public string OperationType { get; set; }
+        /// <summary>
+        /// 获取或设置动作时间
+        /// </summary>
+        /// <value>
+        /// The operation time.
+        /// </value>
+        public string OperationTime { get; set; }
+        /// <summary>
+        /// 当前余额
+        /// </summary>
+        /// <value>
+        /// The curren balance.
+        /// </value>
+        public double CurrenBalance { get; set; }
+        /// <summary>
+        /// 当前次数
+        /// </summary>
+        /// <value>
+        /// The current tries.
+        /// </value>
+        public int CurrentTries { get; set; }
+        /// <summary>
+        /// 剩余时间
+        /// </summary>
+        /// <value>
+        /// The remaining time.
+        /// </value>
+        public double RemainingTime { get; set; }
+        public ChargesInfo()
+        {
+
+
+        }
+    }
+
+    public class ChargeControlInfo
+    {
+        private string pidNo;
+
+        public string PidNo
+        {
+            get { return pidNo; }
+            set { pidNo = value; }
+        }
+        private string name;
+
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+        private string chargeMode;
+
+        public string ChargeMode
+        {
+            get { return chargeMode; }
+            set { chargeMode = value; }
+        }
+        private double balance;
+
+        public double Balance
+        {
+            get { return balance; }
+            set { balance = value; }
+        }
+        private double time;
+
+        public double Time
+        {
+            get { return time; }
+            set { time = value; }
+        }
+        private int tries;
+
+        public int Tries
+        {
+            get { return tries; }
+            set { tries = Math.Abs(value); }
+        }
+        private string startTime;
+
+        public string StartTime
+        {
+            get { return startTime; }
+            set { startTime = value; }
+        }
+        
+    }
+
+    /// <summary>
+    /// 训练详细(显示用)
+    /// </summary>
+    public class TrainingDetail
+    {
+        public string Name;
+        public string PidNo;
+        public string State;
+        public string Balance;
+        public string TrainingTime;
+        public string StartTime;
+        public string EndTime;
+        public int TrainingTries;
+        public int TrainingItemCount;
+        public List<string> Deduck;
+
+        public TrainingDetail()
+        {
+            Name = "";
+            PidNo = "";
+            State = "";
+            Balance = "余额不足";
+            TrainingTime = "0";
+            StartTime = "";
+            EndTime = "";
+            TrainingTries = 0;
+            TrainingItemCount = 0;
+            Deduck = new List<string>();
+        }
+
+    }
 }

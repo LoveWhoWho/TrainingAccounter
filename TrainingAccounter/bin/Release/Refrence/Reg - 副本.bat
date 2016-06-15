@@ -1,0 +1,12 @@
+cd /d "%~dp0"
+regsvr32 /s AvcaputureCtrl.ocx 
+regsvr32 /s biokey.ocx 
+regsvr32 /s CL2005Ocx.ocx 
+regsvr32 /s DoronUruActiveX4B.ocx 
+regsvr32 /s HyVideoCtrl.ocx 
+regsvr32 /s HYVidSeverCtrl.ocx 
+regsvr32 /s SDK_2000.OCX 
+regsvr32 /s SmartPainter.ocx
+regsvr32 /s SmartPainterQ.ocx
+regsvr32 /s TCMFPCtl.ocx
+regsvr32 /s Termb.ocx

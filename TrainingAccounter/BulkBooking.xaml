@@ -53,7 +53,7 @@
                 <ComboBoxItem>科目三</ComboBoxItem>
             </ComboBox>
             <Label Content="计费方式:" FontSize="12" Name="label32"/>
-            <ComboBox  IsEditable="False" FontSize="12" FontFamily="STSong" Name="cboxBillModeBook" Width="120" SelectionChanged="cboxBillModeBook_SelectionChanged"  />
+            <TextBox  IsEnabled="False" TextAlignment="Center" Foreground="Red" VerticalContentAlignment="Center" FontSize="12" FontFamily="STSong" Name="cboxBillModeBook" Width="100" TextChanged="cboxBillModeBook_TextChanged"/>
             <Label   FontSize="12" Content="预约训练车号：" />
             <ComboBox  FontSize="12" x:Name="CboxAutoId"  Width="70" />
             <Label  FontSize="12"  Content="预约教练员：" />
@@ -99,6 +99,9 @@
             <Label Content="训练里程：" FontSize="12" Margin="10,0,0,0" x:Name="lbMil" />
             <TextBox  Foreground="Red"   Style="{StaticResource  RadiusTextBoxStyle}" x:Name="tboxTraMil"  Width="50" KeyDown="tboxTraMil_KeyDown"  />
             <Label Content="公里" FontSize="12"  x:Name="lbKm" />
+            <Label Content="训练学时：" FontSize="12" Margin="10,0,0,0"  />
+            <TextBox  Foreground="Red"   Style="{StaticResource  RadiusTextBoxStyle}" x:Name="tboxTraStudyTime"  Width="50" KeyDown="tboxTraStudyTime_KeyDown"  />
+            <Label Content="个" FontSize="12"  />
             <Button Content="导出许可" Template="{StaticResource GlassButton}" Name="btnExportTraLic" Width="75" Margin="400,0,0,0" Click="btnExportTraLic_Click"/>
         </StackPanel>
     </Grid>

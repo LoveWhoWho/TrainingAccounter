@@ -20,7 +20,7 @@
                     <Label Name="lbTratime" FontSize="11" VerticalAlignment="Bottom" Foreground="Red" Content=""> </Label>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Label Margin="35,5,0,0">本次训练费用：</Label>
+                    <Label Margin="34,5,0,0">本次训练费用：</Label>
                     <TextBox IsEnabled="False" FontSize="14"  TextAlignment="Center" Margin="0,5,0,0" Foreground="Red" Name="tbxAcBalance" Width="150"></TextBox>
                     <Label FontSize="11" Height="25" VerticalAlignment="Bottom" Foreground="Red" Content="(元)"></Label>
                 </StackPanel>

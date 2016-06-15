@@ -34,8 +34,9 @@
             <ComboBox DisplayMemberPath="TRAINER_NAME" x:Name="cboxTrainer" SelectedValuePath="TRAINER_ID" Width="130"  />
             <Label Content="车辆品牌：" FontSize="13"  x:Name="label104" />
             <TextBox  x:Name="tboxBrand" Style="{StaticResource RadiusTextBoxStyle}"  Width="130" />
-            <Button Content="新 增"  Template="{StaticResource GlassButton}" Margin="100,0,0,0" MaxWidth="85" x:Name="btnAddTraCar"  Click="btnAddTraCar_Click" Width="85" />
-            <Button Content="保 存" Template="{StaticResource GlassButton}"  Margin="50,0,0,0" MaxWidth="85" x:Name="btnSaveTraCar"  Width="85" Click="btnSaveTraCar_Click" />
+           
+            <Button Content="保 存" Template="{StaticResource GlassButton}"  Margin="100,0,0,0" MaxWidth="85" x:Name="btnSaveTraCar"  Width="85" Click="btnSaveTraCar_Click" />
+            <Button Content="新 增"  Template="{StaticResource GlassButton}" Margin="50,0,0,0" MaxWidth="85" x:Name="btnAddTraCar"  Click="btnAddTraCar_Click" Width="85" />
         </StackPanel>
         <DataGrid Grid.Row="2" AutoGenerateColumns="False" FontSize="14" CanUserAddRows="False" x:Name="dataGridTraCar" SelectionChanged="dataGridTraCar_SelectionChanged" SelectionMode="Single" >
             <DataGrid.Columns>

@@ -102,6 +102,12 @@ namespace TrainingAccounter
 				if (this.rdbVip.IsChecked == true)
 					userType = 1;
                 }
+                addDsrsrc.SearchTrainee(txbPidNo.Text.Trim(), "", "", "",-1, DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd")).AddYears(-100), DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd")), "1");
+                if (addDsrsrc.trainMangeDataSet.TraineeDataTable.Rows.Count > 0)
+                {
+                    if (MessageBox.Show("已经存在相同身份证号码的学员注册信息，是否要继续保存来更新", "提示", MessageBoxButton.YesNoCancel, MessageBoxImage.Information) == MessageBoxResult.No)
+                      return;
+                }
 				DBAccessHelper.SaveTraStudInfo(txbPidNo.Text.Trim(), txbUserName.Text.Trim(), UserPhoto, this.rdbMan.IsChecked == true ? "男" : "女", this.dpBirthDay.SelectedDate.Value, _sFingerPrint, cmbDrivingSchool.SelectedValue == null ? -1 : Convert.ToInt32(cmbDrivingSchool.SelectedValue.ToString()), this.txbPhoneNo.Text.Trim(), ".", dpRegDate.SelectedDate.Value.ToString("yyyy-MM-dd"), "", "", cmbLicenseTypeCd.SelectedValue.ToString(), "", "", "", "", Convert.ToDouble("0"), txbAddress.Text.Trim(), userType);
                 addDsrsrc.MainBarText = "学员：" + txbUserName.Text.Trim() + ",注册信息成功，可以进行预约";
                 tblSaveSta.Text = "保存成功";

@@ -13,31 +13,22 @@ namespace TrainingControl
     /// </summary>
     public partial class ChargingControl : Window
     {
-
         /// <summary>
-        /// 
+        /// 更新学员信息
         /// </summary>
-        /// <param name="name">The name.</param>
-        public delegate void ShowName(string name);
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="basePhoto">The base photo.</param>
-        public delegate void ShowPhoto(string basePhoto);
-        /// <summary>
-        /// The _brush
-        /// </summary>
-        private readonly Brush _brush = new SolidColorBrush(Colors.OrangeRed);
+        /// <param name="traineeInfo">The trainee information.</param>
+        public delegate void ShowTrineeInfo(ChargeControlInfo traineeInfo);
+ 
         /// <summary>
         /// Initializes a new instance of the <see cref="ChargingControl"/> class.
         /// </summary>
         public ChargingControl()
         {
             InitializeComponent();
-            Top = SystemParameters.PrimaryScreenHeight - Height;
-            Left = 1.0;
-            InitPhoto();
+            Top = 0;
+            Left = SystemParameters.PrimaryScreenWidth / 2 - (Width / 2);
             ShowInTaskbar = false;
+            Visibility = System.Windows.Visibility.Hidden;
         }
 
         /// <summary>
@@ -58,7 +49,7 @@ namespace TrainingControl
                 myBitmapImage.StreamSource = new MemoryStream(bytes);
                 myBitmapImage.EndInit();
             }
-            imgPhoto.Source = myBitmapImage;
+            //imgPhoto.Source = myBitmapImage;
         }
 
         /// <summary>
@@ -78,69 +69,23 @@ namespace TrainingControl
         /// Changes the show information.
         /// </summary>
         /// <param name="info">The information.</param>
-        public void ChangeShowInfo(ChargesInfo info)
+        public void ChangeShowInfo(ChargeControlInfo info)
         {
+
             if (info != null)
             {
-                labTime.FontWeight = FontWeights.Normal;
-                labTime.Foreground = new SolidColorBrush(Colors.Black);
-                txtTrainedTime.Foreground = new SolidColorBrush(Colors.Black);
-                switch (info.Mode)
-                {
-                    case "Time":
-                    {
-                        labTime.FontWeight = FontWeights.Bold;
-                        labTime.Foreground = _brush;
-                        txtTrainedTime.Foreground = _brush;
-                        int hour = (int) info.CurrentMinutes/1;
-                        int min = (int) ((info.CurrentMinutes - hour)*60.0/1.0);
-                        int sec = (int) (Math.Round((info.CurrentMinutes - hour)*60.0 - min, 3)*60.0);
-                        txtTrainedMileage.Text = Math.Round(Math.Abs(info.CurrentMileage*1000.0), 2) + "米";
-                        txtTrainedTime.Text = string.Concat(hour, ":", min, ":", sec);
-                        txtTrainedTimes.Text = Math.Abs(info.SurplusTimes) + "次";
-                         break;
-                    }
-                    case "Mileage":
-                    {
-                        labMileage.FontWeight = FontWeights.Bold;
-                        labMileage.Foreground = _brush;
-                        txtTrainedMileage.Foreground = _brush;
-                        txtTrainedMileage.Text = Math.Round(info.CurrentMileage * 1000.0, 2) + "米";
-                        txtTrainedTimes.Text = Math.Abs(info.SurplusTimes) + "次";
-                        double cmin = Math.Abs(info.CurrentMinutes);
-                        int hour = (int)cmin / 1;
-                        int min = (int)((cmin - hour) * 60.0 / 1.0);
-                        int sec = (int)(Math.Round((cmin - hour) * 60.0 - min, 3) * 60.0);
-                        txtTrainedTime.Text = string.Concat(hour, ":", min, ":", sec);
-                        break;
-                    }
-                    case "Tries":
-                    {
-                        labTries.FontWeight = FontWeights.Bold;
-                        labTries.Foreground = _brush;
-                        txtTrainedTimes.Foreground = _brush;
-                        txtTrainedMileage.Text = Math.Round(Math.Abs(info.CurrentMileage * 1000.0), 2) + "米";
-                        txtTrainedTimes.Text = info.SurplusTimes + "次";
-                        double cmin = Math.Abs(info.CurrentMinutes);
-                        int hour = (int)cmin / 1;
-                        int min = (int)((cmin - hour) * 60.0 / 1.0);
-                        int sec = (int)(Math.Round((cmin - hour) * 60.0 - min, 3) * 60.0);
-                        txtTrainedTime.Text = string.Concat(hour, ":", min, ":", sec);
-                        break;
-                    }
-                }
+                txtTrainerName.Text = info.Name;
+                int hour = (int)(info.Time / 3600);
+                int min = (int)((info.Time - hour * 3600) / 60);
+                int sec = (int)(info.Time - hour * 3600 - min * 60);
+                txtStartTime.Text = "开始时间: " + info.StartTime;
+                txtTrainedTime.Text = "训练时长: " + string.Concat(string.Format("{0:D2}", hour), ":", string.Format("{0:D2}", min), ":", string.Format("{0:D2}", sec));
+                txtTrainedTries.Text = "训练次数: " + info.Tries + "次";
+                txbBalance.Text = "当前余额：" + info.Balance + "元";
             }
         }
 
-        /// <summary>
-        /// Shows the name of the trainer.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        public void ShowTrainerName(string name)
-        {
-            this.TrainerName.Text = name;
-        }
-
+       
         /// <summary>
         /// Shows the trainer photo.
         /// </summary>
@@ -156,7 +101,7 @@ namespace TrainingControl
                     myBitmapImage.BeginInit();
                     myBitmapImage.StreamSource = new MemoryStream(photo);
                     myBitmapImage.EndInit();
-                    this.imgPhoto.Source = myBitmapImage;
+                    //this.imgPhoto.Source = myBitmapImage;
                 }
             }
             catch
@@ -166,37 +111,23 @@ namespace TrainingControl
         }
 
         /// <summary>
-        /// Calls the changes show information.
+        /// Calls the change show information.
         /// </summary>
         /// <param name="info">The information.</param>
-        public void CallChangesShowInfo(ChargesInfo info)
+        public void CallChangeShowInfo(ChargeControlInfo info)
         {
             Dispatcher.Invoke(new Action(delegate
             {
                 this.ChangeShowInfo(info);
             }));
         }
-        /// <summary>
-        /// Calls the name of the show trainer.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        public void CallShowTrainerName(string name)
+
+        private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            Dispatcher.Invoke(new Action(delegate
+            if (e.LeftButton == MouseButtonState.Pressed)
             {
-                this.ShowTrainerName(name);
-            }));
-        }
-        /// <summary>
-        /// Calls the show trainer photo.
-        /// </summary>
-        /// <param name="base64Photo">The base64 photo.</param>
-        public void CallShowTrainerPhoto(string base64Photo)
-        {
-            base.Dispatcher.Invoke(new Action(delegate
-            {
-                this.ShowTrainerPhoto(base64Photo);
-            }), new object[0]);
+                DragMove();
+            }
         }
     }
 }

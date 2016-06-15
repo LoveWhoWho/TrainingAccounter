@@ -41,15 +41,9 @@
             <TextBox Height="25" Foreground="Red" Style="{StaticResource RadiusTextBoxStyle}" TextAlignment="Center" Padding="0,3,0,0" x:Name="tboxVehicleModel" IsEnabled="False" FontSize="13" Width="66" />
             <Label Content="车辆品牌:" FontSize="12" VerticalAlignment="Center" Margin="10,0,0,0"  x:Name="label46" />
         <ComboBox Height="25" FontSize="13"  x:Name="cboxBookBrand" Width="68" SelectionChanged="cboxBookBrand_SelectionChanged" />
-            <Label Content="训练次数："  VerticalAlignment="Center" Margin="10,0,0,0" FontSize="12"  x:Name="label" />
-            <TextBox Height="25" Foreground="Red"  Style="{StaticResource RadiusTextBoxStyle}" FontSize="13" x:Name="tboxTraCnt"  Width="80" KeyDown="tboxTraCnt_KeyDown" KeyUp="tboxTraCnt_KeyUp" />
+            <Label Content="训练次数：" Name="lbBook"  VerticalAlignment="Center" Margin="50,0,0,0" FontSize="12" />
+            <TextBox Height="25" Foreground="Red"  Style="{StaticResource RadiusTextBoxStyle}" FontSize="13" x:Name="tboxTraCnt"  Width="100" KeyDown="tboxTraCnt_KeyDown" KeyUp="tboxTraCnt_KeyUp" />
             <Label Content="次" FontSize="12" Height="24" Foreground="Red" VerticalAlignment="Center" x:Name="lbcnt" />
-            <Label Content="训练里程：" FontSize="12" Margin="10,0,0,0" VerticalAlignment="Center" x:Name="lbMil" />
-            <TextBox Height="25" FontSize="13" Style="{StaticResource RadiusTextBoxStyle}" Foreground="Red"  x:Name="tboxTraMil"  Width="80" KeyDown="tboxTraMil_KeyDown" KeyUp="tboxTraMil_KeyUp" />
-            <Label VerticalAlignment="Center" Content="公里" FontSize="12"  Foreground="Red" x:Name="lbKm" />
-            <Label x:Name="lbTime" Content="训练时间："  Margin="10,0,0,0" VerticalAlignment="Center" FontSize="12"/>
-            <TextBox Height="22" Style="{StaticResource RadiusTextBoxStyle}" FontSize="13" Foreground="Red"  x:Name="tboxTraTime"  Width="80" KeyDown="tboxTraMil_KeyDown" KeyUp="tboxTraMil_KeyUp" />
-            <Label Content="小时" VerticalAlignment="Center" FontSize="12" Foreground="Red" x:Name="lbHour"/>
         </StackPanel>
         <Border Grid.Row="2" BorderThickness="2" BorderBrush="SkyBlue">
         <StackPanel Orientation="Horizontal">

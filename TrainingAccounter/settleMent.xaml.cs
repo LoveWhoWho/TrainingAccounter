@@ -96,6 +96,9 @@ namespace TrainingAccounter
                         case "Mileage":
                             dr["RECHARGE_AMOUNT"] = dr["MILEAGE_AMOUNT"] + " 公里";
                             break;
+                        case "StudyTime":
+                            dr["RECHARGE_AMOUNT"] = dr["RECHARGE_AMOUNT"] + " 个学时";
+                            break;
                     }
                         dt.Rows.Add(dr.ItemArray);
                     }
@@ -180,6 +183,7 @@ namespace TrainingAccounter
 				}
 				if (isSettlement == true)
 				{
+
 					dsrsrc.getTraProcessInfo("", "", "", 0, "1900-01-01", "1900-01-01", "", tempB["PID_NO"].ToString(), "", "", "", "", int.Parse(tempB["SEQ_NO"].ToString()));
 					if (dsrsrc.trainMangeDataSet.TraProcessInfoDataTable.Rows.Count > 0)
 					{
@@ -193,32 +197,75 @@ namespace TrainingAccounter
 					double dChargingStandard = 0;
 					DataRow[] drow = dsrsrc.trainMangeDataSet.BookTrainingDataTable.Select("SEQ_NO = '" + sBookSeqNo[0] + "'");
 					dChargingStandard = dsrsrc.GetChargingStandard(dsrsrc.sBillingMode, dsrsrc.trainMangeDataSet.TraineeDataTable.Rows[0]["LICENSE_TYPE_CD"].ToString());
-					if(dBlance==0)
-					  dBlance = Double.Parse(dsrsrc.trainMangeDataSet.TraineeDataTable.Rows[0]["UNDER_BALANCE"].ToString());
-					if (sBillMode == "Time")
-					{
-						dActualBalance[0] = Math.Round(ActualTimes * Math.Round((dChargingStandard / 60), 2), 2);
-						sTraAmount = ActualTimes.ToString();
+                    double dBookBalance = double.Parse(drow[0]["THIS_BALANCE"].ToString());
+                    var rowStu = dsrsrc.trainMangeDataSet.TraineeDataTable.Rows[0];
+                    bool isVip = (int.Parse(rowStu["STUDENT_TYPE"].ToString()) == 1) ? true : false;
+                    if (tempB["CHECKSTATUS"].ToString() != "未签到")
+                    {
+                        if (isVip)
+                        {
+                                dBlance = Math.Round(Double.Parse(dsrsrc.trainMangeDataSet.TraineeDataTable.Rows[0]["UNDER_BALANCE"].ToString()) +
+                                Double.Parse(dsrsrc.trainMangeDataSet.TraineeDataTable.Rows[0]["BALANCE"].ToString()), 2);                              
+                                ActualBalance = Math.Round(dBookBalance > dActualBalance[0] ? (dBookBalance - dActualBalance[0]) : 0);
+                        }                                         
+                        else 
+                        {
+                                dBlance = Double.Parse(dsrsrc.trainMangeDataSet.TraineeDataTable.Rows[0]["BALANCE"].ToString());
+                                ActualBalance = dBookBalance;
+                        }
+
+                    }
+                    if (sBillMode == "Time" || sBillMode == "StudyTime")
+                    {
+                        if (isVip)
+                        {
+                            if (sBillMode == "StudyTime")
+                                dActualBalance[0] = Math.Round(ActualTimes * dChargingStandard/Math.Round(double.Parse(dsrsrc.StudyHasTime),2), 2);
+                            else
+                                dActualBalance[0] = Math.Round(ActualTimes * Math.Round((dChargingStandard / 60), 2), 2);
+                            sTraAmount = ActualTimes.ToString();
+                        }
+                        else {
+
+                            dActualBalance[0] = dBookBalance;
+                            sTraAmount = drow[0]["RECHARGE_AMOUNT"].ToString();
+                        }
 					}
 					else if (sBillMode == "Tries")
 					{
-						dActualBalance[0] = Math.Round(ActualTries * dChargingStandard, 2);
-						sTraAmount = ActualTries.ToString();
+                        if (isVip)
+                        {
+                            dActualBalance[0] = Math.Round(ActualTries * dChargingStandard, 2);
+                            sTraAmount = ActualTries.ToString();
+                        }
+                        else
+                        {
+                            dActualBalance[0] = dBookBalance;
+                            sTraAmount = drow[0]["TRIES_AMOUNT"].ToString();
+                        }
 					}
-					else if (sBillMode == "Mileage")
-					{
-						dActualBalance[0] = Math.Round(ActualMileage * dChargingStandard, 2);
-						sTraAmount = ActualMileage.ToString();
-					}
-					double dBookBalance = double.Parse(drow[0]["THIS_BALANCE"].ToString());
-					ActualBalance = Math.Round(dBookBalance > dActualBalance[0] ? (dBookBalance - dActualBalance[0]) : 0);
+                    else if (sBillMode == "Mileage")
+                    {
+                        if (isVip)
+                        {
+                            dActualBalance[0] = Math.Round(ActualMileage * dChargingStandard, 2);
+                            sTraAmount = ActualMileage.ToString();
+                        }
+                        else
+                        { 
+                             dActualBalance[0] = dBookBalance;
+                             sTraAmount = drow[0]["MILEAGE_AMOUNT"].ToString();
+                        }
+                    }
+                 
 					UpdateBoxWindow ubw = new UpdateBoxWindow(tempB["PID_NO"].ToString(), tempB["TRAINE_NAME"].ToString(), ActualBalance, sTraAmount, dActualBalance, sBookSeqNo, sBillMode, dBlance);				
 					ubw.ShowDialog();
+                }
 				}
 			}
 		}
 	
-		}
+		
 	}
 
 
