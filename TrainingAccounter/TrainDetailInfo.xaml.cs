@@ -40,7 +40,7 @@ namespace TrainingAccounter
             txtTrainer.Text = _row.TRAINER_NAME;
             txtTrainMileage.Text = _row.TRAIN_MILEAGE.ToString();
             txtTrainTime.Text = _row.TRAINING_TIME.ToString();
-            txtTrainTries.Text = _row.TRAIN_TRIES.ToString();
+            txtTrainTries.Text = _row.TRAIN_TRIES.ToString();           
             txtTrainMode.Text = _row.BILL_MODEL.ToString();
         }      
       

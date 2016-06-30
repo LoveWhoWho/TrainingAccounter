@@ -45,7 +45,7 @@
                 </ContentControl>
             </Button>
         </StackPanel>
-        <DataGrid  Grid.Row="1" AutoGenerateColumns="False" FontSize="14" MouseDoubleClick="dgSearchTrainee_MouseDoubleClick" IsReadOnly="True" Margin="0,10,0,0" x:Name="dgSearchTrainee"  SelectionMode="Single" >
+        <DataGrid  Grid.Row="1" AutoGenerateColumns="False" SelectionUnit="FullRow"   FontSize="14" MouseDoubleClick="dgSearchTrainee_MouseDoubleClick" IsReadOnly="True" Margin="0,10,0,0" x:Name="dgSearchTrainee" HorizontalGridLinesBrush="BlueViolet" HeadersVisibility="Column" VerticalGridLinesBrush="BlueViolet"  SelectionMode="Single" >
             <DataGrid.ContextMenu>
                 <ContextMenu Name="dgStuMenu">
                     <MenuItem Header="设置为VIP学员"> </MenuItem>

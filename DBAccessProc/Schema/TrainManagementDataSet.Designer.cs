@@ -4850,6 +4850,8 @@ namespace DBAccessProc.Schema {
             
             private global::System.Data.DataColumn columnAccountBalance;
             
+            private global::System.Data.DataColumn columnCheckStatus;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public TraTrainLicenseDataTableDataTable() {
@@ -5045,6 +5047,14 @@ namespace DBAccessProc.Schema {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CheckStatusColumn {
+                get {
+                    return this.columnCheckStatus;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -5100,7 +5110,8 @@ namespace DBAccessProc.Schema {
                         int StudentType, 
                         string MinTimeUnit, 
                         float ChargingStandard, 
-                        float AccountBalance) {
+                        float AccountBalance, 
+                        string CheckStatus) {
                 TraTrainLicenseDataTableRow rowTraTrainLicenseDataTableRow = ((TraTrainLicenseDataTableRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         AutoId,
@@ -5122,7 +5133,8 @@ namespace DBAccessProc.Schema {
                         StudentType,
                         MinTimeUnit,
                         ChargingStandard,
-                        AccountBalance};
+                        AccountBalance,
+                        CheckStatus};
                 rowTraTrainLicenseDataTableRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowTraTrainLicenseDataTableRow);
                 return rowTraTrainLicenseDataTableRow;
@@ -5165,6 +5177,7 @@ namespace DBAccessProc.Schema {
                 this.columnMinTimeUnit = base.Columns["MinTimeUnit"];
                 this.columnChargingStandard = base.Columns["ChargingStandard"];
                 this.columnAccountBalance = base.Columns["AccountBalance"];
+                this.columnCheckStatus = base.Columns["CheckStatus"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -5210,6 +5223,8 @@ namespace DBAccessProc.Schema {
                 base.Columns.Add(this.columnChargingStandard);
                 this.columnAccountBalance = new global::System.Data.DataColumn("AccountBalance", typeof(float), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAccountBalance);
+                this.columnCheckStatus = new global::System.Data.DataColumn("CheckStatus", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCheckStatus);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -11116,6 +11131,22 @@ namespace DBAccessProc.Schema {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string CheckStatus {
+                get {
+                    try {
+                        return ((string)(this[this.tableTraTrainLicenseDataTable.CheckStatusColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("表“TraTrainLicenseDataTable”中列“CheckStatus”的值为 DBNull。", e);
+                    }
+                }
+                set {
+                    this[this.tableTraTrainLicenseDataTable.CheckStatusColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsAutoIdNull() {
                 return this.IsNull(this.tableTraTrainLicenseDataTable.AutoIdColumn);
             }
@@ -11352,6 +11383,18 @@ namespace DBAccessProc.Schema {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetAccountBalanceNull() {
                 this[this.tableTraTrainLicenseDataTable.AccountBalanceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCheckStatusNull() {
+                return this.IsNull(this.tableTraTrainLicenseDataTable.CheckStatusColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCheckStatusNull() {
+                this[this.tableTraTrainLicenseDataTable.CheckStatusColumn] = global::System.Convert.DBNull;
             }
         }
         

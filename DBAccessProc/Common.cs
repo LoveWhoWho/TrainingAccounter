@@ -140,8 +140,8 @@ namespace DBAccessProc
                         int nIdx = sPlainTxt.LastIndexOf(';');
                         string sIPAddress = sPlainTxt.Substring(nIdx + 1);
                         if (sIPAddress == string.Empty)
-                            _dbConnectionString = "Data Source=YHC\\YHCSERVER;Initial Catalog=TRADBTEST;User Id=sa;Password=iddqd_3852;";
-                         //  _dbConnectionString = ced.DecryptWork(sEncrypted);
+                        //    _dbConnectionString = "Data Source=YHC\\YHCSERVER;Initial Catalog=TRADBTEST;User Id=sa;Password=iddqd_3852;";
+                           _dbConnectionString = ced.DecryptWork(sEncrypted);
                         else
                         {
                             bool bIsFound = false;
@@ -611,6 +611,16 @@ namespace DBAccessProc
             get
             {
                 return ConfigurationManager.AppSettings["RunningMode"];
+            }
+        }
+        /// <summary>
+        /// ͨѶģʽ
+        /// </summary>
+        public static string CommuniCationMode
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["CommuniCationMode"];
             }
         }
 

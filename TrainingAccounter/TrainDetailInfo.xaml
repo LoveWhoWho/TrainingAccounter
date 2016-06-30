@@ -81,7 +81,7 @@
                 <TextBox Name="txtTrainTries" FontSize="13" Margin="0,2,0,0" />
                 <TextBlock Text="驾校名称:" FontSize="13" Margin="4,2,0,0" Width="80"/>
                 <TextBox Name="txtDrivingSchool" FontSize="13" Text="" Margin="0,2,0,0"  MinWidth="255" Width="277"/>
-                <TextBlock Text="训练时间(单位:小时):" FontSize="13" Margin="60,2,0,0" Width="163"/>
+                <TextBlock Text="训练时间(单位:分钟):" FontSize="13" Margin="60,2,0,0" Width="163"/>
                 <TextBox x:Name="txtTrainTime" FontSize="13" Margin="0,2,0,0" Width="80"/>
 
                 <TextBlock Text="训练里程(单位:公里):" FontSize="13" Margin="0,2,0,0" Width="160"/>

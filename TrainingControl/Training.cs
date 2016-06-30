@@ -144,7 +144,8 @@ namespace TrainingControl
 		///<summary>
 		///学员类型
 		/// </summary>
-		public int StudentType { get; set; }	
+		public int StudentType { get; set; }
+        public string CheckStatus { get; set; }	
         /// <summary>
         /// 预约序号
         /// </summary>

@@ -150,12 +150,7 @@ namespace TrainingAccounter
 				if (tboxTraTime.Text.Trim() == "")
 				{ tboxTraTime.Text = "0"; }
 				else
-				{
-					//	System.Windows.MessageBox.Show("请填入训练时间！");
-					//	tboxTraTime.Focus();
-					//	return;
-					//}
-					//else			
+				{						
 					if (!double.TryParse(tboxTraTime.Text.Trim(), out timeLenth))
 					{
 						System.Windows.MessageBox.Show("输入的时间数不合法！");

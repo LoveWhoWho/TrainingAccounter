@@ -677,15 +677,18 @@ namespace TrainingAccounter
 		}
 		private void btnSign_Click(object sender, RoutedEventArgs e)
 		{
+            if (DBAccessProc.Common.CommuniCationMode == "1")
+            {
+                MessageBox.Show("当前是网络通信模式，无需签到");
+                return;
+            }
 			if (dataGridHistory.SelectedItems.Count == 1)
 			{
 				var tempA = (DataRowView)dataGridHistory.SelectedItems[0];
 				if (tempA["CHECKSTATUS"].ToString() == "未签到")
 				{
 					bool bPrint = true;
-					//打印小票 
-					//   bPrint = print.PrintDirect("OrderDocument.xaml", tempA);//直接打印
-					//bPrint = print.PrintDlg("OrderDocument.xaml", tempA);//选择打印机打印
+					//打印小票 					
 					if (bPrint)
 					{
 						try
@@ -819,7 +822,7 @@ namespace TrainingAccounter
 				traLic.AutoId = dr["AutoId"].ToString().Trim();
 				traLic.AutoType = dr["AutoType"].ToString();
 				traLic.ChargeMode = dr["ChargeMode"].ToString();
-
+                traLic.CheckStatus = dr["CheckStatus"].ToString();
 				traLic.Date = dr["Date"].ToString();
 				traLic.Fingerprint = "";// dr["Fingerprint"].ToString();
 				traLic.Name = dr["Name"].ToString();

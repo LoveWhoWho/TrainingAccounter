@@ -357,9 +357,7 @@ namespace TrainingControl
             {
                 return false;
             }
-            finally
-            {
-            }
+           
         }
         /// <summary>
         /// 获取指定学员信息
@@ -1167,8 +1165,8 @@ namespace TrainingControl
                     for (int i = 0; i < readResult.Count; i++)
                     {
                         //更新状态和余额到主账户
-                    
-                        var result = DBAccessHelper.TraineeCheckIn(readResult[i].TraBookSeqNo.ToString(), "IK", readResult[i].PidNo, readJStoSql.StrWholeRead[1].ToString(), double.Parse(readResult[i].AccountBalance.ToString()));
+
+                        var result = DBAccessHelper.TraineeCheckIn(readResult[i].TraBookSeqNo.ToString(), readResult[i].CheckStatus, readResult[i].PidNo, readJStoSql.StrWholeRead[1].ToString(), double.Parse(readResult[i].AccountBalance.ToString()));
                         if (result != 1)
                         {
                             System.Windows.MessageBox.Show("更新账户余额失败，U盘ＩＤ不匹配或者数据不正确,请重试");
@@ -1198,22 +1196,23 @@ namespace TrainingControl
                                 endTime = item.TrainEndTs;
                             if (startTime > item.TrainStartTs)
                                 startTime = item.TrainStartTs;
-                        }
-                        var traProcSeqNo = DBAccessHelper.SaveTraProcessInfo(autoId, readResult[i].PidNo, readResult[i].Date, startTime, endTime, trainer, readResult[i].AutoType, traTime, readResult[i].TraBookSeqNo, trainTries, trainMileage);
-                        if (traProcSeqNo == -1)
-                        {
-                            continue;
-                        }
-                        else
-                        {
-                            foreach (var item in readResult[i].TrainDetail)
+
+                            var traProcSeqNo = DBAccessHelper.SaveTraProcessInfo(autoId, readResult[i].PidNo, readResult[i].Date, startTime, endTime, trainer, readResult[i].AutoType, traTime, readResult[i].TraBookSeqNo, trainTries, trainMileage);
+                            if (traProcSeqNo == -1)
                             {
-                                foreach (var proc in item.TrainProcList)
-                                {
-                                    DBAccessHelper.SaveTraProcessPoints(traProcSeqNo, proc.Code, DateTime.Parse(proc.Timestamp), proc.Mode, proc.Type);
-                                }
+                                continue;
                             }
+                            else
+                            {                               
+                                    foreach (var proc in item.TrainProcList)
+                                    {
+                                        DBAccessHelper.SaveTraProcessPoints(traProcSeqNo, proc.Code, DateTime.Parse(proc.Timestamp), proc.Mode, proc.Type);
+                                    }
+                                
+                            }
+
                         }
+                       
                         lstTraData.Add(readResult[i]);
                     }
                 }

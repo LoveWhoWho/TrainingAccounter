@@ -150,6 +150,8 @@ namespace TrainingAccounter
 						System.Windows.Forms.MessageBox.Show("已经签到，但未读取到训练数据，无法进行结算。");
 						return;
 					case "训练中":
+                        if (DBAccessProc.Common.CommuniCationMode == "1")
+                        { isSettlement = false; break; }
 						//检测是否有U盘插入
 						var s = DriveInfo.GetDrives();
 						bool isDisk = false;
